@@ -28,7 +28,7 @@ html{ scroll-behavior:smooth; }
 body.mhk-site{
   background:var(--mhk-bg);
   color:var(--mhk-text);
-  font-family:'Barlow',system-ui,sans-serif;
+  font-family:var(--bb-fb,'Barlow'),system-ui,sans-serif;
   font-size:16.5px;
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
@@ -45,7 +45,7 @@ body.mhk-site ul.mhk-list{ list-style:none; margin:0; padding:0; }
 
 
 .mhk-site h1, .mhk-site h2, .mhk-site h3, .mhk-site h4, .mhk-site .mhk-display{
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   text-transform:uppercase;
   line-height:1.02;
   letter-spacing:.01em;
@@ -65,7 +65,7 @@ body.mhk-site ul.mhk-list{ list-style:none; margin:0; padding:0; }
 /* ---------- gombok ---------- */
 .mhk-btn{
   display:inline-block;
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-weight:700;
   font-size:1.06rem;
   text-transform:uppercase;
@@ -104,7 +104,7 @@ body.mhk-site ul.mhk-list{ list-style:none; margin:0; padding:0; }
 .mhk-nav-logo img{ height:40px; width:auto; }
 .mhk-nav-links{ display:flex; align-items:center; gap:6px; }
 .mhk-nav-links a{
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-weight:600; font-size:1.02rem;
   text-transform:uppercase; letter-spacing:.07em;
   padding:.55rem .9rem;
@@ -116,7 +116,7 @@ body.mhk-site ul.mhk-list{ list-style:none; margin:0; padding:0; }
 .mhk-nav-links a.active{ color:var(--mhk-accent); }
 .mhk-nav-cta{ display:flex; align-items:center; gap:14px; }
 .mhk-nav-phone{
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-weight:700; font-size:1.05rem; letter-spacing:.04em;
   color:var(--mhk-text);
 }
@@ -193,7 +193,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 .mhk-trust-item:first-child{ border-left:0; }
 .mhk-trust-item b{
   display:block;
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-size:2rem; font-weight:800; font-style:italic;
   color:var(--mhk-accent);
   line-height:1.1;
@@ -251,7 +251,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 .mhk-badge{
   position:absolute; top:14px; left:-6px;
   background:var(--mhk-accent); color:#151009;
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-weight:800; font-size:.92rem;
   text-transform:uppercase; letter-spacing:.08em;
   padding:.32rem 1rem .32rem 1.2rem;
@@ -266,13 +266,13 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
   color:var(--mhk-muted); font-weight:600;
 }
 .mhk-p-name{
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-size:1.35rem; font-weight:700; text-transform:uppercase;
   line-height:1.1;
 }
 .mhk-p-price-row{ margin-top:auto; padding-top:14px; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
 .mhk-p-price{
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-size:1.5rem; font-weight:800; font-style:italic;
   color:var(--mhk-accent);
 }
@@ -318,7 +318,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 .mhk-brand-tile .mhk-tile-cta{
   margin-top:14px;
   display:inline-block;
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-weight:700; text-transform:uppercase; letter-spacing:.08em;
   color:var(--mhk-accent);
   border-bottom:2px solid var(--mhk-accent);
@@ -371,7 +371,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 .mhk-gear p{ margin-top:1rem; color:#d8d4cd; }
 .mhk-gear-tags{ margin-top:1.6rem; display:flex; flex-wrap:wrap; gap:10px; }
 .mhk-gear-tags li{
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-weight:600; text-transform:uppercase; letter-spacing:.06em;
   font-size:.95rem;
   border:1px solid rgba(255,255,255,.3);
@@ -404,7 +404,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 .mhk-closing::after{
   content:"MHK";
   position:absolute; right:-30px; bottom:-70px;
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-weight:800; font-style:italic;
   font-size:20rem; line-height:1;
   color:rgba(21,16,9,.08);
@@ -487,7 +487,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 .mhk-page-head::after{
   content:attr(data-ghost);
   position:absolute; right:-20px; top:50%; transform:translateY(-50%);
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-weight:800; font-style:italic; text-transform:uppercase;
   font-size:9rem; line-height:1;
   color:rgba(255,255,255,.035);
@@ -507,12 +507,12 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 }
 .mhk-filter-row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
 .mhk-filter-label{
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   text-transform:uppercase; letter-spacing:.1em; font-weight:600;
   color:var(--mhk-muted); font-size:.9rem; margin-right:6px;
 }
 .mhk-f-btn{
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-weight:600; font-size:.93rem;
   text-transform:uppercase; letter-spacing:.05em;
   background:none; color:var(--mhk-muted);
@@ -551,7 +551,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 }
 .mhk-price-box .mhk-p-old{ font-size:1.05rem; }
 .mhk-price-box .mhk-now{
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-size:2.4rem; font-weight:800; font-style:italic;
   color:var(--mhk-accent); line-height:1.1;
 }
@@ -571,7 +571,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 }
 .mhk-spec-card b{
   display:block;
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-size:1.8rem; font-weight:800; font-style:italic;
   color:var(--mhk-accent);
 }
@@ -605,7 +605,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 .mhk-form-field{ display:flex; flex-direction:column; gap:6px; }
 .mhk-form-field.mhk-full{ grid-column:1 / -1; }
 .mhk-form-field label{
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-weight:600; font-size:.92rem;
   text-transform:uppercase; letter-spacing:.08em;
   color:var(--mhk-text);
@@ -616,7 +616,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
   background:#101013;
   border:1px solid var(--mhk-line);
   color:var(--mhk-text);
-  font-family:'Barlow',sans-serif;
+  font-family:var(--bb-fb,'Barlow'),sans-serif;
   font-size:1rem;
   padding:.8rem 1rem;
   transition:border-color .15s ease;
@@ -649,7 +649,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 .mhk-c-card p, .mhk-c-card a{ color:var(--mhk-muted); font-size:.97rem; }
 .mhk-c-card a:hover{ color:var(--mhk-accent); }
 .mhk-c-card .mhk-big{
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-size:1.5rem; font-weight:700; color:var(--mhk-text);
 }
 .mhk-c-card .mhk-big:hover{ color:var(--mhk-accent); }
@@ -680,7 +680,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 .mhk-mobile-call a{
   display:flex; align-items:center; justify-content:center; gap:10px;
   padding:14px;
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-weight:800; font-size:1.15rem; text-transform:uppercase; letter-spacing:.05em;
   color:#151009;
 }
@@ -822,7 +822,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 .mhk-hstat > span{ display:block; transform:skewX(calc(var(--mhk-skew) * -1)); }
 .mhk-hstat b{
   display:block;
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-weight:800; font-style:italic;
   font-size:1.7rem; line-height:1.15;
   color:var(--mhk-accent);
@@ -837,7 +837,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
   background:#101013;
   border:1px solid var(--mhk-line);
   color:var(--mhk-text);
-  font-family:'Barlow',sans-serif; font-size:.93rem;
+  font-family:var(--bb-fb,'Barlow'),sans-serif; font-size:.93rem;
   padding:.45rem .85rem;
   height:38px;
 }
@@ -872,7 +872,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 .mhk-marquee-track span{
   display:flex; align-items:center; gap:26px;
   padding:13px 13px;
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-weight:800; font-style:italic; text-transform:uppercase;
   font-size:1.8rem; line-height:1;
   color:#151009;
@@ -961,7 +961,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 .mhk-uc-body p{ color:var(--mhk-muted); font-size:.95rem; flex:1; }
 .mhk-uc-body .mhk-tile-cta{
   margin-top:10px; align-self:flex-start;
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-weight:700; text-transform:uppercase; letter-spacing:.08em;
   color:var(--mhk-accent); border-bottom:2px solid var(--mhk-accent); padding-bottom:2px;
 }
@@ -977,7 +977,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 .mhk-step .mhk-num{
   width:52px; height:52px;
   background:var(--mhk-accent); color:#151009;
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-weight:800; font-style:italic; font-size:1.4rem;
   display:flex; align-items:center; justify-content:center;
   transform:skewX(var(--mhk-skew));
@@ -1000,7 +1000,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 .mhk-q-stars{ display:flex; gap:4px; }
 .mhk-q-stars svg{ width:18px; height:18px; fill:var(--mhk-accent); }
 .mhk-q-main blockquote{
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-weight:600; font-style:italic;
   font-size:1.65rem; line-height:1.3;
 }
@@ -1011,7 +1011,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 .mhk-q-avatar{
   width:44px; height:44px; flex:none;
   background:var(--mhk-accent); color:#151009;
-  font-family:'Saira Condensed',sans-serif; font-weight:800;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif; font-weight:800;
   display:flex; align-items:center; justify-content:center;
   transform:skewX(var(--mhk-skew));
 }
@@ -1029,7 +1029,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 .mhk-news-form input{
   flex:1; min-width:0;
   background:#fff; border:1px solid rgba(23,21,15,.22);
-  color:#17150f; font-family:'Barlow',sans-serif; font-size:1rem;
+  color:#17150f; font-family:var(--bb-fb,'Barlow'),sans-serif; font-size:1rem;
   padding:.95rem 1.1rem;
 }
 .mhk-news-form input::placeholder{ color:#8f8a80; }
@@ -1042,7 +1042,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 .mhk-faq summary{
   cursor:pointer; list-style:none;
   padding:18px 24px;
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-weight:700; font-size:1.15rem;
   text-transform:uppercase; letter-spacing:.03em;
   display:flex; justify-content:space-between; align-items:center; gap:18px;
@@ -1050,7 +1050,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 .mhk-faq summary::-webkit-details-marker{ display:none; }
 .mhk-faq summary::after{
   content:"+";
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-weight:600; font-size:1.7rem; line-height:1;
   color:var(--mhk-accent);
   transition:transform .25s ease;
@@ -1164,7 +1164,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 
 /* Elementor menü a saját tipográfiánkkal */
 .mhk-site .elementor-nav-menu .elementor-item{
-  font-family:'Saira Condensed',sans-serif;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif;
   font-weight:600; font-size:1.02rem;
   text-transform:uppercase; letter-spacing:.07em;
 }
@@ -1201,7 +1201,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
   }
   .mhk-mobile-call a{
     display:flex; align-items:center; justify-content:center; gap:10px; padding:14px;
-    font-family:'Saira Condensed',sans-serif; font-weight:800; font-size:1.15rem;
+    font-family:var(--bb-fh,'Saira Condensed'),sans-serif; font-weight:800; font-size:1.15rem;
     text-transform:uppercase; letter-spacing:.05em; color:#151009;
   }
   body.mhk-site{ padding-bottom:52px; }
@@ -1367,7 +1367,7 @@ body.mhk-menu-open{ overflow:hidden; }
 .mhk-modal-head .mhk-p-brand{ color:#8a857b; }
 .mhk-modal-head h3{ font-size:1.5rem; color:#17150f; margin:2px 0 4px; }
 .mhk-modal-price{
-  font-family:'Saira Condensed',sans-serif; font-weight:800; font-style:italic;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif; font-weight:800; font-style:italic;
   font-size:1.25rem; color:var(--mhk-accent-dk);
 }
 .mhk-modal .mhk-form-panel{
@@ -1574,7 +1574,7 @@ body.mhk-modal-open{ overflow:hidden; }
 .mhk-cookie-text{ flex:1 1 420px; min-width:0; }
 .mhk-cookie-text strong{
   display:block;
-  font-family:'Saira Condensed',sans-serif; font-weight:800;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif; font-weight:800;
   text-transform:uppercase; letter-spacing:.04em; font-size:1.05rem;
   color:var(--mhk-text); margin-bottom:4px;
 }
@@ -1601,7 +1601,7 @@ body.mhk-modal-open{ overflow:hidden; }
   padding:14px 18px 14px 14px;
   border:0; cursor:pointer;
   background:var(--mhk-accent); color:#151009;
-  font-family:'Saira Condensed',sans-serif; font-weight:800;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif; font-weight:800;
   text-transform:uppercase; letter-spacing:.06em; font-size:1rem;
   writing-mode:vertical-rl;
   border-radius:0 6px 6px 0;
@@ -1690,7 +1690,7 @@ body.mhk-modal-open{ overflow:hidden; }
     padding:20px 24px; border-bottom:1px solid var(--mhk-line);
   }
   .mhk-nav-panel-head span{
-    font-family:'Saira Condensed',sans-serif; font-weight:800;
+    font-family:var(--bb-fh,'Saira Condensed'),sans-serif; font-weight:800;
     text-transform:uppercase; letter-spacing:.12em; font-size:.9rem;
     color:var(--mhk-muted);
   }
@@ -1722,7 +1722,7 @@ body.mhk-modal-open{ overflow:hidden; }
   }
   .mhk-nav-panel-foot .mhk-btn{ text-align:center; }
   .mhk-nav-panel-phone{
-    font-family:'Saira Condensed',sans-serif; font-weight:800; font-size:1.35rem;
+    font-family:var(--bb-fh,'Saira Condensed'),sans-serif; font-weight:800; font-size:1.35rem;
     color:var(--mhk-text) !important; text-align:center; padding:0 !important;
     border:0 !important;
   }
@@ -1781,7 +1781,7 @@ body.mhk-modal-open{ overflow:hidden; }
 .mhk-blog-chip{
   position:absolute; top:16px; left:-6px; z-index:2;
   background:var(--mhk-accent); color:#151009;
-  font-family:'Saira Condensed',sans-serif; font-weight:800; font-size:.88rem;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif; font-weight:800; font-size:.88rem;
   text-transform:uppercase; letter-spacing:.08em;
   padding:.3rem 1rem .3rem 1.2rem;
   transform:skewX(var(--mhk-skew));
@@ -1790,7 +1790,7 @@ body.mhk-modal-open{ overflow:hidden; }
 
 .mhk-blog-body{ padding:24px 26px 28px; display:flex; flex-direction:column; gap:10px; flex:1; }
 .mhk-blog-meta{
-  font-family:'Saira Condensed',sans-serif; font-weight:600;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif; font-weight:600;
   text-transform:uppercase; letter-spacing:.12em; font-size:.82rem;
   color:var(--mhk-muted);
 }
@@ -1848,7 +1848,7 @@ body.mhk-modal-open{ overflow:hidden; }
 .mhk-site .mhk-pagination .page-numbers{
   display:inline-block; padding:.55rem 1.1rem; margin-right:8px;
   border:1px solid var(--mhk-line); color:var(--mhk-muted);
-  font-family:'Saira Condensed',sans-serif; font-weight:700; text-transform:uppercase;
+  font-family:var(--bb-fh,'Saira Condensed'),sans-serif; font-weight:700; text-transform:uppercase;
   transform:skewX(var(--mhk-skew));
 }
 .mhk-site .mhk-pagination .page-numbers.current,
@@ -2202,7 +2202,7 @@ body.single-post .mhk-page-head p{ color:var(--mhk-muted); font-size:.95rem; }
    de vizuálisan alárendelve, hogy a fő ár maradjon a hangsúlyos. */
 .mhk-section-light .mhk-price-box .mhk-vat-line,
 .mhk-price-box .mhk-net-line{
-  display:block; font-family:'Barlow',system-ui,sans-serif;
+  display:block; font-family:var(--bb-fb,'Barlow'),system-ui,sans-serif;
   font-size:.92rem; font-style:normal; color:var(--mhk-muted); line-height:1.45;
 }
 .mhk-price-box .mhk-vat-line{ margin-top:6px; }
@@ -2218,7 +2218,7 @@ body.single-post .mhk-page-head p{ color:var(--mhk-muted); font-size:.95rem; }
   text-transform:uppercase; color:var(--mhk-muted); margin-left:7px;
 }
 .mhk-modal-net{
-  display:block; font-family:'Barlow',system-ui,sans-serif;
+  display:block; font-family:var(--bb-fb,'Barlow'),system-ui,sans-serif;
   font-size:.82rem; color:var(--mhk-muted); margin-top:3px;
 }
 
@@ -2233,7 +2233,7 @@ body.single-post .mhk-page-head p{ color:var(--mhk-muted); font-size:.95rem; }
 .mhk-p-price{ font-size:1.6rem; letter-spacing:-.01em; white-space:nowrap; }
 .mhk-p-gross{
   order:2;
-  font-family:'Barlow',system-ui,sans-serif;
+  font-family:var(--bb-fb,'Barlow'),system-ui,sans-serif;
   font-size:.6rem; font-weight:700; font-style:normal;
   letter-spacing:.14em; text-transform:uppercase; white-space:nowrap;
   color:var(--mhk-muted); align-self:center;

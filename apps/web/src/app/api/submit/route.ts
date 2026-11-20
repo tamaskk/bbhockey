@@ -1,4 +1,4 @@
-import { ADMIN_URL, getContent } from "@/lib/cms";
+import { CMS_API, getContent } from "@/lib/cms";
 import { allFields, isInput, isVisible } from "@/lib/form";
 
 // admin-only or system columns a form field must never write
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
   }
   data.valaszok = valaszok;
 
-  const res = await fetch(`${ADMIN_URL}/api/jelentkezesek`, {
+  const res = await fetch(`${CMS_API}/jelentkezesek`, {
     method: "POST",
     headers: { "content-type": "application/json", "x-shared-secret": process.env.SHARED_SECRET ?? "" },
     body: JSON.stringify(data),

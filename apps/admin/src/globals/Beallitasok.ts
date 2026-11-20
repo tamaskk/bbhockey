@@ -1,4 +1,5 @@
 import type { GlobalConfig } from 'payload'
+import { FONTS } from '../fonts'
 import { image } from '../fields'
 import { revalidateHook } from '../revalidate'
 
@@ -47,6 +48,15 @@ export const Beallitasok: GlobalConfig = {
                 color('accentDark', 'Sötétebb szín (világos háttéren)', '#857f00'),
               ],
             },
+            {
+              type: 'row',
+              fields: [
+                { name: 'fontHeading', label: 'Címek betűtípusa', type: 'select', options: FONTS.filter((f) => f.value), admin: { description: 'Üresen: Saira Condensed' } },
+                { name: 'fontBody', label: 'Szövegek betűtípusa', type: 'select', options: FONTS.filter((f) => f.value), admin: { description: 'Üresen: Barlow' } },
+              ],
+            },
+            // per-element looks set in the page editor (🎨): { "<global>:<field path>": { color, bg, font, size, … } }
+            { name: 'styles', type: 'json', admin: { hidden: true } },
           ],
         },
         {

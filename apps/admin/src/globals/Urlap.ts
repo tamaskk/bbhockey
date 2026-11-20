@@ -4,7 +4,10 @@ import { revalidateHook } from '../revalidate'
 
 const CHOICE_TYPES = ['select', 'radio', 'checkboxes']
 const INPUT_TYPES = ['text', 'email', 'tel', 'number', 'textarea']
+const ALL_TYPES = ['text', 'email', 'tel', 'date', 'number', 'textarea', 'select', 'radio', 'checkboxes', 'consent', 'note', 'image']
 const onlyFor = (types: string[]) => (_: unknown, sibling: { type?: string }) => types.includes(sibling?.type ?? '')
+// custom.showFor mirrors admin.condition for the page editor's settings panel (functions can't be sent to the browser)
+const showFor = (types: string[]) => ({ condition: onlyFor(types), custom: { showFor: types } })
 
 export const slug = (s: string) =>
   s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '').slice(0, 40) || 'mezo'
@@ -55,7 +58,7 @@ const fieldItem: Field[] = [
         ],
         admin: { width: '50%' },
       },
-      { name: 'required', label: 'Kötelező', type: 'checkbox', defaultValue: false, admin: { width: '50%', condition: (_, s) => !['note', 'image'].includes(s?.type) } },
+      { name: 'required', label: 'Kötelező', type: 'checkbox', defaultValue: false, admin: { width: '50%', ...showFor(ALL_TYPES.filter((t) => !['note', 'image'].includes(t))) } },
     ],
   },
   {
@@ -63,12 +66,12 @@ const fieldItem: Field[] = [
     label: 'Választási lehetőségek',
     type: 'text',
     hasMany: true,
-    admin: { condition: onlyFor(CHOICE_TYPES), description: 'Írd be az opciót, majd Enter. Sorrend húzással állítható.' },
+    admin: { ...showFor(CHOICE_TYPES), description: 'Írd be az opciót, majd Enter. Sorrend húzással állítható.' },
   },
-  { name: 'placeholder', label: 'Minta szöveg a mezőben', type: 'text', admin: { condition: onlyFor(INPUT_TYPES) } },
-  { name: 'link', label: 'Link (a felirat erre mutat)', type: 'text', admin: { condition: onlyFor(['consent']) } },
-  { ...image('image', 'Kép'), admin: { condition: onlyFor(['image']) } } as Field,
-  { name: 'help', label: 'Segítő szöveg (a mező alatt)', type: 'textarea', admin: { condition: (_, s) => s?.type !== 'image' } },
+  { name: 'placeholder', label: 'Minta szöveg a mezőben', type: 'text', admin: showFor(INPUT_TYPES) },
+  { name: 'link', label: 'Link (a felirat erre mutat)', type: 'text', admin: showFor(['consent']) },
+  { ...image('image', 'Kép'), admin: showFor(['image']) } as Field,
+  { name: 'help', label: 'Segítő szöveg (a mező alatt)', type: 'textarea', admin: showFor(ALL_TYPES.filter((t) => t !== 'image')) },
   {
     type: 'collapsible',
     label: 'Haladó: azonosító és feltétel',

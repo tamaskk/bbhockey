@@ -205,6 +205,10 @@ export interface Jelentkezesek {
 export interface Media {
   id: string;
   alt?: string | null;
+  /**
+   * A Drive-ban a kép megosztása legyen „Bárki, aki rendelkezik a linkkel”. Más képlink (https://…) is működik.
+   */
+  driveUrl?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -551,6 +555,7 @@ export interface JelentkezesekSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  driveUrl?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -736,6 +741,63 @@ export interface Beallitasok {
    * Hex színkód, pl. #f4eb06
    */
   accentDark: string;
+  /**
+   * Üresen: Saira Condensed
+   */
+  fontHeading?:
+    | (
+        | 'Saira Condensed:ital,wght@0,500;0,700;0,800;1,700;1,800'
+        | 'Barlow:ital,wght@0,400;0,600;0,700;1,400'
+        | 'Barlow Condensed:ital,wght@0,500;0,700;0,800;1,700'
+        | 'Oswald:wght@400;600;700'
+        | 'Bebas Neue'
+        | 'Anton'
+        | 'Archivo Black'
+        | 'Montserrat:ital,wght@0,400;0,600;0,800;1,700'
+        | 'Poppins:ital,wght@0,400;0,600;0,800;1,700'
+        | 'Inter:wght@400;600;800'
+        | 'Roboto:ital,wght@0,400;0,700;1,700'
+        | 'Open Sans:ital,wght@0,400;0,700;1,700'
+        | 'Lato:ital,wght@0,400;0,700;1,700'
+        | 'Raleway:ital,wght@0,400;0,700;1,700'
+        | 'Rubik:ital,wght@0,400;0,700;1,700'
+        | 'Playfair Display:ital,wght@0,400;0,700;1,700'
+        | 'Merriweather:ital,wght@0,400;0,700;1,700'
+      )
+    | null;
+  /**
+   * Üresen: Barlow
+   */
+  fontBody?:
+    | (
+        | 'Saira Condensed:ital,wght@0,500;0,700;0,800;1,700;1,800'
+        | 'Barlow:ital,wght@0,400;0,600;0,700;1,400'
+        | 'Barlow Condensed:ital,wght@0,500;0,700;0,800;1,700'
+        | 'Oswald:wght@400;600;700'
+        | 'Bebas Neue'
+        | 'Anton'
+        | 'Archivo Black'
+        | 'Montserrat:ital,wght@0,400;0,600;0,800;1,700'
+        | 'Poppins:ital,wght@0,400;0,600;0,800;1,700'
+        | 'Inter:wght@400;600;800'
+        | 'Roboto:ital,wght@0,400;0,700;1,700'
+        | 'Open Sans:ital,wght@0,400;0,700;1,700'
+        | 'Lato:ital,wght@0,400;0,700;1,700'
+        | 'Raleway:ital,wght@0,400;0,700;1,700'
+        | 'Rubik:ital,wght@0,400;0,700;1,700'
+        | 'Playfair Display:ital,wght@0,400;0,700;1,700'
+        | 'Merriweather:ital,wght@0,400;0,700;1,700'
+      )
+    | null;
+  styles?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   name: string;
   phone: string;
   email?: string | null;
@@ -803,6 +865,109 @@ export interface Beallitasok {
 export interface Fooldal {
   id: string;
   order?: string[] | null;
+  /**
+   * A szerkesztőben a „+ Új szekció” gombbal adhatók hozzá.
+   */
+  blocks?:
+    | (
+        | {
+            show?: boolean | null;
+            title: string;
+            /**
+             * A cím után, kiemelő színnel jelenik meg.
+             */
+            highlight?: string | null;
+            text?: string | null;
+            button?: {
+              label?: string | null;
+              href?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'szoveg';
+          }
+        | {
+            show?: boolean | null;
+            title: string;
+            /**
+             * A cím után, kiemelő színnel jelenik meg.
+             */
+            highlight?: string | null;
+            text?: string | null;
+            image?: (string | null) | Media;
+            imageRight?: boolean | null;
+            button?: {
+              label?: string | null;
+              href?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'kepszoveg';
+          }
+        | {
+            show?: boolean | null;
+            title: string;
+            /**
+             * A cím után, kiemelő színnel jelenik meg.
+             */
+            highlight?: string | null;
+            subtitle?: string | null;
+            items?:
+              | {
+                  title: string;
+                  text?: string | null;
+                  image?: (string | null) | Media;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'kartyak';
+          }
+        | {
+            show?: boolean | null;
+            title: string;
+            /**
+             * A cím után, kiemelő színnel jelenik meg.
+             */
+            highlight?: string | null;
+            images?:
+              | {
+                  image?: (string | null) | Media;
+                  caption?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'galeria';
+          }
+        | {
+            show?: boolean | null;
+            title: string;
+            /**
+             * A cím után, kiemelő színnel jelenik meg.
+             */
+            highlight?: string | null;
+            url?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'video';
+          }
+        | {
+            show?: boolean | null;
+            title: string;
+            text?: string | null;
+            button?: {
+              label?: string | null;
+              href?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'gomb';
+          }
+      )[]
+    | null;
   hero: {
     title: string;
     /**
@@ -1047,6 +1212,9 @@ export interface BeallitasokSelect<T extends boolean = true> {
   accent?: T;
   accentLight?: T;
   accentDark?: T;
+  fontHeading?: T;
+  fontBody?: T;
+  styles?: T;
   name?: T;
   phone?: T;
   email?: T;
@@ -1093,6 +1261,103 @@ export interface BeallitasokSelect<T extends boolean = true> {
  */
 export interface FooldalSelect<T extends boolean = true> {
   order?: T;
+  blocks?:
+    | T
+    | {
+        szoveg?:
+          | T
+          | {
+              show?: T;
+              title?: T;
+              highlight?: T;
+              text?: T;
+              button?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        kepszoveg?:
+          | T
+          | {
+              show?: T;
+              title?: T;
+              highlight?: T;
+              text?: T;
+              image?: T;
+              imageRight?: T;
+              button?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        kartyak?:
+          | T
+          | {
+              show?: T;
+              title?: T;
+              highlight?: T;
+              subtitle?: T;
+              items?:
+                | T
+                | {
+                    title?: T;
+                    text?: T;
+                    image?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        galeria?:
+          | T
+          | {
+              show?: T;
+              title?: T;
+              highlight?: T;
+              images?:
+                | T
+                | {
+                    image?: T;
+                    caption?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        video?:
+          | T
+          | {
+              show?: T;
+              title?: T;
+              highlight?: T;
+              url?: T;
+              id?: T;
+              blockName?: T;
+            };
+        gomb?:
+          | T
+          | {
+              show?: T;
+              title?: T;
+              text?: T;
+              button?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+      };
   hero?:
     | T
     | {

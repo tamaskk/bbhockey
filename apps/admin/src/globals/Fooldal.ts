@@ -1,4 +1,4 @@
-import type { GlobalConfig } from 'payload'
+import type { Block, GlobalConfig } from 'payload'
 import { heading, image, show } from '../fields'
 import { revalidateHook } from '../revalidate'
 
@@ -18,6 +18,47 @@ const button = (name: string, label: string) => ({
 })
 
 const subtitle = { name: 'subtitle', label: 'Alcím / bevezető', type: 'textarea' as const }
+const text = { name: 'text', label: 'Szöveg (új bekezdés: üres sor)', type: 'textarea' as const }
+
+// Sections the editor can add anywhere on the page ("+ Új szekció"), any number of times.
+export const customBlocks: Block[] = [
+  { slug: 'szoveg', labels: { singular: 'Szöveg', plural: 'Szövegek' }, fields: [show, ...heading(), text, button('button', 'Gomb')] },
+  {
+    slug: 'kepszoveg',
+    labels: { singular: 'Kép + szöveg', plural: 'Kép + szöveg' },
+    fields: [show, ...heading(), text, image('image', 'Kép'), { name: 'imageRight', label: 'Kép a jobb oldalon', type: 'checkbox' }, button('button', 'Gomb')],
+  },
+  {
+    slug: 'kartyak',
+    labels: { singular: 'Kártyák', plural: 'Kártyák' },
+    fields: [
+      show,
+      ...heading(),
+      subtitle,
+      { name: 'items', label: 'Kártyák', type: 'array', fields: [{ name: 'title', label: 'Cím', type: 'text', required: true }, { name: 'text', label: 'Szöveg', type: 'textarea' }, image('image', 'Kép')] },
+    ],
+  },
+  {
+    slug: 'galeria',
+    labels: { singular: 'Képgaléria', plural: 'Képgalériák' },
+    fields: [show, ...heading(), { name: 'images', label: 'Képek', type: 'array', fields: [image('image', 'Kép'), { name: 'caption', label: 'Képaláírás', type: 'text' }] }],
+  },
+  {
+    slug: 'video',
+    labels: { singular: 'Videó', plural: 'Videók' },
+    fields: [
+      show,
+      ...heading(),
+      {
+        name: 'url',
+        label: 'YouTube link',
+        type: 'text',
+        validate: (v: string | null | undefined) => !v || /^https:\/\/(www\.)?(youtube\.com|youtu\.be)\//.test(v) || 'YouTube link kell (https://www.youtube.com/…)',
+      },
+    ],
+  },
+  { slug: 'gomb', labels: { singular: 'Felhívás gombbal', plural: 'Felhívások' }, fields: [show, { name: 'title', label: 'Cím', type: 'text', required: true }, text, button('button', 'Gomb')] },
+]
 
 export const Fooldal: GlobalConfig = {
   slug: 'fooldal',
@@ -28,6 +69,7 @@ export const Fooldal: GlobalConfig = {
   fields: [
     // section order, set by drag and drop in the page editor (Oldalszerkesztő)
     { name: 'order', type: 'text', hasMany: true, admin: { hidden: true } },
+    { name: 'blocks', label: 'Saját szekciók', type: 'blocks', blocks: customBlocks, admin: { description: 'A szerkesztőben a „+ Új szekció” gombbal adhatók hozzá.' } },
     {
       type: 'tabs',
       tabs: [

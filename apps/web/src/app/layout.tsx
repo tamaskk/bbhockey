@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getContent, img } from "@/lib/cms";
+import { fontName, fontsHref, type Looks } from "@/lib/style";
 
 const css = [
   "/wp-content/themes/hello-elementor/assets/css/reset.css",
@@ -13,6 +14,9 @@ const css = [
   "/wp-content/uploads/elementor/css/base-mobile.css",
   "/bb-light.css",
 ];
+
+// blocking route: CMS content is read at request time (see getContent), then served from cache
+export const instant = false;
 
 export async function generateMetadata(): Promise<Metadata> {
   const { site } = await getContent();
@@ -29,13 +33,17 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const { site } = await getContent();
   // brand colours from the admin override the stylesheet defaults
-  const colors = `:root{--mhk-accent:${site.accent};--mhk-accent-2:${site.accentLight};--mhk-accent-dk:${site.accentDark}}`;
+  // fonts chosen in the admin: theme-wide heading/text font + any font used by a single element
+  const fh = fontName(site.fontHeading), fb = fontName(site.fontBody);
+  const fonts = fontsHref([site.fontHeading, site.fontBody, ...Object.values((site.styles ?? {}) as Looks).map((l) => l?.font)]);
+  const colors = `:root{--mhk-accent:${site.accent};--mhk-accent-2:${site.accentLight};--mhk-accent-dk:${site.accentDark}${fh ? `;--bb-fh:"${fh}"` : ""}${fb ? `;--bb-fb:"${fb}"` : ""}}`;
   return (
     <html lang="hu" suppressHydrationWarning>
       <head>
         {css.map((href) => (
           <link key={href} rel="stylesheet" href={href} precedence="default" />
         ))}
+        {fonts && <link rel="stylesheet" href={fonts} precedence="default" />}
         <style precedence="high" href="bb-colors">{colors}</style>
         {/* apply the saved theme before first paint (no dark flash for light-mode users) */}
         <script dangerouslySetInnerHTML={{ __html: `try{if(localStorage.getItem("bb-theme")==="light")document.documentElement.dataset.theme="light"}catch(e){}` }} />

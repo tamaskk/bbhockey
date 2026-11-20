@@ -1,37 +1,40 @@
 import "./jelentkezes.css";
 import { alt, img, type Urlap } from "@/lib/cms";
 import type { FormField } from "@/lib/form";
+import { editor, type Ed } from "@/lib/edit";
+import type { Looks } from "@/lib/style";
 
 const Linked = ({ text, href }: { text: string; href?: string | null }) =>
   href ? <a href={href} target="_blank" rel="noopener">{text}</a> : <>{text}</>;
 
 const star = (f: FormField) => (f.required ? " *" : "");
 
-function Control({ f, privacyUrl }: { f: FormField; privacyUrl?: string | null }) {
+function Control({ f, privacyUrl, p, e }: { f: FormField; privacyUrl?: string | null; p: string; e: Ed }) {
   const name = f.name ?? "";
   const id = `f-${name}`;
-  const help = f.help && <small className="bb-help">{f.help}</small>;
+  const help = (e.edit || f.help) && <small className="bb-help" {...e.f(`${p}.help`, true)}>{f.help}</small>;
+  const label = <span {...e.f(`${p}.label`)}>{f.label}</span>;
   const opts = f.options ?? [];
 
   switch (f.type) {
     case "note":
-      return <p className="bb-note">{f.label}{f.help && <><br />{f.help}</>}</p>;
+      return <p className="bb-note">{label}{(e.edit || f.help) && <><br /><span {...e.f(`${p}.help`, true)}>{f.help}</span></>}</p>;
     case "image": {
       const src = img(f.image);
-      return src ? <img className="bb-size-chart" src={src} alt={alt(f.image) || f.label} loading="lazy" /> : null;
+      return src || e.edit ? <img className="bb-size-chart" src={src} alt={alt(f.image) || f.label} loading="lazy" {...e.img(`${p}.image`)} /> : null;
     }
     case "consent":
       return (
         <label className="mhk-form-check">
           <input type="checkbox" name={name} value="igen" required={!!f.required} />
-          <span><Linked text={f.label} href={f.link || (name === "adatkezeles" ? privacyUrl : null)} />{star(f)}</span>
+          <span>{e.edit ? label : <Linked text={f.label} href={f.link || (name === "adatkezeles" ? privacyUrl : null)} />}{star(f)}</span>
         </label>
       );
     case "radio":
     case "checkboxes":
       return (
         <fieldset className="bb-choices">
-          <legend>{f.label}{star(f)}</legend>
+          <legend>{label}{star(f)}</legend>
           <div>
             {opts.map((o, i) => (
               <label key={o}>
@@ -49,7 +52,7 @@ function Control({ f, privacyUrl }: { f: FormField; privacyUrl?: string | null }
   const common = { id, name, required: !!f.required, placeholder: f.placeholder ?? undefined };
   return (
     <>
-      <label htmlFor={id}>{f.label}{star(f)}</label>
+      <label htmlFor={id}>{label}{star(f)}</label>
       {f.type === "textarea" ? (
         <textarea rows={3} {...common} />
       ) : f.type === "select" ? (
@@ -65,45 +68,46 @@ function Control({ f, privacyUrl }: { f: FormField; privacyUrl?: string | null }
   );
 }
 
-function Item({ f, privacyUrl }: { f: FormField; privacyUrl?: string | null }) {
+function Item({ f, privacyUrl, p, e }: { f: FormField; privacyUrl?: string | null; p: string; e: Ed }) {
   // choices/consents/notes keep their own styling, outside the text-input field rules
   const base = ["radio", "checkboxes", "consent", "note", "image"].includes(f.type) ? "bb-item" : "mhk-form-field";
   const cls = `${base}${f.width === "full" ? " mhk-full" : ""}`;
-  const control = <Control f={f} privacyUrl={privacyUrl} />;
+  const control = <Control f={f} privacyUrl={privacyUrl} p={p} e={e} />;
   // conditional fields start disabled (hidden, skipped by validation); the bb-form-if script enables them
   return f.ifField ? (
-    <fieldset className={`bb-if ${cls}`} data-if={f.ifField} data-if-value={f.ifValue ?? ""} disabled>{control}</fieldset>
+    <fieldset className={`bb-if ${cls}`} data-if={f.ifField} data-if-value={f.ifValue ?? ""} disabled={!e.edit} {...e.item(p)}>{control}</fieldset>
   ) : (
-    <div className={cls}>{control}</div>
+    <div className={cls} {...e.item(p)}>{control}</div>
   );
 }
 
-export default function Jelentkezes({ form, privacyUrl }: { form: Urlap; privacyUrl?: string | null }) {
+export default function Jelentkezes({ form, privacyUrl, looks, edit = false }: { form: Urlap; privacyUrl?: string | null; looks?: Looks; edit?: boolean }) {
+  const e = editor(edit, "urlap", looks);
   return (
-    <section className="mhk-sec bb-jelentkezes" id="jelentkezes">
+    <section className="mhk-sec bb-jelentkezes" id="jelentkezes" {...e.block("", undefined, "section")}>
       <div className="mhk-wrap">
         <div className="mhk-section-head">
           <div>
-            <h2>{form.title} {form.highlight && <em>{form.highlight}</em>}</h2>
-            {form.open && form.intro && <p>{form.intro}</p>}
+            <h2><span {...e.f("title")}>{form.title}</span> {(edit || form.highlight) && <em {...e.f("highlight")}>{form.highlight}</em>}</h2>
+            {form.open && (edit || form.intro) && <p {...e.f("intro", true)}>{form.intro}</p>}
           </div>
         </div>
 
         {!form.open ? (
-          <p className="mhk-form-panel bb-closed">{form.closedText}</p>
+          <p className="mhk-form-panel bb-closed" {...e.f("closedText", true)}>{form.closedText}</p>
         ) : (
           <form className="mhk-form-panel mhk-form bb-form" data-form="jelentkezes">
-            {(form.groups ?? []).map((g) => (
-              <fieldset className="bb-group" key={g.id ?? g.title}>
-                <legend>{g.title}</legend>
+            {(form.groups ?? []).map((g, gi) => (
+              <fieldset className="bb-group" key={g.id ?? g.title} {...e.item(`groups.${gi}`)}>
+                <legend {...e.f(`groups.${gi}.title`)}>{g.title}</legend>
                 <div className="mhk-form-grid">
-                  {(g.fields ?? []).map((f) => <Item key={f.id ?? f.name} f={f} privacyUrl={privacyUrl} />)}
+                  {(g.fields ?? []).map((f, fi) => <Item key={f.id ?? f.name} f={f} privacyUrl={privacyUrl} p={`groups.${gi}.fields.${fi}`} e={e} />)}
                 </div>
               </fieldset>
             ))}
 
             <input aria-hidden="true" autoComplete="off" className="mhk-hp" name="website" tabIndex={-1} type="text" />
-            <button className="mhk-btn mhk-btn-primary" type="submit"><span>{form.submitLabel}</span></button>
+            <button className="mhk-btn mhk-btn-primary" type="submit"><span {...e.f("submitLabel")}>{form.submitLabel}</span></button>
             <p className="mhk-form-msg" role="status" />
           </form>
         )}

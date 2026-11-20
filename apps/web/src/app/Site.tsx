@@ -3,25 +3,29 @@ import { getContent } from "@/lib/cms";
 import { Footer, Header } from "./Chrome";
 import Jelentkezes from "./Jelentkezes";
 import Sections from "./Sections";
+import type { Looks } from "@/lib/style";
 
 export default async function Site({ edit = false }: { edit?: boolean }) {
   const { site, home, form } = await getContent();
   return (
     <>
-      <Header site={site} />
+      <Header site={site} edit={edit} />
       <main id="mhk-content">
-        <Sections home={home} edit={edit} />
-        <Jelentkezes form={form} privacyUrl={site.privacyUrl} />
+        <Sections home={home} looks={site.styles as Looks} edit={edit} />
+        <Jelentkezes form={form} privacyUrl={site.privacyUrl} looks={site.styles as Looks} edit={edit} />
       </main>
-      <Footer site={site} />
+      <Footer site={site} edit={edit} />
       <Script id="mhk-config" strategy="beforeInteractive">
         {`window.MHK={ajax:"/api/submit",nonce:""};`}
       </Script>
       <Script src="/wp-content/plugins/mhk-core/assets/js/mhk.js" strategy="afterInteractive" />
       {/* conditional form fields: enable the ones whose trigger field has the chosen value (3 passes for chained conditions) */}
-      <Script id="bb-form-if" strategy="afterInteractive">
-        {`(()=>{const f=document.querySelector('.bb-form');if(!f)return;const s=()=>{for(let i=0;i<3;i++){const d=new FormData(f);f.querySelectorAll('fieldset[data-if]').forEach(x=>{x.disabled=!d.getAll(x.dataset.if).includes(x.dataset.ifValue)})}};f.addEventListener('change',s);f.addEventListener('reset',()=>setTimeout(s));s()})();`}
-      </Script>
+      {/* edit mode shows every conditional field, so the toggling script stays off */}
+      {!edit && (
+        <Script id="bb-form-if" strategy="afterInteractive">
+          {`(()=>{const f=document.querySelector('.bb-form');if(!f)return;const s=()=>{for(let i=0;i<3;i++){const d=new FormData(f);f.querySelectorAll('fieldset[data-if]').forEach(x=>{x.disabled=!d.getAll(x.dataset.if).includes(x.dataset.ifValue)})}};f.addEventListener('change',s);f.addEventListener('reset',()=>setTimeout(s));s()})();`}
+        </Script>
+      )}
       {/* scrollspy: highlight the nav link of the section in the middle of the viewport */}
       <Script id="bb-scrollspy" strategy="afterInteractive">
         {`(()=>{const l=[...document.querySelectorAll('#mhk-menu a[href^="#"]')];const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)l.forEach(a=>a.classList.toggle('mhk-active',a.hash==='#'+e.target.id))}),{rootMargin:'-45% 0px -50% 0px'});l.forEach(a=>{const s=document.querySelector(a.hash);if(s)io.observe(s)})})();`}

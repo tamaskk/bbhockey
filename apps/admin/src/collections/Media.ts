@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { directImageUrl } from '../drive'
 import { revalidateHook } from '../revalidate'
 
 export const Media: CollectionConfig = {
@@ -6,7 +7,21 @@ export const Media: CollectionConfig = {
   labels: { singular: 'Kép', plural: 'Képek' },
   admin: { group: 'Weboldal' },
   access: { read: () => true },
-  hooks: { afterChange: [revalidateHook], afterDelete: [revalidateHook] },
-  fields: [{ name: 'alt', label: 'Leírás (akadálymentesség, Google)', type: 'text' }],
-  upload: { mimeTypes: ['image/*'] },
+  hooks: {
+    afterChange: [revalidateHook],
+    afterDelete: [revalidateHook],
+    // a linked image is served straight from its link (Drive links converted to the direct image URL)
+    afterRead: [({ doc }) => (doc.driveUrl ? { ...doc, url: directImageUrl(doc.driveUrl), thumbnailURL: directImageUrl(doc.driveUrl) } : doc)],
+  },
+  fields: [
+    { name: 'alt', label: 'Leírás (akadálymentesség, Google)', type: 'text' },
+    {
+      name: 'driveUrl',
+      label: 'Google Drive link (feltöltés helyett)',
+      type: 'text',
+      admin: { description: 'A Drive-ban a kép megosztása legyen „Bárki, aki rendelkezik a linkkel”. Más képlink (https://…) is működik.' },
+      validate: (v: string | null | undefined) => !v || /^https:\/\//i.test(v.trim()) || 'https:// kezdetű link kell',
+    },
+  ],
+  upload: { mimeTypes: ['image/*'], filesRequiredOnCreate: false },
 }

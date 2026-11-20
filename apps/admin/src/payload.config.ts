@@ -22,12 +22,16 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     meta: { titleSuffix: ' – BB Skills admin' },
-    importMap: { baseDir: path.resolve(dirname) },
+    importMap: { baseDir: path.resolve(dirname), importMapFile: path.resolve(dirname, 'app/(payload)/importMap.js') },
     components: {
       afterNavLinks: ['/components/EditorLink#EditorLink'],
-      views: { szerkeszto: { Component: '/views/Szerkeszto#Szerkeszto', path: '/szerkeszto' } },
+      // the visual page editor is the admin home page
+      views: { dashboard: { Component: '/views/Szerkeszto#Szerkeszto' } },
     },
   },
+  // Next basePath '/admin' (next.config.ts) + admin at '/' keeps the panel at /admin and moves the API to /admin/api,
+  // so on Vercel the whole app sits under /admin next to the public site
+  routes: { admin: '/' },
   i18n: { supportedLanguages: { hu }, fallbackLanguage: 'hu' },
   collections: [Jelentkezesek, Media, Users],
   globals: [Beallitasok, Fooldal, Urlap],

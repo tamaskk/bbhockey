@@ -7,10 +7,12 @@ const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
+  // the whole admin (panel, API, /_next assets) lives under /admin; the public site owns every other path
+  basePath: '/admin',
   images: {
     localPatterns: [
       {
-        pathname: '/api/media/file/**',
+        pathname: '/admin/api/media/file/**',
       },
     ],
   },
@@ -26,9 +28,6 @@ const nextConfig: NextConfig = {
   // monorepo: dependencies are hoisted to the workspace root
   turbopack: {
     root: path.resolve(dirname, '../..'),
-  },
-  async redirects() {
-    return [{ source: '/', destination: '/admin', permanent: false }]
   },
 }
 
