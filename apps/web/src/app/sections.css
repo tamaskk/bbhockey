@@ -1,0 +1,54 @@
+/* in-page nav: keep section titles clear of the sticky header */
+.mhk-site [id] { scroll-margin-top: 84px; }
+
+/* single static hero image: no slider controls */
+.bb-hero .mhk-hs-bg { background-position: center 40%; }
+.bb-byline { display: block; margin-top: .35em; font-size: .32em; font-style: normal; font-weight: 600; letter-spacing: .18em; text-transform: none; color: #d8d4cd; }
+
+.bb-coaches { display: grid; gap: 16px; margin-top: 28px; }
+.bb-coach { display: flex; gap: 14px; align-items: flex-start; padding: 16px; border: 1px solid var(--mhk-line); background: var(--mhk-card); }
+.bb-coach b { display: block; font-family: "Saira Condensed", sans-serif; font-size: 1.15rem; text-transform: uppercase; }
+.bb-coach small { color: var(--mhk-accent); font-weight: 600; }
+.bb-coach p { margin: 6px 0 0; color: var(--mhk-muted); font-size: .95rem; }
+
+.bb-faq { display: grid; gap: 10px; max-width: 880px; }
+.bb-faq details { background: #fff; border: 1px solid rgba(23,21,15,.12); }
+.bb-faq summary {
+  cursor: pointer; list-style: none; padding: 18px 52px 18px 20px; position: relative;
+  font-family: "Saira Condensed", sans-serif; font-weight: 700; font-size: 1.2rem; text-transform: uppercase; color: #17150f;
+}
+.bb-faq summary::-webkit-details-marker { display: none; }
+.bb-faq summary::after { content: "+"; position: absolute; right: 20px; top: 50%; translate: 0 -50%; font-size: 1.6rem; color: var(--mhk-accent-dk); }
+.bb-faq details[open] summary::after { content: "–"; }
+.bb-faq summary:focus-visible { outline: 2px solid var(--mhk-accent-dk); outline-offset: 2px; }
+.bb-faq details p { margin: 0; padding: 0 20px 18px; color: #4a463f; }
+
+.bb-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+.bb-menu-day { background: var(--mhk-card); border: 1px solid var(--mhk-line); border-top: 3px solid var(--mhk-accent); padding: 20px; }
+.bb-menu-day header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+.bb-menu-day header b { font-family: "Saira Condensed", sans-serif; font-weight: 800; font-style: italic; text-transform: uppercase; font-size: 1.4rem; }
+.bb-menu-day header small { color: var(--mhk-muted); font-size: .85rem; }
+.bb-menu-day dl { margin: 0; display: grid; gap: 4px; }
+.bb-menu-day dt { color: var(--mhk-accent); font-size: .78rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin-top: 8px; }
+.bb-menu-day dd { margin: 0; line-height: 1.4; }
+
+.bb-coach-photo { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex: none; }
+.bb-closed { text-align: center; font-size: 1.1rem; }
+
+/* body.mhk-site a{color:inherit} turned the tab text white on yellow */
+body.mhk-site a.mhk-quick-tab, body.mhk-site a.mhk-quick-tab:visited { color: #151009; }
+
+/* contact card keeps its dark background in light theme, so its text stays light */
+.mhk-site .mhk-closing-card,
+.mhk-site .mhk-closing-card h3,
+.mhk-site .mhk-closing-card ul li b { color: #f2f0ec; }
+.mhk-site .mhk-closing-card ul li span { color: #b9b4ac; }
+.mhk-site .mhk-closing-card ul li { border-top-color: rgba(255, 255, 255, .12); }
+
+/* training-gear photos inside the daily schedule block */
+.mhk-site .bb-gear-wrap { margin-top: 56px; }
+.mhk-site .bb-gear-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-style: italic; color: #17150f; }
+.mhk-site .bb-gear-title em { color: var(--mhk-accent-dk); }
+.mhk-site .bb-gear-sub { margin: 8px 0 24px; color: #514c44; max-width: 60ch; }
+.mhk-site .bb-gear { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.mhk-site .bb-gear .mhk-brand-tile { min-height: 480px; grid-column: auto; }

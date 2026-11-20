@@ -1,0 +1,58 @@
+/* Light theme: html[data-theme="light"], set by the header toggle (ThemeToggle.tsx). Photo-backed areas (hero, tiles) stay dark. */
+html[data-theme="light"] {
+  color-scheme: light;
+  --mhk-bg: #faf9f6;
+  --mhk-bg-2: #f1efeb;
+  --mhk-card: #ffffff;
+  --mhk-line: rgba(23, 21, 15, .12);
+  --mhk-text: #17150f;
+  --mhk-muted: #5e594f;
+  --mhk-shadow: 0 18px 40px rgba(23, 21, 15, .12);
+}
+
+/* surfaces that are hardcoded dark in mhk.css */
+html[data-theme="light"] .mhk-sticky-header { background: rgba(250, 249, 246, .92); }
+html[data-theme="light"] .mhk-site-footer { background: #f1efeb; }
+html[data-theme="light"] .mhk-site .mhk-nav-links { background: #faf9f6; }
+html[data-theme="light"] .mhk-nav-backdrop { background: rgba(23, 21, 15, .35); }
+html[data-theme="light"] .mhk-form-field input,
+html[data-theme="light"] .mhk-form-field select,
+html[data-theme="light"] .mhk-form-field textarea,
+html[data-theme="light"] .bb-choices span { background: #fff; }
+html[data-theme="light"] .mhk-site .mhk-form-field select option { background: #fff; }
+html[data-theme="light"] .mhk-form-field input::placeholder,
+html[data-theme="light"] .mhk-form-field textarea::placeholder { color: #8f8a80; }
+html[data-theme="light"] .mhk-section-light { background: #ece9e2; }
+html[data-theme="light"] .mhk-btn-ghost { border-color: rgba(23, 21, 15, .4); }
+
+/* white monochrome logo -> black */
+html[data-theme="light"] :is(.mhk-nav-logo, .mhk-footer-logo) img { filter: invert(1); }
+
+/* yellow text is unreadable on light: use the dark accent outside photo-backed areas */
+html[data-theme="light"] :is(.mhk-sec, .mhk-site-footer, .mhk-sticky-header) :is(h2 em, .bb-group > legend, .bb-coach small, .bb-menu-day dt, .mhk-slash, .mhk-num, .mhk-tile-cta, a:hover, .mhk-active),
+html[data-theme="light"] .mhk-site .mhk-nav-links a.mhk-active { color: var(--mhk-accent-dk); }
+html[data-theme="light"] :is(.bb-hero, .mhk-hero-slider, .mhk-brand-tile) :is(h1 em, h2 em, a:hover) { color: var(--mhk-accent); }
+
+.bb-theme-toggle {
+  display: inline-grid; place-items: center; width: 40px; height: 40px; padding: 0; cursor: pointer;
+  background: transparent; border: 1px solid var(--mhk-line); color: var(--mhk-text);
+}
+.bb-theme-toggle:hover { border-color: var(--mhk-accent); }
+.bb-theme-toggle:focus-visible { outline: 2px solid var(--mhk-accent); outline-offset: 2px; }
+.bb-theme-toggle svg { width: 20px; height: 20px; }
+.bb-theme-toggle .bb-sun { display: none; }
+html[data-theme="light"] .bb-theme-toggle .bb-sun { display: block; }
+html[data-theme="light"] .bb-theme-toggle .bb-moon { display: none; }
+
+/* loading splash (layout.tsx): logo swells until window load, hard limit 2s */
+.bb-splash {
+  position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center;
+  background: var(--mhk-bg); color: var(--mhk-text);
+  animation: bb-splash-out .3s ease 1.7s forwards;
+}
+.bb-splash img { width: 120px; height: auto; animation: bb-swell 1s ease-in-out infinite alternate; }
+html[data-theme="light"] .bb-splash img { filter: invert(1); }
+html[data-loaded] .bb-splash { animation: bb-splash-out .3s ease forwards; }
+@keyframes bb-swell { from { transform: scale(.85); } to { transform: scale(1.15); } }
+@keyframes bb-splash-out { to { opacity: 0; visibility: hidden; } }
+@media (prefers-reduced-motion: reduce) { .bb-splash img { animation: none; } }

@@ -1,0 +1,33 @@
+.bb-jelentkezes .mhk-section-head p { color: var(--mhk-muted); max-width: 640px; margin-top: 8px; }
+.bb-form { max-width: 920px; margin: 0 auto; }
+
+.bb-group { border: 0; margin: 0 0 36px; padding: 0; min-width: 0; }
+.bb-group > legend {
+  font-family: "Saira Condensed", sans-serif; font-weight: 800; font-style: italic; text-transform: uppercase;
+  font-size: 1.35rem; color: var(--mhk-accent); padding: 0 0 6px; margin-bottom: 18px;
+  border-bottom: 2px solid var(--mhk-line); width: 100%;
+}
+.bb-note { color: var(--mhk-muted); font-size: .9rem; margin: -6px 0 0; }
+
+.bb-choices { border: 0; margin: 0; padding: 0; min-width: 0; }
+.bb-choices > legend { font-weight: 600; font-size: .9rem; margin-bottom: 8px; padding: 0; }
+.bb-choices > div { display: flex; flex-wrap: wrap; gap: 8px; }
+.bb-choices label { position: relative; cursor: pointer; }
+.bb-choices input { position: absolute; opacity: 0; inset: 0; }
+.bb-choices span {
+  display: inline-block; padding: 9px 16px; border: 1px solid var(--mhk-line); background: #101013;
+  font-size: .95rem; transition: border-color .15s, background .15s, color .15s;
+}
+.bb-choices label:hover span { border-color: var(--mhk-accent); }
+.bb-choices input:checked + span { background: var(--mhk-accent); border-color: var(--mhk-accent); color: #151009; font-weight: 600; }
+.bb-choices input:focus-visible + span { outline: 2px solid var(--mhk-accent); outline-offset: 2px; }
+
+.bb-size-chart { width: 100%; height: auto; background: #fff; }
+
+/* conditional fields: disabled (= hidden, not validated, not sent) until the bb-form-if script matches */
+.bb-form fieldset.bb-if { border: 0; margin: 0; padding: 0; min-width: 0; }
+.bb-form fieldset.bb-if:disabled { display: none; }
+.bb-help { color: var(--mhk-muted); font-size: .82rem; }
+.bb-item .bb-help { display: block; margin-top: 6px; }
+
+.bb-form .mhk-form-grid > .mhk-full { grid-column: 1 / -1; }
