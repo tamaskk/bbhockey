@@ -313,6 +313,7 @@ export function Editor({ webUrl, schema }: { webUrl: string; schema: Record<stri
         <button type="button" className="btn btn--style-secondary btn--size-small" style={{ margin: 0 }} onClick={() => setModal({ kind: 'settings', slug: 'beallitasok', path: '' })}>⚙ Oldal beállításai (színek, betűk)</button>
         <button type="button" className="btn btn--style-secondary btn--size-small" style={{ margin: 0 }} onClick={() => setModal({ kind: 'settings', slug: 'urlap', path: '' })}>⚙ Űrlap</button>
         <a href="/admin/collections/jelentkezesek">Jelentkezések</a>
+        <a href="/admin/globals/email">✉ Visszaigazoló e-mail</a>
         <a href="/admin/globals/fooldal">Haladó admin</a>
         <a href={webUrl || '/'} target="_blank" rel="noreferrer">Oldal ↗</a>
       </div>

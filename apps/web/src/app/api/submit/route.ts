@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     fd.getAll(name).filter((v): v is string => typeof v === "string").map((v) => v.trim().slice(0, 2000)).filter(Boolean);
 
   const data: Record<string, unknown> = {};
-  const valaszok: { kerdes: string; valasz: string }[] = [];
+  const valaszok: { kerdes: string; valasz: string; mezo: string }[] = [];
   for (const f of allFields(form)) {
     if (!isInput(f) || !f.name || !isVisible(f, values)) continue;
     let v = values(f.name);
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
 
     const consent = f.type === "consent";
     if (!RESERVED.has(f.name)) data[f.name] = consent ? v[0] === "igen" : v.join(", ");
-    valaszok.push({ kerdes: f.label, valasz: consent ? (v[0] === "igen" ? "Igen" : "Nem") : v.join(", ") });
+    valaszok.push({ kerdes: f.label, valasz: consent ? (v[0] === "igen" ? "Igen" : "Nem") : v.join(", "), mezo: f.name });
   }
   data.valaszok = valaszok;
 

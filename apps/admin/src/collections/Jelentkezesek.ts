@@ -1,4 +1,6 @@
-import type { CollectionConfig, Field } from 'payload'
+import type { CollectionAfterChangeHook, CollectionConfig, Field } from 'payload'
+import { directImageUrl } from '../drive'
+import { fill, recipient, renderEmail, type Submission } from '../email/template'
 
 // the form is built in the admin (Űrlap global); the website validates required fields, so none are required here
 const t = (name: string, label: string, _required = false): Field => ({ name, label, type: 'text' })
@@ -8,14 +10,40 @@ const box = (label: string, fields: Field[]): Field => ({ type: 'collapsible', l
 
 const isAdmin = ({ req }: { req: { user?: unknown } }) => Boolean(req.user)
 
+// confirmation e-mail to the applicant (+ copy to the organisers), text from the "Visszaigazoló e-mail" page.
+// A failed e-mail is logged and never fails the submission itself.
+const sendConfirmation: CollectionAfterChangeHook = async ({ doc, operation, req }) => {
+  if (operation !== 'create') return doc
+  try {
+    const tpl = await req.payload.findGlobal({ slug: 'email', req, overrideAccess: true })
+    if (!tpl.enabled) return doc
+    const d = doc as Submission
+    const subject = fill(tpl.subject ?? '', d).replace(/\s+/g, ' ').trim()
+    const text = fill(tpl.body ?? '', d)
+    const from = process.env.EMAIL_FROM || process.env.SMTP_USER
+    const html = renderEmail(tpl.body ?? '', { ...tpl, logoUrl: tpl.logoUrl ? directImageUrl(tpl.logoUrl) : '' }, d)
+    const mail = { subject, text, html, ...(from && { from: `"${(tpl.fromName ?? '').replace(/"/g, '')}" <${from}>` }), ...(tpl.replyTo && { replyTo: tpl.replyTo }) }
+    const to = recipient(d)
+    if (to) await req.payload.sendEmail({ ...mail, to })
+    else req.payload.logger.warn(`[email] no applicant address on submission ${doc.id}`)
+    const copy = (tpl.notify ?? '').split(',').map((s: string) => s.trim()).filter(Boolean)
+    if (copy.length) await req.payload.sendEmail({ ...mail, to: copy, subject: `[Új jelentkezés] ${subject}`, ...(to && { replyTo: to }) })
+  } catch (err) {
+    req.payload.logger.error({ err, msg: `[email] confirmation for submission ${doc.id} failed` })
+  }
+  return doc
+}
+
 export const Jelentkezesek: CollectionConfig = {
   slug: 'jelentkezesek',
   labels: { singular: 'Jelentkezés', plural: 'Jelentkezések' },
   admin: {
     useAsTitle: 'jatekos_nev',
-    defaultColumns: ['jatekos_nev', 'korosztaly', 'szulo_nev', 'email', 'telefon', 'statusz', 'createdAt'],
+    defaultColumns: ['jatekos_nev', 'korosztaly', 'szulo_nev', 'email', 'telefon', 'csoport', 'statusz', 'createdAt'],
     listSearchableFields: ['jatekos_nev', 'szulo_nev', 'email', 'telefon', 'klub'],
     group: 'Jelentkezések',
+    // the list is the folder view (folders, drag and drop, export)
+    components: { views: { list: { Component: '/views/Mappak#Mappak' } } },
   },
   access: {
     // only the website server (shared secret) or a logged-in admin may create
@@ -33,6 +61,7 @@ export const Jelentkezesek: CollectionConfig = {
         return data
       },
     ],
+    afterChange: [sendConfirmation],
   },
   fields: [
     {
@@ -54,6 +83,7 @@ export const Jelentkezesek: CollectionConfig = {
         { name: 'megjegyzes', label: 'Belső megjegyzés', type: 'textarea', access: { create: isAdmin } },
       ],
     },
+    { name: 'csoport', label: 'Mappa', type: 'relationship', relationTo: 'csoportok', access: { create: isAdmin }, admin: { position: 'sidebar' } },
     { name: 'jatekos_nev', label: 'Játékos', type: 'text', admin: { hidden: true } },
     { name: 'szulo_nev', label: 'Szülő', type: 'text', admin: { hidden: true } },
     {
@@ -61,7 +91,11 @@ export const Jelentkezesek: CollectionConfig = {
       label: 'Összes válasz (az űrlap sorrendjében)',
       type: 'array',
       admin: { readOnly: true, initCollapsed: false },
-      fields: [{ type: 'row', fields: [t('kerdes', 'Kérdés'), { name: 'valasz', label: 'Válasz', type: 'textarea' }] }],
+      fields: [
+        { type: 'row', fields: [t('kerdes', 'Kérdés'), { name: 'valasz', label: 'Válasz', type: 'textarea' }] },
+        // form field name, so an edited answer can update its own column
+        { name: 'mezo', type: 'text', admin: { hidden: true } },
+      ],
     },
     t('jelentkezes', 'Jelentkezés típusa', true),
     box('Szülő / kapcsolattartó', [

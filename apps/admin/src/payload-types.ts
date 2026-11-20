@@ -68,6 +68,7 @@ export interface Config {
   blocks: {};
   collections: {
     jelentkezesek: Jelentkezesek;
+    csoportok: Csoportok;
     media: Media;
     users: User;
     exports: Export;
@@ -81,6 +82,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     jelentkezesek: JelentkezesekSelect<false> | JelentkezesekSelect<true>;
+    csoportok: CsoportokSelect<false> | CsoportokSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
@@ -99,11 +101,13 @@ export interface Config {
     beallitasok: Beallitasok;
     fooldal: Fooldal;
     urlap: Urlap;
+    email: Email;
   };
   globalsSelect: {
     beallitasok: BeallitasokSelect<false> | BeallitasokSelect<true>;
     fooldal: FooldalSelect<false> | FooldalSelect<true>;
     urlap: UrlapSelect<false> | UrlapSelect<true>;
+    email: EmailSelect<false> | EmailSelect<true>;
   };
   locale: null;
   widgets: {
@@ -148,12 +152,14 @@ export interface Jelentkezesek {
   id: string;
   statusz?: ('uj' | 'feldolgozva' | 'fizetve' | 'lemondva') | null;
   megjegyzes?: string | null;
+  csoport?: (string | null) | Csoportok;
   jatekos_nev?: string | null;
   szulo_nev?: string | null;
   valaszok?:
     | {
         kerdes?: string | null;
         valasz?: string | null;
+        mezo?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -195,6 +201,18 @@ export interface Jelentkezesek {
   adatkezeles?: boolean | null;
   szuloi_hozzajarulas?: boolean | null;
   foto_hozzajarulas?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "csoportok".
+ */
+export interface Csoportok {
+  id: string;
+  name: string;
+  parent?: (string | null) | Csoportok;
+  hidden?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -443,6 +461,10 @@ export interface PayloadLockedDocument {
         value: string | Jelentkezesek;
       } | null)
     | ({
+        relationTo: 'csoportok';
+        value: string | Csoportok;
+      } | null)
+    | ({
         relationTo: 'media';
         value: string | Media;
       } | null)
@@ -499,6 +521,7 @@ export interface PayloadMigration {
 export interface JelentkezesekSelect<T extends boolean = true> {
   statusz?: T;
   megjegyzes?: T;
+  csoport?: T;
   jatekos_nev?: T;
   szulo_nev?: T;
   valaszok?:
@@ -506,6 +529,7 @@ export interface JelentkezesekSelect<T extends boolean = true> {
     | {
         kerdes?: T;
         valasz?: T;
+        mezo?: T;
         id?: T;
       };
   jelentkezes?: T;
@@ -546,6 +570,17 @@ export interface JelentkezesekSelect<T extends boolean = true> {
   adatkezeles?: T;
   szuloi_hozzajarulas?: T;
   foto_hozzajarulas?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "csoportok_select".
+ */
+export interface CsoportokSelect<T extends boolean = true> {
+  name?: T;
+  parent?: T;
+  hidden?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1203,6 +1238,46 @@ export interface Urlap {
   createdAt?: string | null;
 }
 /**
+ * Ez az e-mail megy ki automatikusan minden új jelentkezés után a jelentkező e-mail címére. Lent élő előnézet mutatja, hogyan fog kinézni.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email".
+ */
+export interface Email {
+  id: string;
+  enabled?: boolean | null;
+  fromName?: string | null;
+  replyTo?: string | null;
+  subject: string;
+  /**
+   * Változók: a {{ }} közé írt név helyére a jelentkezés adata kerül. {{szulo_keresztnev}}, {{szulo_nev}}, {{jatekos_nev}}, {{jelentkezes}}, {{korosztaly}}, {{telefon}}, {{email}}, és {{valaszok}}: az összes kitöltött válasz (a Dizájn fülön választható, táblázat vagy lista). Bármelyik űrlapmező azonosítója használható (Jelentkezési űrlap → mező → Haladó: azonosító).
+   */
+  body: string;
+  buttonLabel?: string | null;
+  buttonUrl?: string | null;
+  footer?: string | null;
+  /**
+   * Ha kitöltöd, minden jelentkezésről másolat megy ide is.
+   */
+  notify?: string | null;
+  logoUrl?: string | null;
+  logoWidth?: number | null;
+  headerTitle?: string | null;
+  headerBg?: string | null;
+  headerText?: string | null;
+  pageBg?: string | null;
+  cardBg?: string | null;
+  textColor?: string | null;
+  accent?: string | null;
+  buttonText?: string | null;
+  font?: ('arial' | 'georgia' | 'verdana' | 'trebuchet' | 'tahoma' | 'courier') | null;
+  fontSize?: number | null;
+  radius?: number | null;
+  answers?: ('table' | 'list' | 'none') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "beallitasok_select".
  */
@@ -1573,6 +1648,38 @@ export interface UrlapSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email_select".
+ */
+export interface EmailSelect<T extends boolean = true> {
+  enabled?: T;
+  fromName?: T;
+  replyTo?: T;
+  subject?: T;
+  body?: T;
+  buttonLabel?: T;
+  buttonUrl?: T;
+  footer?: T;
+  notify?: T;
+  logoUrl?: T;
+  logoWidth?: T;
+  headerTitle?: T;
+  headerBg?: T;
+  headerText?: T;
+  pageBg?: T;
+  cardBg?: T;
+  textColor?: T;
+  accent?: T;
+  buttonText?: T;
+  font?: T;
+  fontSize?: T;
+  radius?: T;
+  answers?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -1590,7 +1697,7 @@ export interface TaskCreateCollectionExport {
     id: string;
     name: string;
     batchSize?: number | null;
-    collectionSlug: 'jelentkezesek' | 'media' | 'users' | 'exports' | 'imports';
+    collectionSlug: 'jelentkezesek' | 'csoportok' | 'media' | 'users' | 'exports' | 'imports';
     drafts?: ('yes' | 'no') | null;
     exportCollection: string;
     fields?: string[] | null;

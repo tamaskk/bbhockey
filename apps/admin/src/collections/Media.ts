@@ -5,7 +5,8 @@ import { revalidateHook } from '../revalidate'
 export const Media: CollectionConfig = {
   slug: 'media',
   labels: { singular: 'Kép', plural: 'Képek' },
-  admin: { group: 'Weboldal' },
+  // images are managed from the page editor; the collection only stores them
+  admin: { group: 'Weboldal', hidden: true },
   access: { read: () => true },
   hooks: {
     afterChange: [revalidateHook],

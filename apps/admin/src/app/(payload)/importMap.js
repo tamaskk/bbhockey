@@ -1,5 +1,6 @@
 import { ExportListMenuItem as ExportListMenuItem_cdf7e044479f899a31f804427d568b36 } from '@payloadcms/plugin-import-export/rsc'
 import { ImportListMenuItem as ImportListMenuItem_cdf7e044479f899a31f804427d568b36 } from '@payloadcms/plugin-import-export/rsc'
+import { Mappak as Mappak_1ccd1208dac71c6b121d976606ac57ab } from '../../views/Mappak'
 import { FormatField as FormatField_cdf7e044479f899a31f804427d568b36 } from '@payloadcms/plugin-import-export/rsc'
 import { LimitField as LimitField_cdf7e044479f899a31f804427d568b36 } from '@payloadcms/plugin-import-export/rsc'
 import { Page as Page_cdf7e044479f899a31f804427d568b36 } from '@payloadcms/plugin-import-export/rsc'
@@ -14,6 +15,8 @@ import { ImportPreview as ImportPreview_cdf7e044479f899a31f804427d568b36 } from 
 import { ImportSaveButton as ImportSaveButton_cdf7e044479f899a31f804427d568b36 } from '@payloadcms/plugin-import-export/rsc'
 import { FieldRowLabel as FieldRowLabel_1e7cbdce5a2838a4e35b012373a30412 } from '../../components/RowLabel'
 import { GroupRowLabel as GroupRowLabel_1e7cbdce5a2838a4e35b012373a30412 } from '../../components/RowLabel'
+import { EmailPreview as EmailPreview_265a847773ea54040a9acab0cb0a29b4 } from '../../components/EmailPreview'
+import { ColorField as ColorField_b786b405fcd9412302ce8d29e6c441af } from '../../components/ColorField'
 import { EditorLink as EditorLink_0ddac1686a47e651cfc38a491042e1dc } from '../../components/EditorLink'
 import { ImportExportProvider as ImportExportProvider_cdf7e044479f899a31f804427d568b36 } from '@payloadcms/plugin-import-export/rsc'
 import { Szerkeszto as Szerkeszto_5f503f59f9b7eb5b3b547015945e999f } from '../../views/Szerkeszto'
@@ -24,6 +27,7 @@ import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e
 export const importMap = {
   "@payloadcms/plugin-import-export/rsc#ExportListMenuItem": ExportListMenuItem_cdf7e044479f899a31f804427d568b36,
   "@payloadcms/plugin-import-export/rsc#ImportListMenuItem": ImportListMenuItem_cdf7e044479f899a31f804427d568b36,
+  "/views/Mappak#Mappak": Mappak_1ccd1208dac71c6b121d976606ac57ab,
   "@payloadcms/plugin-import-export/rsc#FormatField": FormatField_cdf7e044479f899a31f804427d568b36,
   "@payloadcms/plugin-import-export/rsc#LimitField": LimitField_cdf7e044479f899a31f804427d568b36,
   "@payloadcms/plugin-import-export/rsc#Page": Page_cdf7e044479f899a31f804427d568b36,
@@ -38,6 +42,8 @@ export const importMap = {
   "@payloadcms/plugin-import-export/rsc#ImportSaveButton": ImportSaveButton_cdf7e044479f899a31f804427d568b36,
   "/components/RowLabel#FieldRowLabel": FieldRowLabel_1e7cbdce5a2838a4e35b012373a30412,
   "/components/RowLabel#GroupRowLabel": GroupRowLabel_1e7cbdce5a2838a4e35b012373a30412,
+  "/components/EmailPreview#EmailPreview": EmailPreview_265a847773ea54040a9acab0cb0a29b4,
+  "/components/ColorField#ColorField": ColorField_b786b405fcd9412302ce8d29e6c441af,
   "/components/EditorLink#EditorLink": EditorLink_0ddac1686a47e651cfc38a491042e1dc,
   "@payloadcms/plugin-import-export/rsc#ImportExportProvider": ImportExportProvider_cdf7e044479f899a31f804427d568b36,
   "/views/Szerkeszto#Szerkeszto": Szerkeszto_5f503f59f9b7eb5b3b547015945e999f,
