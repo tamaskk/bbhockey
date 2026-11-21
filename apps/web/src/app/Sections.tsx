@@ -175,7 +175,7 @@ export default function Sections({ home, looks, edit = false }: { home: Fooldal;
               const g = pics(t, edit);
               return (
                 // a div with a covering link, so the gallery buttons are not nested inside the link
-                <div className={`mhk-brand-tile mhk-reveal${d(i)}${g.length ? " bb-has-gallery" : ""}`} key={t.id ?? i} {...item(`tabor.tiles.${i}`)} {...im(`tabor.tiles.${i}.image`)} style={{ backgroundImage: `url(${img(t.image)})`, ...item(`tabor.tiles.${i}`).style }}>
+                <div className={`mhk-brand-tile mhk-reveal${d(i)}${g.length ? " bb-has-gallery" : ""}`} key={t.id ?? i} {...item(`tabor.tiles.${i}`)} {...im(`tabor.tiles.${i}.image`)} {...e.gallery(`tabor.tiles.${i}`, (t.gallery?.length ?? 0) + (t.galleryLinks?.split("\n").filter(Boolean).length ?? 0))} style={{ backgroundImage: `url(${img(t.image)})`, ...item(`tabor.tiles.${i}`).style }}>
                   {!edit && <a className="bb-tile-link" href="#jelentkezes" aria-label={`${t.title}: ${t.cta || "jelentkezés"}`} />}
                   <div className="mhk-brand-tile-inner">
                     <h3 {...f(`tabor.tiles.${i}.title`)}>{t.title}</h3>
@@ -212,7 +212,7 @@ export default function Sections({ home, looks, edit = false }: { home: Fooldal;
                 {(eszkozok?.items ?? []).map((t, i) => {
                   const g = pics(t, edit);
                   return (
-                    <div className={`mhk-brand-tile mhk-reveal${d(i)}${g.length ? " bb-has-gallery" : ""}`} key={t.id ?? i} role={g.length ? undefined : "img"} aria-label={g.length ? undefined : alt(t.image)} {...item(`eszkozok.items.${i}`)} {...im(`eszkozok.items.${i}.image`)} style={{ backgroundImage: `url(${img(t.image)})`, ...item(`eszkozok.items.${i}`).style }}>
+                    <div className={`mhk-brand-tile mhk-reveal${d(i)}${g.length ? " bb-has-gallery" : ""}`} key={t.id ?? i} role={g.length ? undefined : "img"} aria-label={g.length ? undefined : alt(t.image)} {...item(`eszkozok.items.${i}`)} {...im(`eszkozok.items.${i}.image`)} {...e.gallery(`eszkozok.items.${i}`, (t.gallery?.length ?? 0) + (t.galleryLinks?.split("\n").filter(Boolean).length ?? 0))} style={{ backgroundImage: `url(${img(t.image)})`, ...item(`eszkozok.items.${i}`).style }}>
                       <div className="mhk-brand-tile-inner">
                         <h3 {...f(`eszkozok.items.${i}.title`)}>{t.title}</h3>
                         {(edit || t.text) && <p {...f(`eszkozok.items.${i}.text`, true)}>{t.text}</p>}

@@ -354,7 +354,11 @@ export default function EditMode({ adminOrigin }: { adminOrigin: string }) {
       // <img> can't hold children: put the button on its parent
       const host = im.tagName === "IMG" ? im.parentElement! : im;
       if (host !== im) host.dataset.img ??= path;
-      bar(host, "img", [["🖼 Kép cseréje", "Google Drive link beillesztése", () => post({ op: "img", path })]]);
+      const buttons: [string, string, () => void][] = [["🖼 Kép cseréje", "Google Drive link beillesztése", () => post({ op: "img", path })]];
+      // a card with a gallery (Sections.tsx): its photo links are edited from the same bar
+      const gallery = host.dataset.gallery;
+      if (gallery) buttons.push([`🖼 Galéria (${host.dataset.gn ?? 0})`, "Galéria képei: Google Drive linkek, max 10", () => post({ op: "gallery", path: gallery })]);
+      bar(host, "img", buttons);
     });
 
     return () => {

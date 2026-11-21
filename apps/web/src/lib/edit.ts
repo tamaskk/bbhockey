@@ -23,6 +23,8 @@ export function editor(edit: boolean, slug: string, looks: Looks = {}) {
     move: (path: string): A => ({ ...at("data-move", path), ...look(path) }),
     /** image (upload field): replace by link */
     img: (path: string): A => at("data-img", path),
+    /** card gallery (Google Drive links, one per line): `n` photos now */
+    gallery: (path: string, n: number): A => at("data-gallery", path, { "data-gn": String(n) }),
     /** section/block with a settings panel; `section` makes it draggable and hideable, `custom` deletable.
      *  `key` names its look when the settings path is shared (header and footer both edit the site settings). */
     block: (path: string, section?: { key: string; show: boolean; custom?: boolean }, key = path): A => ({

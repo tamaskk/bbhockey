@@ -61,7 +61,7 @@ const itemName = (v: unknown) => {
   return [o.label ?? o.title ?? o.name ?? o.q ?? o.day ?? o.time, o.highlight].filter(Boolean).join(' ').slice(0, 40)
 }
 
-type Modal = { kind: 'img' | 'settings' | 'add' | 'style' | 'section'; slug: string; path: string } | null
+type Modal = { kind: 'img' | 'gallery' | 'settings' | 'add' | 'style' | 'section'; slug: string; path: string } | null
 
 export function Editor({ webUrl, schema }: { webUrl: string; schema: Record<string, Schema[]> }) {
   const docs = useRef<Record<string, Doc>>({})
@@ -174,7 +174,7 @@ export function Editor({ webUrl, schema }: { webUrl: string; schema: Record<stri
       const [slug, path = ''] = (e.data.path as string).split(':')
       const doc = docs.current[slug]
       if (!doc) return
-      if (op === 'img' || op === 'settings') return setModal({ kind: op, slug, path })
+      if (op === 'img' || op === 'gallery' || op === 'settings') return setModal({ kind: op, slug, path })
       if (op === 'style') return setModal({ kind: 'style', slug, path })
       if (op === 'hide') {
         if (typeof value !== 'boolean') return
@@ -333,6 +333,14 @@ export function Editor({ webUrl, schema }: { webUrl: string; schema: Record<stri
       </div>
       <iframe ref={frame} src={src} title="Oldalszerkesztő" style={{ flex: 1, border: 0, width: '100%' }} />
       {modal?.kind === 'img' && <ImageModal onClose={() => setModal(null)} onSave={(id) => apply(modal.slug, modal.path, id)} />}
+      {modal?.kind === 'gallery' && (
+        <GalleryModal
+          value={String(getPath(docs.current[modal.slug], `${modal.path}.galleryLinks`) ?? '')}
+          uploaded={((getPath(docs.current[modal.slug], `${modal.path}.gallery`) as unknown[] | undefined) ?? []).length}
+          onClose={() => setModal(null)}
+          onSave={(text) => apply(modal.slug, `${modal.path}.galleryLinks`, text)}
+        />
+      )}
       {modal?.kind === 'settings' && (
         <SettingsModal
           title={modal.path ? `Beállítások: ${itemName(getPath(docs.current[modal.slug], modal.path)) || 'elem'}` : modal.slug === 'urlap' ? 'Űrlap beállításai' : 'Oldal beállításai'}
@@ -548,6 +556,27 @@ function ImageModal({ onClose, onSave }: { onClose: () => void; onSave: (mediaId
       <label>Google Drive link<input autoFocus style={inputStyle} placeholder="https://drive.google.com/file/d/…/view" onChange={(e) => (link.current = e.target.value)} /></label>
       <small>{LINK_HELP}</small>
       <label>Leírás (mi látható a képen)<input style={inputStyle} onChange={(e) => (alt.current = e.target.value)} /></label>
+    </Dialog>
+  )
+}
+
+// a card's gallery: one image link per line (the admin turns Drive links into direct image URLs on save)
+function GalleryModal({ value, uploaded, onClose, onSave }: { value: string; uploaded: number; onClose: () => void; onSave: (text: string) => void }) {
+  const [err, setErr] = useState('')
+  const text = useRef(value)
+  const submit = () => {
+    const lines = text.current.split('\n').map((l) => l.trim()).filter(Boolean)
+    if (lines.some((l) => !/^https:\/\//i.test(l))) return setErr('Minden sor egy https:// kezdetű link legyen.')
+    if (lines.length + uploaded > 10) return setErr(`Legfeljebb 10 kép lehet${uploaded ? ` (${uploaded} feltöltött kép már van)` : ''}.`)
+    onSave(lines.join('\n'))
+  }
+  return (
+    <Dialog title="Galéria" onClose={onClose} onSubmit={submit} busy={false} err={err}>
+      <label>
+        Képek linkje, soronként egy (max 10)
+        <textarea autoFocus rows={8} style={inputStyle} defaultValue={value} placeholder={'https://drive.google.com/file/d/…/view\nhttps://drive.google.com/file/d/…/view'} onChange={(e) => (text.current = e.target.value)} />
+      </label>
+      <small>{LINK_HELP} A kártya sarkában az első 2 kép látszik, kattintásra nagyban lapozható az összes. Üresen hagyva nincs galéria.</small>
     </Dialog>
   )
 }
