@@ -14,7 +14,7 @@ export type Design = {
 }
 
 // replies and the contact line at the bottom of the e-mail go here unless the admin sets another reply address
-export const CONTACT_EMAIL = 'istvanbartalis28@gmail.com'
+export const CONTACT_EMAIL = 'bbyourskills@gmail.com'
 
 // sender address (server only). shortcut: hello@bbskills.hu assumes bbskills.hu is verified in Resend; EMAIL_FROM overrides
 export const emailFrom = () => process.env.EMAIL_FROM || process.env.SMTP_USER || (process.env.RESEND_API_KEY ? 'hello@bbskills.hu' : undefined)

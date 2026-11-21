@@ -1,17 +1,16 @@
 // Default text of the legal pages (Dokumentumok global). Format: empty line = new paragraph,
 // "## " / "### " at the start = heading, lines starting with "- " = list.
 const CEG = 'Bartalis-Horváth Nikolett egyéni vállalkozó'
-const EMAIL = 'istvanbartalis28@gmail.com'
+const EMAIL = 'bbyourskills@gmail.com'
 const HATALY = '2026. november 21.'
 
 export const IMPRESSZUM = `## Szolgáltató adatai
 
 - Név: ${CEG}
-- Székhely: [SZÉKHELY]
 - Nyilvántartási szám: 61963614
 - Adószám: 52796753-1-27
 - E-mail: ${EMAIL}
-- Telefon: [TELEFONSZÁM]
+- Telefon: +36 30 677 8093
 - Nyilvántartó hatóság: Belügyminisztérium (egyéni vállalkozók nyilvántartása)
 
 ## Tárhelyszolgáltató
@@ -30,11 +29,10 @@ export const ASZF = `Jelen Általános Szerződési Feltételek (a továbbiakban
 ## 1. A szervező
 
 - ${CEG}
-- Székhely: [SZÉKHELY]
 - Nyilvántartási szám: 61963614
 - Adószám: 52796753-1-27
 - E-mail: ${EMAIL}
-- Telefon: [TELEFONSZÁM]
+- Telefon: +36 30 677 8093
 
 ## 2. A tábor
 
@@ -106,11 +104,10 @@ export const ADATKEZELES = `Jelen Adatkezelési Tájékoztató (a továbbiakban:
 ## 1. Az adatkezelő
 
 - Név: ${CEG}
-- Székhely: [SZÉKHELY]
 - Nyilvántartási szám: 61963614
 - Adószám: 52796753-1-27
 - E-mail: ${EMAIL}
-- Telefon: [TELEFONSZÁM]
+- Telefon: +36 30 677 8093
 
 A Tájékoztató elérhető a bbskills.hu/adatkezeles oldalon.
 
