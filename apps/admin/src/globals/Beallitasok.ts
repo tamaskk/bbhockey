@@ -15,6 +15,17 @@ const sectionTargets = [
   { label: 'Jelentkezés', value: 'jelentkezes' },
 ]
 
+// one icon each on the site (web/src/app/Chrome.tsx); „Egyéb” is a plain link icon
+export const SOCIAL_PLATFORMS = [
+  { label: 'Facebook', value: 'facebook' },
+  { label: 'Instagram', value: 'instagram' },
+  { label: 'YouTube', value: 'youtube' },
+  { label: 'TikTok', value: 'tiktok' },
+  { label: 'X (Twitter)', value: 'x' },
+  { label: 'LinkedIn', value: 'linkedin' },
+  { label: 'Egyéb', value: 'egyeb' },
+]
+
 const color = (name: string, label: string, defaultValue: string) => ({
   name,
   label,
@@ -66,8 +77,29 @@ export const Beallitasok: GlobalConfig = {
             { name: 'phone', label: 'Telefonszám', type: 'text', required: true },
             { name: 'email', label: 'E-mail', type: 'email' },
             { name: 'location', label: 'Helyszín / cím', type: 'text' },
-            { name: 'facebook', label: 'Facebook link', type: 'text' },
-            { name: 'instagram', label: 'Instagram link', type: 'text' },
+            {
+              name: 'social',
+              label: 'Közösségi oldalak',
+              type: 'array',
+              labels: { singular: 'Ikon', plural: 'Ikonok' },
+              admin: { description: 'Ikonok a fejléc tetején és a láblécben; a sorrend itt állítható. Új oldalhoz adj hozzá egy sort (pl. YouTube).' },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    { name: 'platform', label: 'Oldal', type: 'select', required: true, defaultValue: 'facebook', options: SOCIAL_PLATFORMS },
+                    {
+                      name: 'url',
+                      label: 'Link',
+                      type: 'text',
+                      required: true,
+                      validate: (v: unknown) => (typeof v === 'string' && /^https?:\/\/\S+$/.test(v)) || 'Teljes link kell, https://-sel',
+                    },
+                    { name: 'label', label: 'Felirat (egérrel rámutatva)', type: 'text', admin: { description: 'Üresen: az oldal neve' } },
+                  ],
+                },
+              ],
+            },
           ],
         },
         {

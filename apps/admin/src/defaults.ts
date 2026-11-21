@@ -20,8 +20,10 @@ export const beallitasokData = ({ logo, hero }: Media) => ({
   phone: '+36 30 000 0000',
   email: 'info@example.com',
   location: 'Győr, Audi Aréna (dummy)',
-  facebook: 'https://www.facebook.com/',
-  instagram: 'https://www.instagram.com/',
+  social: [
+    { platform: 'facebook' as const, url: 'https://www.facebook.com/profile.php?id=100035394534235' },
+    { platform: 'instagram' as const, url: 'https://www.instagram.com/bbskillshockey' },
+  ],
   nav: [
     { label: 'Főoldal', target: 'fooldal' },
     { label: 'Táborról', target: 'taborrol' },

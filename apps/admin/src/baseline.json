@@ -8,8 +8,10 @@
     "phone": "+36 30 677 8093",
     "email": "bbyourskills@gmail.com",
     "location": "Győri Egyetemi Jégsport Központ",
-    "facebook": "",
-    "instagram": "",
+    "social": [
+      { "platform": "facebook", "url": "https://www.facebook.com/profile.php?id=100035394534235" },
+      { "platform": "instagram", "url": "https://www.instagram.com/bbskillshockey" }
+    ],
     "nav": [
       {
         "label": "Főoldal",

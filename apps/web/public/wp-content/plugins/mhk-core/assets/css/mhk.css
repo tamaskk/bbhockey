@@ -462,6 +462,12 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
 .mhk-footer-social a:hover{ border-color:var(--mhk-accent); }
 .mhk-footer-social svg{ width:18px; height:18px; fill:var(--mhk-muted); }
 .mhk-footer-social a:hover svg{ fill:var(--mhk-accent); }
+.mhk-nav-panel-foot .mhk-footer-social{ margin-top:6px; }
+.mhk-nav-social{ display:flex; align-items:center; gap:4px; }
+.mhk-nav-social a{ display:grid; place-items:center; width:34px; height:34px; border-radius:50%; }
+.mhk-nav-social svg{ width:18px; height:18px; fill:currentColor; opacity:.8; transition:fill .2s, opacity .2s; }
+.mhk-nav-social a:hover svg{ fill:var(--mhk-accent); opacity:1; }
+@media (max-width:560px){ .mhk-nav-social{ display:none; } }
 .mhk-footer-bottom{
   border-top:1px solid var(--mhk-line);
   padding:20px 0;

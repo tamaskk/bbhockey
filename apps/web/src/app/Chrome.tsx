@@ -41,10 +41,12 @@ export function Header({ site, edit = false, base = "" }: { site: Beallitasok; e
               <a className="mhk-btn mhk-btn-primary" href={`${base}#jelentkezes`}><span>{site.ctaLabel}</span></a>
               <a className="mhk-nav-panel-phone" href={tel(site.phone)}>{site.phone}</a>
               {site.location && <span className="mhk-nav-panel-note">{site.location}</span>}
+              <Social site={site} className="mhk-footer-social" />
             </div>
           </nav>
           <div className="mhk-nav-backdrop" hidden />
           <div className="mhk-nav-cta">
+            <Social site={site} className="mhk-nav-social" />
             <ThemeToggle />
             <a className="mhk-nav-phone" href={tel(site.phone)}><span {...e.f("phone")}>{site.phone}</span></a>
             <a className="mhk-btn mhk-btn-primary" href={`${base}#jelentkezes`}><span {...e.f("ctaLabel")}>{site.ctaLabel}</span></a>
@@ -58,12 +60,34 @@ export function Header({ site, edit = false, base = "" }: { site: Beallitasok; e
   );
 }
 
-const FacebookIcon = () => (
-  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.3-1.5 1.6-1.5h1.6V3.6c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.4H7.8V13h2.7v8h3z" /></svg>
-);
-const InstagramIcon = () => (
-  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9-.1-1.3-.1-1.6-.1-4.8s0-3.6.1-4.8C2.4 4 4 2.4 7.2 2.3c1.2-.1 1.6-.1 4.8-.1zm0 2c-3.1 0-3.5 0-4.7.1-2.2.1-3 1-3.1 3.1-.1 1.2-.1 1.6-.1 4.6s0 3.4.1 4.6c.1 2.2 1 3 3.1 3.1 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c2.2-.1 3-1 3.1-3.1.1-1.2.1-1.6.1-4.6s0-3.4-.1-4.6c-.1-2.2-1-3-3.1-3.1-1.2-.1-1.6-.1-4.7-.1zm0 3.3a5.1 5.1 0 1 1 0 10.2 5.1 5.1 0 0 1 0-10.2zm0 2a3.1 3.1 0 1 0 0 6.2 3.1 3.1 0 0 0 0-6.2zm5.3-2.3a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z" /></svg>
-);
+// one icon per platform of Beállítások → Közösségi oldalak (admin/src/globals/Beallitasok.ts SOCIAL_PLATFORMS)
+const ICONS: Record<string, string> = {
+  facebook: "M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.3-1.5 1.6-1.5h1.6V3.6c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.4H7.8V13h2.7v8h3z",
+  instagram: "M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9-.1-1.3-.1-1.6-.1-4.8s0-3.6.1-4.8C2.4 4 4 2.4 7.2 2.3c1.2-.1 1.6-.1 4.8-.1zm0 2c-3.1 0-3.5 0-4.7.1-2.2.1-3 1-3.1 3.1-.1 1.2-.1 1.6-.1 4.6s0 3.4.1 4.6c.1 2.2 1 3 3.1 3.1 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c2.2-.1 3-1 3.1-3.1.1-1.2.1-1.6.1-4.6s0-3.4-.1-4.6c-.1-2.2-1-3-3.1-3.1-1.2-.1-1.6-.1-4.7-.1zm0 3.3a5.1 5.1 0 1 1 0 10.2 5.1 5.1 0 0 1 0-10.2zm0 2a3.1 3.1 0 1 0 0 6.2 3.1 3.1 0 0 0 0-6.2zm5.3-2.3a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z",
+  youtube: "M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4a2.5 2.5 0 0 0-1.8 1.8C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8zM10 15V9l5.2 3L10 15z",
+  tiktok: "M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.1v12.4a2.6 2.6 0 1 1-1.8-2.5V9.7a5.7 5.7 0 1 0 4.9 5.7V9.1a7.3 7.3 0 0 0 4.3 1.4V7.4a4.3 4.3 0 0 1-3.2-1.6z",
+  x: "M17.8 3h3.1l-6.8 7.7 8 10.3h-6.2l-4.9-6.3L5.4 21H2.3l7.2-8.3L1.8 3h6.4l4.4 5.8L17.8 3zm-1.1 16.2h1.7L7.4 4.7H5.5l11.2 14.5z",
+  linkedin: "M20.4 20.5h-3.6v-5.6c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9v5.7H9.4V9h3.4v1.6c.5-.9 1.6-1.8 3.4-1.8 3.6 0 4.3 2.4 4.3 5.5v6.2zM5.3 7.4a2.1 2.1 0 1 1 0-4.2 2.1 2.1 0 0 1 0 4.2zM7.1 20.5H3.6V9h3.5v11.5z",
+  egyeb: "M10.6 13.4a1 1 0 0 1 0-1.4l3.5-3.5a1 1 0 1 1 1.4 1.4L12 13.4a1 1 0 0 1-1.4 0zM13 6.3l1.4-1.4a4 4 0 0 1 5.7 5.7L18.7 12a1 1 0 1 1-1.4-1.4l1.4-1.4a2 2 0 0 0-2.9-2.9l-1.4 1.4A1 1 0 1 1 13 6.3zm-2 11.4-1.4 1.4a4 4 0 0 1-5.7-5.7L5.3 12a1 1 0 1 1 1.4 1.4l-1.4 1.4a2 2 0 0 0 2.9 2.9l1.4-1.4a1 1 0 1 1 1.4 1.4z",
+};
+const NAMES: Record<string, string> = { facebook: "Facebook", instagram: "Instagram", youtube: "YouTube", tiktok: "TikTok", x: "X", linkedin: "LinkedIn", egyeb: "Link" };
+
+function Social({ site, className }: { site: Beallitasok; className: string }) {
+  const links = site.social ?? [];
+  if (!links.length) return null;
+  return (
+    <div className={className}>
+      {links.map((l, i) => {
+        const name = l.label || NAMES[l.platform];
+        return (
+          <a aria-label={name} title={name} href={l.url} key={l.id ?? i} rel="noopener" target="_blank">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d={ICONS[l.platform] ?? ICONS.egyeb} /></svg>
+          </a>
+        );
+      })}
+    </div>
+  );
+}
 
 export function Footer({ site, edit = false, base = "" }: { site: Beallitasok; edit?: boolean; base?: string }) {
   const e = editor(edit, "beallitasok", site.styles as Looks);
@@ -74,10 +98,7 @@ export function Footer({ site, edit = false, base = "" }: { site: Beallitasok; e
           <div className="mhk-footer-logo">
             <Logo site={site} edit={edit} />
             {(edit || site.footerText) && <p {...e.f("footerText", true)}>{site.footerText}</p>}
-            <div className="mhk-footer-social">
-              {site.facebook && <a aria-label="Facebook oldalunk" href={site.facebook} rel="noopener" target="_blank"><FacebookIcon /></a>}
-              {site.instagram && <a aria-label="Instagram oldalunk" href={site.instagram} rel="noopener" target="_blank"><InstagramIcon /></a>}
-            </div>
+            <Social site={site} className="mhk-footer-social" />
           </div>
           <div>
             <h4>Menü</h4>

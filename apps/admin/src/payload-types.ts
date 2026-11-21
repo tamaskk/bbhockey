@@ -841,8 +841,20 @@ export interface Beallitasok {
   phone: string;
   email?: string | null;
   location?: string | null;
-  facebook?: string | null;
-  instagram?: string | null;
+  /**
+   * Ikonok a fejléc tetején és a láblécben; a sorrend itt állítható. Új oldalhoz adj hozzá egy sort (pl. YouTube).
+   */
+  social?:
+    | {
+        platform: 'facebook' | 'instagram' | 'youtube' | 'tiktok' | 'x' | 'linkedin' | 'egyeb';
+        url: string;
+        /**
+         * Üresen: az oldal neve
+         */
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   nav?:
     | {
         label: string;
@@ -1330,8 +1342,14 @@ export interface BeallitasokSelect<T extends boolean = true> {
   phone?: T;
   email?: T;
   location?: T;
-  facebook?: T;
-  instagram?: T;
+  social?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        label?: T;
+        id?: T;
+      };
   nav?:
     | T
     | {
