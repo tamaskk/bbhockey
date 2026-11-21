@@ -2,11 +2,18 @@
 
 import { useEffect, useState } from "react";
 
-// "Teszt adatok" button for trying the form: only on a URL with ?teszt (www.bbskills.hu/?teszt#jelentkezes).
+// "Teszt adatok" button for trying the form: shown to a logged-in admin (same domain on Vercel),
+// or to anyone on a URL with ?teszt (www.bbskills.hu/?teszt#jelentkezes).
 // Fills every visible field with sample data except the e-mail, which is focused so the tester types their own.
 export default function TestFill() {
   const [on, setOn] = useState(false);
-  useEffect(() => setOn(new URLSearchParams(location.search).has("teszt")), []);
+  useEffect(() => {
+    if (new URLSearchParams(location.search).has("teszt")) return setOn(true);
+    fetch("/admin/api/users/me", { credentials: "same-origin" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => setOn(!!j?.user))
+      .catch(() => {});
+  }, []);
   if (!on) return null;
 
   const fill = (form: HTMLFormElement) => {
