@@ -14,27 +14,27 @@
       {
         "label": "Főoldal",
         "target": "fooldal",
-        "id": "6b00322e30b39ef71a6d53c0"
+        "id": "6aedb83e4924f29aedc7084d"
       },
       {
         "label": "Táborról",
         "target": "taborrol",
-        "id": "6b00322e30b39ef71a6d53c1"
+        "id": "6aedb83e4924f29aedc7084e"
       },
       {
         "label": "Rólunk",
         "target": "rolunk",
-        "id": "6b00322e30b39ef71a6d53c2"
+        "id": "6aedb83e4924f29aedc7084f"
       },
       {
         "label": "Kapcsolat",
         "target": "kapcsolat",
-        "id": "6b00322e30b39ef71a6d53c3"
+        "id": "6aedb83e4924f29aedc70850"
       },
       {
         "label": "GYIK",
         "target": "gyik",
-        "id": "6b00322e30b39ef71a6d53c4"
+        "id": "6aedb83e4924f29aedc70851"
       }
     ],
     "ctaLabel": "Jelentkezés",
@@ -45,22 +45,22 @@
       {
         "label": "Jelentkezés",
         "target": "jelentkezes",
-        "id": "6b00322e30b39ef71a6d53c5"
+        "id": "6aedb83e4924f29aedc70852"
       },
       {
         "label": "Napirend",
         "target": "napirend",
-        "id": "6b00322e30b39ef71a6d53c6"
+        "id": "6aedb83e4924f29aedc70853"
       },
       {
         "label": "Étlap",
         "target": "etlap",
-        "id": "6b00322e30b39ef71a6d53c7"
+        "id": "6aedb83e4924f29aedc70854"
       },
       {
         "label": "Árak és fizetés",
         "target": "gyik",
-        "id": "6b00322e30b39ef71a6d53c8"
+        "id": "6aedb83e4924f29aedc70855"
       }
     ],
     "footerColumnTitle": "Tábor",
@@ -73,18 +73,13 @@
     "cookieTitle": "Sütiket használunk",
     "cookieText": "A weboldal működéséhez szükséges sütiket minden esetben használjuk. A statisztikai sütikhez a hozzájárulásodat kérjük.",
     "cookieAccept": "Elfogadom",
-    "cookieNecessary": "Csak a szükségesek",
-    "styles": {
-      "fooldal:hero.byline": {
-        "hide": true
-      }
-    },
-    "fontHeading": null
+    "cookieNecessary": "Csak a szükségesek"
   },
   "fooldal": {
     "hero": {
-      "title": "Fejleszd a",
-      "highlight": "skilleidet.",
+      "title": "Your Hockey",
+      "highlight": "Skills",
+      "byline": "by BB",
       "text": "BB Skills nyári jégkorongtábor U8–U18 játékosoknak, svéd és finn módszertannal, nemzetközi edzőkkel.",
       "image": "6b00322dbaa880936e6d783f",
       "primary": {
@@ -99,26 +94,26 @@
         {
           "value": "5+",
           "unit": "év",
-          "label": "tábor 2015 óta",
-          "id": "6b00322e30b39ef71a6d53c9"
+          "label": "közös munka, 2020 óta",
+          "id": "6aedb83e4924f29aedc70856"
         },
         {
           "value": "1000+",
           "unit": "résztvevő",
           "label": "az elmúlt években",
-          "id": "6b00322e30b39ef71a6d53ca"
+          "id": "6aedb83e4924f29aedc70857"
         },
         {
           "value": "7",
           "unit": "ország",
           "label": "játékosok és edzők",
-          "id": "6b00322e30b39ef71a6d53cb"
+          "id": "6aedb83e4924f29aedc70858"
         },
         {
-          "value": "SHL",
-          "unit": "& NLA",
-          "label": "tapasztalatú edzők",
-          "id": "6b00322e30b39ef71a6d53cc"
+          "value": "5",
+          "unit": "liga",
+          "label": "SHL · NLA · DEL · Allsvenskan · ICEHL",
+          "id": "6aedb83e4924f29aedc70859"
         }
       ]
     },
@@ -146,21 +141,21 @@
           "cta": "Jelentkezem",
           "text": "Korcsolyázás, ütőkezelés, lövés és passz: napi két jeges edzés kis csoportokban.",
           "image": "6b00322dbaa880936e6d7845",
-          "id": "6b00322e30b39ef71a6d53cd"
+          "id": "6aedb83e4924f29aedc7085a"
         },
         {
           "title": "Off-ice",
           "cta": "Jelentkezem",
           "text": "Koordináció, gyorsaság és erőnlét a jégen kívül, korosztályra szabva.",
           "image": "6b00322dbaa880936e6d784b",
-          "id": "6b00322e30b39ef71a6d53ce"
+          "id": "6aedb83e4924f29aedc7085b"
         },
         {
           "title": "Közösség",
           "cta": "Jelentkezem",
           "text": "Csapatépítő programok, közös étkezések és új barátok több országból.",
           "image": "6b00322dbaa880936e6d7851",
-          "id": "6b00322e30b39ef71a6d53cf"
+          "id": "6aedb83e4924f29aedc7085c"
         }
       ]
     },
@@ -168,39 +163,57 @@
       "show": true,
       "title": "Így telik",
       "highlight": "egy nap",
-      "subtitle": "Két jeges edzés, egy off-ice blokk és sok pihenő.",
+      "subtitle": "Minden csoportnak és korosztálynak általában van egy rövid és egy hosszú napja. Így néz ki például egy korai csoport napja. Kapusoknak egyéni tábor is lesz: extra jég, kiscsoportos egyéni edzés, VR, száraz és jeges edzés.",
       "items": [
         {
-          "time": "08:00",
-          "title": "Reggeli és bemelegítés",
-          "text": "Közös reggeli, majd mobilizáló gyakorlatok.",
-          "id": "6b00322e30b39ef71a6d53d0"
+          "time": "01",
+          "title": "Jég",
+          "text": "Egy korai csoport jeges edzéssel kezdi a napot.",
+          "id": "6af2ca3d32f22f4da1b8ebc2"
         },
         {
-          "time": "09:30",
-          "title": "1. jeges edzés",
-          "text": "Korcsolyatechnika és ütőkezelés kis csoportokban.",
-          "id": "6b00322e30b39ef71a6d53d1"
+          "time": "02",
+          "title": "Snack",
+          "text": "Gyümölcs és müzliszeletek.",
+          "id": "6af2ca3d32f22f4da1b8ebc3"
         },
         {
-          "time": "14:00",
-          "title": "Off-ice blokk",
-          "text": "Koordináció, gyorsaság, játékos erőnléti feladatok.",
-          "id": "6b00322e30b39ef71a6d53d2"
+          "time": "03",
+          "title": "Száraz edzés",
+          "text": "Ütőkezelés és lövés szárazon, valamint egyéni korcsolyatechnika a skatemillen (korcsolyagépen).",
+          "id": "6af2ca3d32f22f4da1b8ebc4"
         },
         {
-          "time": "16:30",
-          "title": "2. jeges edzés",
-          "text": "Lövés, passz és játékszituációk, a nap zárásaként.",
-          "id": "6b00322e30b39ef71a6d53d3"
+          "time": "04",
+          "title": "Ebéd",
+          "text": "Az aktuális menü lent, a heti étlapban látható.",
+          "id": "6af2ca3d32f22f4da1b8ebc5"
+        },
+        {
+          "time": "05",
+          "title": "Pihenő",
+          "text": "Regenerálódás a délutáni blokk előtt.",
+          "id": "6af2ca3d32f22f4da1b8ebc6"
+        },
+        {
+          "time": "06",
+          "title": "VR edzés",
+          "text": "Virtuális valóságos edzés.",
+          "id": "6af2ca3d32f22f4da1b8ebc7"
+        },
+        {
+          "time": "07",
+          "title": "Jég",
+          "text": "Második jeges edzés.",
+          "id": "6af2ca3d32f22f4da1b8ebc8"
+        },
+        {
+          "time": "08",
+          "title": "Levezetés és snack",
+          "text": "Levezetés, majd snack a nap végén.",
+          "id": "6af2ca3d32f22f4da1b8ebc9"
         }
       ]
-    },
-    "eszkozok": {
-      "show": false,
-      "title": "A nap",
-      "highlight": "képekben",
-      "items": []
     },
     "etlap": {
       "show": true,
@@ -214,7 +227,7 @@
           "soup": "Hideg eperkrémleves",
           "a": "Bolognai spagetti",
           "b": "Rántott csirkemell jázmin rizzsel",
-          "id": "6b00322e30b39ef71a6d53d4"
+          "id": "6aedb83e4924f29aedc70861"
         },
         {
           "day": "Kedd",
@@ -222,7 +235,7 @@
           "soup": "Húsleves cérnametélttel",
           "a": "Csirke gyrostál",
           "b": "Tarhonyás hús",
-          "id": "6b00322e30b39ef71a6d53d5"
+          "id": "6aedb83e4924f29aedc70862"
         },
         {
           "day": "Szerda",
@@ -230,7 +243,7 @@
           "soup": "Zöldségleves",
           "a": "Borsófőzelék fasírozottal",
           "b": "Cordon bleu jázmin rizzsel",
-          "id": "6b00322e30b39ef71a6d53d6"
+          "id": "6aedb83e4924f29aedc70863"
         },
         {
           "day": "Csütörtök",
@@ -238,7 +251,7 @@
           "soup": "Kolbászos burgonyaleves",
           "a": "Brassói aprópecsenye sült burgonyával",
           "b": "Pankós bundában sült csirkefalatok jázmin rizzsel",
-          "id": "6b00322e30b39ef71a6d53d7"
+          "id": "6aedb83e4924f29aedc70864"
         },
         {
           "day": "Péntek",
@@ -246,28 +259,28 @@
           "soup": "Zöldborsóleves",
           "a": "Csirkepörkölt galuskával",
           "b": "Sajtbundában sült csirkemell jázmin rizzsel",
-          "id": "6b00322e30b39ef71a6d53d8"
+          "id": "6aedb83e4924f29aedc70865"
         }
       ]
     },
     "rolunk": {
       "show": true,
       "title": "Két testvér,",
-      "highlight": "egy szenvedély",
-      "text": "A BB Your Hockey Skills-t Bartalis Balázs és Bartalis István alapította 2015-ben. A célunk az utánpótlás-játékosok egyéni fejlesztése azzal a tudással és rutinnal, amit Svédországban és Finnországban szereztünk.\n\n2020 óta minden évben szervezünk tábort, eddig több mint 1000 résztvevővel Magyarországról, Romániából, Szlovákiából, Svédországból és más országokból.",
+      "highlight": "egy közös cél",
+      "text": "## Nemzetközi jégkorongtapasztalat, közös szenvedély, egyéni fejlődés\n\nA magyar jégkorong világában a Bartalis név hosszú évek óta ismert. Bartalis István és Bartalis Balázs két különböző úton jutott el a nemzetközi jégkorong magas szintjére, de van egy közös céljuk: a megszerzett tudásukat és tapasztalatukat továbbadni a fiatal jégkorongozóknak.\n\nEbből a közös gondolkodásból született meg a BB Skills egyéni képességfejlesztő jégkorongtábor, amelyet a testvérek 2020 óta minden évben, egyes években több alkalommal is közösen tartanak meg.\n\nA BB Skills nem csupán egy hagyományos jégkorongtábor. Olyan fejlesztési lehetőség, ahol két, nemzetközi szinten tapasztalt szakember tudása találkozik, és ahol a középpontban a fiatal játékosok egyéni fejlődése áll.\n\n## BB Skills – 2020 óta a fiatal jégkorongozók fejlődéséért\n\nA Bartalis testvérek 2020 óta évről évre visszatérnek a közös munkához, hogy saját tapasztalataikat a fiatal játékosok fejlődésének szolgálatába állítsák. A BB Skills táborok különlegessége, hogy a játékos és az edző szemlélete egyszerre jelenik meg a képzésben.\n\nIstván a magas szintű játékoskarrier gyakorlati tapasztalatait, Balázs pedig a nemzetközi élvonalban alkalmazott egyéni képességfejlesztés szakmai megközelítését hozza a közös munkába. Ez a két nézőpont egymást kiegészítve teremti meg a BB Skills szakmai értékét.\n\nA táborok középpontjában az egyéni technikai képességek, a korcsolyázás, a korongkezelés, a mozgáskoordináció és a játékosok fejlődésének támogatása áll. A cél nem egyszerűen az, hogy a résztvevők új gyakorlatokat tanuljanak, hanem hogy olyan technikai alapokat és szemléletet sajátítsanak el, amelyekre a későbbi jégkorong-pályafutásuk során is építhetnek.\n\n## Nemzetközi tudás, magyar fiataloknak\n\nA BB Skills egyik legnagyobb értéke, hogy a résztvevőknek nem kell külföldre utazniuk ahhoz, hogy nemzetközi szinten tapasztalt szakemberektől tanulhassanak. A Bartalis testvérek a Svédországban, Svájcban és a nemzetközi jégkorongban megszerzett tudásukat közvetlenül adják tovább a fiataloknak.\n\nA táborok 2020 óta tartó rendszeres megszervezése jól mutatja, hogy a BB Skills nem egyszeri kezdeményezés, hanem hosszú távú elköteleződés a játékosok fejlesztése mellett.\n\n## Több mint egy tábor – Közös küldetés\n\nA Bartalis testvérek története önmagában is inspiráló. Egy családból indulva, két különböző szakmai úton jutottak el a nemzetközi jégkorong magas szintjére. A BB Skills azonban ennél többről szól.\n\nArról, hogy a megszerzett tapasztalat akkor válik igazán értékessé, amikor azt tovább lehet adni. Arról, hogy a fiatal játékosok fejlődése hosszú távú folyamat, amelyhez megfelelő szakmai iránymutatás, következetes munka és sok gyakorlás szükséges. És arról, hogy a magyar jégkorong jövőjébe történő befektetés a fiatal játékosok egyéni képességeinek fejlesztésével kezdődik.\n\nKét testvér. Két nemzetközi életút. Egy közös szenvedély. Egy cél: a következő generáció fejlesztése.",
       "image": "6b00322dbaa880936e6d7851",
       "coaches": [
         {
-          "name": "Bartalis Balázs",
-          "role": "Vezetőedző · skills coach",
-          "text": "Vierumäki edzőképzés, SHL és NLA bajnoki címek skills edzőként.",
-          "id": "6b00322e30b39ef71a6d53d9"
+          "name": "Bartalis István",
+          "role": "Nemzetközi játékostapasztalat · magyar válogatott",
+          "text": "A magyar jégkorong-válogatott meghatározó játékosa. A svéd Troja-Ljungby és Vita Hästen, a német DEL-ben a Schwenningen Wild Wings, valamint a Hydro Fehérvár AV19 csapatánál szerzett tapasztalatai révén pontosan ismeri a magas szintű jégkorong technikai, fizikai és mentális követelményeit.",
+          "id": "6aedb83e4924f29aedc70867"
         },
         {
-          "name": "Bartalis István",
-          "role": "Szervező · edző",
-          "text": "A tábor alapítója, 2015 óta szervezi a BB Skills programokat.",
-          "id": "6b00322e30b39ef71a6d53da"
+          "name": "Bartalis Balázs",
+          "role": "Edző · képességfejlesztő szakember",
+          "text": "A svéd és a svájci élvonalban dolgozott, kiemelt figyelmet fordítva a játékosok egyéni képességeinek fejlesztésére. 2021 – svéd bajnoki cím (Växjö Lakers). 2023 – svájci bajnoki cím (Genève-Servette HC). 2024–25 – svájci bajnoki döntők a Lausanne HC másodedzőjeként és képességfejlesztő szakembereként.",
+          "id": "6aedb83e4924f29aedc70866"
         }
       ]
     },
@@ -280,19 +293,19 @@
           "name": "Nagy Katalin",
           "who": "U12-es játékos szülője",
           "quote": "A fiam teljesen új lendülettel jött haza. Egy hét alatt látványosat fejlődött a korcsolyázása.",
-          "id": "6b00322e30b39ef71a6d53db"
+          "id": "6aedb83e4924f29aedc70868"
         },
         {
           "name": "Tóth Gábor",
           "who": "U14-es játékos szülője",
           "quote": "Profi szervezés, figyelmes edzők. Jövőre is jövünk.",
-          "id": "6b00322e30b39ef71a6d53dc"
+          "id": "6aedb83e4924f29aedc70869"
         },
         {
           "name": "Szabó Márk",
           "who": "U16 játékos",
           "quote": "Itt tanultam meg igazán lőni. Az edzők mindenkivel külön foglalkoznak.",
-          "id": "6b00322e30b39ef71a6d53dd"
+          "id": "6aedb83e4924f29aedc7086a"
         }
       ]
     },
@@ -304,32 +317,32 @@
         {
           "q": "Hány éves kortól lehet jelentkezni?",
           "a": "U8-tól U18-ig várunk játékosokat. A csoportokat korosztály és tudásszint szerint alakítjuk ki.",
-          "id": "6b00322e30b39ef71a6d53de"
+          "id": "6aedb83e4924f29aedc7086b"
         },
         {
           "q": "Mit kell hozni a táborba?",
           "a": "Teljes jégkorong felszerelést, edzőruhát az off-ice blokkokhoz, kulacsot és váltóruhát. A tábori pólót és zoknit mi adjuk.",
-          "id": "6b00322e30b39ef71a6d53df"
+          "id": "6aedb83e4924f29aedc7086c"
         },
         {
           "q": "Mennyibe kerül a tábor?",
           "a": "Egyéni jelentkezés 160 000 Ft / fő, testvéreknek 140 000 Ft / fő. Az ár tartalmazza az edzéseket, az étkezést és a tábori felszerelést.",
-          "id": "6b00322e30b39ef71a6d53e0"
+          "id": "6aedb83e4924f29aedc7086d"
         },
         {
           "q": "Hogyan fizethetek?",
           "a": "A jelentkezés után e-mailben küldjük a díjbekérőt, átutalással lehet fizetni.",
-          "id": "6b00322e30b39ef71a6d53e1"
+          "id": "6aedb83e4924f29aedc7086e"
         },
         {
           "q": "Kapusoknak is van program?",
-          "a": "Igen, a kapusok külön kapusedzővel dolgoznak a jeges edzések egy részében.",
-          "id": "6b00322e30b39ef71a6d53e2"
+          "a": "Igen! Kapusoknak egyéni tábor is lesz, ami egy extra jeges edzést és kiscsoportos egyéni edzést tartalmaz: VR, száraz és jeges edzés.",
+          "id": "6aedb83e4924f29aedc7086f"
         },
         {
           "q": "Mi történik, ha lemondjuk a részvételt?",
           "a": "A tábor kezdete előtt 30 nappal díjmentesen lemondható, utána a részvételi feltételek szerint térítünk vissza.",
-          "id": "6b00322e30b39ef71a6d53e3"
+          "id": "6aedb83e4924f29aedc70870"
         }
       ]
     },
@@ -342,22 +355,22 @@
         {
           "label": "Helyszín",
           "value": "Győr, Audi Aréna (dummy)",
-          "id": "6b00322e30b39ef71a6d53e4"
+          "id": "6aedb83e4924f29aedc70871"
         },
         {
           "label": "Telefon",
           "value": "+36 30 000 0000",
-          "id": "6b00322e30b39ef71a6d53e5"
+          "id": "6aedb83e4924f29aedc70872"
         },
         {
           "label": "E-mail",
           "value": "info@example.com",
-          "id": "6b00322e30b39ef71a6d53e6"
+          "id": "6aedb83e4924f29aedc70873"
         },
         {
           "label": "Időpont",
           "value": "2027. június 21–25.",
-          "id": "6b00322e30b39ef71a6d53e7"
+          "id": "6aedb83e4924f29aedc70874"
         }
       ],
       "button": {
@@ -365,61 +378,26 @@
         "href": "#jelentkezes"
       }
     },
-    "order": [
-      "marquee",
-      "tabor",
-      "napirend",
-      "etlap",
-      "rolunk",
-      "velemenyek",
-      "gyik",
-      "kapcsolat",
-      "b:74aa1abab3efb57afccfebef",
-      "b:2986debf3b7eed7d8b01ea46",
-      "b:a38f8d4259ffcaffe494f294"
-    ],
-    "blocks": [
-      {
-        "blockType": "kartyak",
-        "show": true,
-        "title": "Új",
-        "highlight": "kártyák",
-        "items": [
-          {
-            "title": "Első kártya",
-            "text": "Rövid leírás.",
-            "id": "6b00bf522a159a996b1a97dd"
-          },
-          {
-            "title": "Második kártya",
-            "text": "Rövid leírás.",
-            "id": "6b00bf522a159a996b1a97de"
-          },
-          {
-            "title": "Harmadik kártya",
-            "text": "Rövid leírás.",
-            "id": "6b00bf522a159a996b1a97df"
-          }
-        ],
-        "id": "74aa1abab3efb57afccfebef"
-      },
-      {
-        "blockType": "szoveg",
-        "show": true,
-        "title": "Új",
-        "highlight": "szekció",
-        "text": "Írd ide a szöveget. Új bekezdés: üres sor.",
-        "id": "2986debf3b7eed7d8b01ea46"
-      },
-      {
-        "blockType": "szoveg",
-        "show": true,
-        "title": "Új",
-        "highlight": "szekció",
-        "text": "Írd ide a szöveget. Új bekezdés: üres sor.",
-        "id": "a38f8d4259ffcaffe494f294"
-      }
-    ]
+    "eszkozok": {
+      "show": true,
+      "title": "Így néz ki",
+      "highlight": "a száraz edzés",
+      "subtitle": "Korcsolyagép és VR: ezekkel az eszközökkel a játékosok a jégen kívül is célzottan fejlődhetnek.",
+      "items": [
+        {
+          "title": "Skatemill",
+          "text": "Egyéni korcsolyatechnika a korcsolyagépen, edzői visszajelzéssel. A hibák azonnal láthatók és javíthatók.",
+          "image": "6af76abd0861f990a6e08e5d",
+          "id": "6af76b7e012666ce87487077"
+        },
+        {
+          "title": "VR edzés",
+          "text": "Virtuális valóságos edzés ütővel és koronggal: látás, reakció és döntéshozatal játékhelyzetekben.",
+          "image": "6af76abd0861f990a6e08e46",
+          "id": "6af76b7e012666ce87487078"
+        }
+      ]
+    }
   },
   "urlap": {
     "open": true,
@@ -429,6 +407,73 @@
     "intro": "Add meg a szülő és a játékos adatait, a ruhaméreteket, az egészségügyi információkat, majd fogadd el a feltételeket és küldd el a jelentkezést.",
     "submitLabel": "Jelentkezés elküldése",
     "successMessage": "Köszönjük, megkaptuk a jelentkezést! Hamarosan e-mailben jelentkezünk.",
+    "sizeChart": "6b00322ebaa880936e6d7857",
+    "jelentkezesTipus": [
+      "Egyedül jelentkezem – 160 000 Ft / fő",
+      "Testvéremmel jelentkezem – 140 000 Ft / fő"
+    ],
+    "jelentkezesNote": "Testvéres jelentkezésnél a második gyermeket egy új jelentkezéssel tudod regisztrálni.",
+    "korosztaly": [
+      "U8",
+      "U10",
+      "U12",
+      "U14",
+      "U16",
+      "U18",
+      "Egyéb"
+    ],
+    "poszt": [
+      "Kapus",
+      "Védő",
+      "Csatár"
+    ],
+    "utoFogas": [
+      "Bal",
+      "Jobb"
+    ],
+    "tapasztalat": [
+      "1–2 év",
+      "3–5 év",
+      "6–8 év",
+      "9+ év"
+    ],
+    "polomeret": [
+      "98-104",
+      "110-116",
+      "122-128",
+      "134-146",
+      "152-158",
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "zokni": [
+      "27–30",
+      "31–34",
+      "35–38",
+      "39–42",
+      "43–46"
+    ],
+    "etkezes": [
+      "Nincs",
+      "Laktózmentes",
+      "Gluténmentes",
+      "Vegetáriánus",
+      "Egyéb"
+    ],
+    "kapcsolat": [
+      "Anya",
+      "Apa",
+      "Gondviselő",
+      "Egyéb"
+    ],
+    "feltetelek": "Elfogadom a BB Skills Camp részvételi feltételeit",
+    "adatkezeles": "Elfogadom az adatkezelési tájékoztatót és adatvédelmi nyilatkozatot",
+    "szuloi": "Szülőként / törvényes képviselőként hozzájárulok a gyermek részvételéhez",
+    "foto": "Hozzájárulok fénykép- és videófelvételek készítéséhez, valamint azok BB Skills marketing- és közösségi média célú felhasználásához",
     "groups": [
       {
         "title": "Jelentkezés",
@@ -444,10 +489,10 @@
             ],
             "help": "Testvéres jelentkezésnél a második gyermeket egy új jelentkezéssel tudod regisztrálni.",
             "name": "jelentkezes",
-            "id": "6b00322e30b39ef71a6d53e8"
+            "id": "6aedba16578e9bdc6241f15d"
           }
         ],
-        "id": "6b00322e30b39ef71a6d53e9"
+        "id": "6aedba16578e9bdc6241f15e"
       },
       {
         "title": "Szülő / kapcsolattartó adatai",
@@ -458,7 +503,7 @@
             "width": "half",
             "required": true,
             "name": "szulo_vezeteknev",
-            "id": "6b00322e30b39ef71a6d53ea"
+            "id": "6aedba16578e9bdc6241f15f"
           },
           {
             "label": "Szülő / gondviselő – keresztnév",
@@ -466,7 +511,7 @@
             "width": "half",
             "required": true,
             "name": "szulo_keresztnev",
-            "id": "6b00322e30b39ef71a6d53eb"
+            "id": "6aedba16578e9bdc6241f160"
           },
           {
             "label": "E-mail cím",
@@ -475,7 +520,7 @@
             "required": true,
             "placeholder": "pelda@pelda.hu",
             "name": "email",
-            "id": "6b00322e30b39ef71a6d53ec"
+            "id": "6aedba16578e9bdc6241f161"
           },
           {
             "label": "Telefonszám",
@@ -484,7 +529,7 @@
             "required": true,
             "placeholder": "+36 30 123 4567",
             "name": "telefon",
-            "id": "6b00322e30b39ef71a6d53ed"
+            "id": "6aedba16578e9bdc6241f162"
           },
           {
             "label": "Számlázási név – vezetéknév",
@@ -492,7 +537,7 @@
             "width": "half",
             "required": true,
             "name": "szamlazasi_vezeteknev",
-            "id": "6b00322e30b39ef71a6d53ee"
+            "id": "6aedba16578e9bdc6241f163"
           },
           {
             "label": "Számlázási név – keresztnév",
@@ -500,7 +545,7 @@
             "width": "half",
             "required": true,
             "name": "szamlazasi_keresztnev",
-            "id": "6b00322e30b39ef71a6d53ef"
+            "id": "6aedba16578e9bdc6241f164"
           },
           {
             "label": "Irányítószám",
@@ -508,7 +553,7 @@
             "width": "half",
             "required": true,
             "name": "szamla_iranyitoszam",
-            "id": "6b00322e30b39ef71a6d53f0"
+            "id": "6aedba16578e9bdc6241f165"
           },
           {
             "label": "Város",
@@ -516,7 +561,7 @@
             "width": "half",
             "required": true,
             "name": "szamla_varos",
-            "id": "6b00322e30b39ef71a6d53f1"
+            "id": "6aedba16578e9bdc6241f166"
           },
           {
             "label": "Utca, házszám",
@@ -524,7 +569,7 @@
             "width": "full",
             "required": true,
             "name": "szamla_utca",
-            "id": "6b00322e30b39ef71a6d53f2"
+            "id": "6aedba16578e9bdc6241f167"
           },
           {
             "label": "Ország",
@@ -533,7 +578,7 @@
             "required": true,
             "placeholder": "Magyarország",
             "name": "szamla_orszag",
-            "id": "6b00322e30b39ef71a6d53f3"
+            "id": "6aedba16578e9bdc6241f168"
           },
           {
             "label": "Milyen számlát kérsz?",
@@ -545,7 +590,7 @@
               "Cég"
             ],
             "name": "szamla_tipus",
-            "id": "6b00322e30b39ef71a6d53f4"
+            "id": "6aedba16578e9bdc6241f169"
           },
           {
             "label": "Cégnév",
@@ -555,7 +600,7 @@
             "name": "cegnev",
             "ifField": "szamla_tipus",
             "ifValue": "Cég",
-            "id": "6b00322e30b39ef71a6d53f5"
+            "id": "6aedba16578e9bdc6241f16a"
           },
           {
             "label": "Adószám",
@@ -565,7 +610,7 @@
             "name": "adoszam",
             "ifField": "szamla_tipus",
             "ifValue": "Cég",
-            "id": "6b00322e30b39ef71a6d53f6"
+            "id": "6aedba16578e9bdc6241f16b"
           },
           {
             "label": "Székhely (cím)",
@@ -575,10 +620,10 @@
             "name": "szekhely",
             "ifField": "szamla_tipus",
             "ifValue": "Cég",
-            "id": "6b00322e30b39ef71a6d53f7"
+            "id": "6aedba16578e9bdc6241f16c"
           }
         ],
-        "id": "6b00322e30b39ef71a6d53f8"
+        "id": "6aedba16578e9bdc6241f16d"
       },
       {
         "title": "Játékos adatai",
@@ -589,7 +634,7 @@
             "width": "half",
             "required": true,
             "name": "jatekos_vezeteknev",
-            "id": "6b00322e30b39ef71a6d53f9"
+            "id": "6aedba16578e9bdc6241f16e"
           },
           {
             "label": "Játékos – keresztnév",
@@ -597,7 +642,7 @@
             "width": "half",
             "required": true,
             "name": "jatekos_keresztnev",
-            "id": "6b00322e30b39ef71a6d53fa"
+            "id": "6aedba16578e9bdc6241f16f"
           },
           {
             "label": "Születési dátum",
@@ -605,7 +650,7 @@
             "width": "half",
             "required": true,
             "name": "szuletesi_datum",
-            "id": "6b00322e30b39ef71a6d53fb"
+            "id": "6aedba16578e9bdc6241f170"
           },
           {
             "label": "Klub / csapat neve",
@@ -613,7 +658,7 @@
             "width": "half",
             "required": true,
             "name": "klub",
-            "id": "6b00322e30b39ef71a6d53fc"
+            "id": "6aedba16578e9bdc6241f171"
           },
           {
             "label": "Korosztály",
@@ -630,7 +675,7 @@
               "Egyéb"
             ],
             "name": "korosztaly",
-            "id": "6b00322e30b39ef71a6d53fd"
+            "id": "6aedba16578e9bdc6241f172"
           },
           {
             "label": "Poszt",
@@ -643,7 +688,7 @@
               "Csatár"
             ],
             "name": "poszt",
-            "id": "6b00322e30b39ef71a6d53fe"
+            "id": "6aedba16578e9bdc6241f173"
           },
           {
             "label": "Ütő fogás",
@@ -655,7 +700,7 @@
               "Jobb"
             ],
             "name": "uto_fogas",
-            "id": "6b00322e30b39ef71a6d53ff"
+            "id": "6aedba16578e9bdc6241f174"
           },
           {
             "label": "Mióta jégkorongozik?",
@@ -669,10 +714,10 @@
               "9+ év"
             ],
             "name": "tapasztalat",
-            "id": "6b00322e30b39ef71a6d5400"
+            "id": "6aedba16578e9bdc6241f175"
           }
         ],
-        "id": "6b00322e30b39ef71a6d5401"
+        "id": "6aedba16578e9bdc6241f176"
       },
       {
         "title": "Ruhaméretek",
@@ -684,7 +729,7 @@
             "required": false,
             "image": "6b00322ebaa880936e6d7857",
             "name": "meret_tablazat",
-            "id": "6b00322e30b39ef71a6d5402"
+            "id": "6aedba16578e9bdc6241f177"
           },
           {
             "label": "Pólóméret / pulóver",
@@ -705,7 +750,7 @@
               "XXL"
             ],
             "name": "polomeret",
-            "id": "6b00322e30b39ef71a6d5403"
+            "id": "6aedba16578e9bdc6241f178"
           },
           {
             "label": "Zokniméret",
@@ -720,10 +765,10 @@
               "43–46"
             ],
             "name": "zokni",
-            "id": "6b00322e30b39ef71a6d5404"
+            "id": "6aedba16578e9bdc6241f179"
           }
         ],
-        "id": "6b00322e30b39ef71a6d5405"
+        "id": "6aedba16578e9bdc6241f17a"
       },
       {
         "title": "Étkezés / egészségügyi információ",
@@ -738,7 +783,7 @@
               "Igen"
             ],
             "name": "allergia",
-            "id": "6b00322e30b39ef71a6d5406"
+            "id": "6aedba16578e9bdc6241f17b"
           },
           {
             "label": "Mire allergiás?",
@@ -748,7 +793,7 @@
             "name": "allergia_reszletek",
             "ifField": "allergia",
             "ifValue": "Igen",
-            "id": "6b00322e30b39ef71a6d5407"
+            "id": "6aedba16578e9bdc6241f17c"
           },
           {
             "label": "Van-e a gyermeknek ételintoleranciája?",
@@ -760,7 +805,7 @@
               "Igen"
             ],
             "name": "etelintolerancia",
-            "id": "6b00322e30b39ef71a6d5408"
+            "id": "6aedba16578e9bdc6241f17d"
           },
           {
             "label": "Speciális étkezési igények",
@@ -775,7 +820,7 @@
               "Egyéb"
             ],
             "name": "etkezes",
-            "id": "6b00322e30b39ef71a6d5409"
+            "id": "6aedba16578e9bdc6241f17e"
           },
           {
             "label": "Egyéb fontos egészségügyi vagy orvosi információ",
@@ -785,10 +830,10 @@
             "name": "egeszsegugyi_info",
             "ifField": "etkezes",
             "ifValue": "Egyéb",
-            "id": "6b00322e30b39ef71a6d540a"
+            "id": "6aedba16578e9bdc6241f17f"
           }
         ],
-        "id": "6b00322e30b39ef71a6d540b"
+        "id": "6aedba16578e9bdc6241f180"
       },
       {
         "title": "Vészhelyzeti kapcsolattartó",
@@ -799,7 +844,7 @@
             "width": "half",
             "required": true,
             "name": "veszhelyzeti_vezeteknev",
-            "id": "6b00322e30b39ef71a6d540c"
+            "id": "6aedba16578e9bdc6241f181"
           },
           {
             "label": "Kapcsolattartó – keresztnév",
@@ -807,7 +852,7 @@
             "width": "half",
             "required": true,
             "name": "veszhelyzeti_keresztnev",
-            "id": "6b00322e30b39ef71a6d540d"
+            "id": "6aedba16578e9bdc6241f182"
           },
           {
             "label": "Kapcsolat a gyermekkel",
@@ -821,7 +866,7 @@
               "Egyéb"
             ],
             "name": "veszhelyzeti_kapcsolat",
-            "id": "6b00322e30b39ef71a6d540e"
+            "id": "6aedba16578e9bdc6241f183"
           },
           {
             "label": "Telefonszám",
@@ -830,10 +875,10 @@
             "required": true,
             "placeholder": "+36 30 123 4567",
             "name": "veszhelyzeti_telefon",
-            "id": "6b00322e30b39ef71a6d540f"
+            "id": "6aedba16578e9bdc6241f184"
           }
         ],
-        "id": "6b00322e30b39ef71a6d5410"
+        "id": "6aedba16578e9bdc6241f185"
       },
       {
         "title": "Nyilatkozatok",
@@ -844,16 +889,16 @@
             "width": "full",
             "required": true,
             "name": "feltetelek",
-            "id": "6b00322e30b39ef71a6d5411"
+            "id": "6aedba16578e9bdc6241f186"
           },
           {
             "label": "Elfogadom az adatkezelési tájékoztatót és adatvédelmi nyilatkozatot",
             "type": "consent",
             "width": "full",
             "required": true,
-            "link": null,
+            "link": "",
             "name": "adatkezeles",
-            "id": "6b00322e30b39ef71a6d5412"
+            "id": "6aedba16578e9bdc6241f187"
           },
           {
             "label": "Szülőként / törvényes képviselőként hozzájárulok a gyermek részvételéhez",
@@ -861,7 +906,7 @@
             "width": "full",
             "required": true,
             "name": "szuloi_hozzajarulas",
-            "id": "6b00322e30b39ef71a6d5413"
+            "id": "6aedba16578e9bdc6241f188"
           },
           {
             "label": "Hozzájárulok fénykép- és videófelvételek készítéséhez, valamint azok BB Skills marketing- és közösségi média célú felhasználásához",
@@ -869,10 +914,10 @@
             "width": "full",
             "required": false,
             "name": "foto_hozzajarulas",
-            "id": "6b00322e30b39ef71a6d5414"
+            "id": "6aedba16578e9bdc6241f189"
           }
         ],
-        "id": "6b00322e30b39ef71a6d5415"
+        "id": "6aedba16578e9bdc6241f18a"
       }
     ]
   }

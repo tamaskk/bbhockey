@@ -4,7 +4,7 @@ import baseline from './baseline.json'
 const SYSTEM = ['id', 'createdAt', 'updatedAt', 'globalType']
 
 // POST /admin/api/alaphelyzet: the editor's "Alaphelyzet" button. Puts the page content, settings and form
-// back to baseline.json (a snapshot of the live site, 2026-11-21), in one transaction so a failure changes nothing.
+// back to baseline.json (the 2026-11-13 version of the site from the earlier database), in one transaction so a failure changes nothing.
 // To make the current state the new baseline: dump the three globals from the database into baseline.json.
 export const resetEndpoint: Endpoint = {
   path: '/alaphelyzet',
