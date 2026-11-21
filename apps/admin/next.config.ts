@@ -9,6 +9,8 @@ const dirname = path.dirname(__filename)
 const nextConfig: NextConfig = {
   // the whole admin (panel, API, /_next assets) lives under /admin; the public site owns every other path
   basePath: '/admin',
+  // admin-only deployments (no web service in front) would 404 on the bare domain
+  redirects: async () => [{ source: '/', destination: '/admin', basePath: false, permanent: false }],
   images: {
     localPatterns: [
       {
