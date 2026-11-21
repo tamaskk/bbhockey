@@ -1,6 +1,9 @@
 // Builds the confirmation e-mail from the "Visszaigazoló e-mail" settings and one submission.
 // Pure (no Payload imports): used by the send hook and by the live preview in the admin. Tested in template.test.ts.
+import type { Payment } from '../payment'
+
 type Answer = { kerdes?: string | null; valasz?: string | null }
+
 export type Submission = Record<string, unknown> & { valaszok?: Answer[] | null }
 
 export type Design = {
@@ -54,7 +57,7 @@ export const EMAIL_FONTS = [
 const safeUrl = (u?: string | null) => (u && /^(https?:\/\/|mailto:|tel:)/i.test(u.trim()) ? u.trim() : '')
 
 // HTML e-mail: table layout and inline styles, the only thing every mail client renders reliably
-export function renderEmail(body: string, design: Design, doc: Submission): string {
+export function renderEmail(body: string, design: Design, doc: Submission, pay?: Payment | null): string {
   const d = {
     page: col(design.pageBg, '#f2f2f2'), card: col(design.cardBg, '#ffffff'), head: col(design.headerBg, '#111111'),
     headText: col(design.headerText, '#f4eb06'), text: col(design.textColor, '#222222'), accent: col(design.accent, '#f4eb06'),
@@ -75,6 +78,12 @@ export function renderEmail(body: string, design: Design, doc: Submission): stri
     .split(/\{\{\s*valaszok\s*\}\}\n?/)
     .map((part) => esc(part.replace(TOKEN, (_, k: string) => value(doc, k))).replace(/\n/g, '<br>'))
     .join(answersHtml())
+  // bank transfer details (payment.ts), a framed box under the text
+  const payHtml = pay
+    ? `<div style="margin-top:20px;padding:16px 18px;border:2px solid ${d.accent};border-radius:${Math.min(d.radius, 12)}px"><div style="font-weight:800;font-size:${d.size + 2}px;margin-bottom:8px">${esc(pay.title)}</div><table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:collapse;font-size:${d.size}px">${pay.rows
+        .map(([k, v]) => `<tr><td style="padding:3px 14px 3px 0;opacity:.7">${esc(k)}</td><td style="padding:3px 0;font-weight:700">${esc(v)}</td></tr>`)
+        .join('')}</table>${pay.text ? `<p style="margin:10px 0 0">${esc(pay.text).replace(/\n/g, '<br>')}</p>` : ''}</div>`
+    : ''
   const logo = safeUrl(design.logoUrl)
   const btnUrl = safeUrl(fill(design.buttonUrl ?? '', doc))
   const header = logo || design.headerTitle
@@ -94,6 +103,6 @@ export function renderEmail(body: string, design: Design, doc: Submission): stri
   return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"></head><body style="margin:0;padding:0;background:${d.page}">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${d.page}"><tr><td align="center" style="padding:24px 12px">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:${d.card};border-radius:${d.radius}px;overflow:hidden;font-family:${d.font};font-size:${d.size}px;line-height:1.55;color:${d.text}">
-${header}<tr><td style="padding:28px">${content}</td></tr>${button}${footer}
+${header}<tr><td style="padding:28px">${content}${payHtml}</td></tr>${button}${footer}
 </table></td></tr></table></body></html>`
 }

@@ -409,6 +409,11 @@
     "intro": "Add meg a szülő és a játékos adatait, a ruhaméreteket, az egészségügyi információkat, majd fogadd el a feltételeket és küldd el a jelentkezést.",
     "submitLabel": "Jelentkezés elküldése",
     "successMessage": "Köszönjük, megkaptuk a jelentkezést! Hamarosan e-mailben jelentkezünk.",
+    "paymentShow": true,
+    "paymentTitle": "Fizetési adatok",
+    "paymentHolder": "Bartalis-Horváth Nikolett",
+    "paymentAccount": "11736006-21509339",
+    "paymentText": "A részvételi díjat a jelentkezéssel egy időben, banki átutalással kérjük befizetni. A közleménybe pontosan a fenti szöveget írd (a gyermek neve és születési dátuma). A befizetésről számlát küldünk.",
     "sizeChart": "6b00322ebaa880936e6d7857",
     "jelentkezesTipus": [
       "Egyedül jelentkezem – 160 000 Ft / fő",

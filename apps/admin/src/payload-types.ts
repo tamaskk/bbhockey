@@ -154,6 +154,9 @@ export interface Jelentkezesek {
   id: string;
   statusz?: ('uj' | 'feldolgozva' | 'fizetve' | 'lemondva') | null;
   megjegyzes?: string | null;
+  fizetve?: boolean | null;
+  kozlemeny?: string | null;
+  osszeg?: string | null;
   csoport?: (string | null) | Csoportok;
   jatekos_nev?: string | null;
   szulo_nev?: string | null;
@@ -524,6 +527,9 @@ export interface PayloadMigration {
 export interface JelentkezesekSelect<T extends boolean = true> {
   statusz?: T;
   megjegyzes?: T;
+  fizetve?: T;
+  kozlemeny?: T;
+  osszeg?: T;
   csoport?: T;
   jatekos_nev?: T;
   szulo_nev?: T;
@@ -1227,6 +1233,11 @@ export interface Urlap {
   intro?: string | null;
   submitLabel?: string | null;
   successMessage?: string | null;
+  paymentShow?: boolean | null;
+  paymentTitle?: string | null;
+  paymentHolder?: string | null;
+  paymentAccount?: string | null;
+  paymentText?: string | null;
   groups?:
     | {
         title: string;
@@ -1697,6 +1708,11 @@ export interface UrlapSelect<T extends boolean = true> {
   intro?: T;
   submitLabel?: T;
   successMessage?: T;
+  paymentShow?: T;
+  paymentTitle?: T;
+  paymentHolder?: T;
+  paymentAccount?: T;
+  paymentText?: T;
   groups?:
     | T
     | {

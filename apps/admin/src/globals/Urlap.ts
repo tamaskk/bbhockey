@@ -138,6 +138,27 @@ export const Urlap: GlobalConfig = {
           ],
         },
         {
+          label: 'Fizetés',
+          description: 'Küldés után felugró ablakban és a visszaigazoló e-mailben jelenik meg. A közlemény automatikusan a gyermek neve és születési dátuma (pl. Kiss Gábor 2019.07.01), az összeg a választott jelentkezési típusból jön.',
+          fields: [
+            { name: 'paymentShow', label: 'Fizetési adatok megjelenjenek', type: 'checkbox', defaultValue: true },
+            { name: 'paymentTitle', label: 'Cím', type: 'text', defaultValue: 'Fizetési adatok' },
+            {
+              type: 'row',
+              fields: [
+                { name: 'paymentHolder', label: 'Kedvezményezett', type: 'text', defaultValue: 'Bartalis-Horváth Nikolett' },
+                { name: 'paymentAccount', label: 'Számlaszám', type: 'text', defaultValue: '11736006-21509339' },
+              ],
+            },
+            {
+              name: 'paymentText',
+              label: 'Szöveg alatta',
+              type: 'textarea',
+              defaultValue: 'A részvételi díjat a jelentkezéssel egy időben, banki átutalással kérjük befizetni. A közleménybe pontosan a fenti szöveget írd (a gyermek neve és születési dátuma). A befizetésről számlát küldünk.',
+            },
+          ],
+        },
+        {
           label: 'Mezők',
           description: 'Csoportok és mezők: húzással rendezhetők, a „+” gombbal bővíthetők. Minden mezőnél állítható a szélesség (fél / teljes sor).',
           fields: [

@@ -216,6 +216,7 @@
 						}
 						if ( ok ) {
 							form.reset();
+							if ( res.data && res.data.payment ) showPayment( res.data.payment, text );
 							// Köszönőoldal: a hirdetési konverzió valódi
 							// oldalletöltéshez kötve mérhető.
 							if ( res.data && res.data.redirect ) {
@@ -410,3 +411,30 @@
 
   main.style.transition = 'opacity .18s ease';
 })();
+
+/* Fizetési adatok felugró ablak a jelentkezés elküldése után (adatok: /api/submit → data.payment). */
+function showPayment( p, message ) {
+	var d = document.createElement( 'dialog' );
+	d.className = 'bb-pay';
+	d.setAttribute( 'aria-labelledby', 'bb-pay-title' );
+	var esc = function ( s ) { var e = document.createElement( 'span' ); e.textContent = s == null ? '' : String( s ); return e.innerHTML; };
+	var rows = ( p.rows || [] ).map( function ( r ) {
+		var copy = r[ 0 ] === 'Számlaszám' || r[ 0 ] === 'Közlemény';
+		return '<div class="bb-pay-row"><span>' + esc( r[ 0 ] ) + '</span><b>' + esc( r[ 1 ] ) + '</b>' +
+			( copy ? '<button type="button" class="bb-pay-copy" data-copy="' + esc( r[ 1 ] ) + '">Másolás</button>' : '' ) + '</div>';
+	} ).join( '' );
+	d.innerHTML = '<p class="bb-pay-ok">' + esc( message ) + '</p><h3 id="bb-pay-title">' + esc( p.title ) + '</h3>' + rows +
+		( p.text ? '<p class="bb-pay-text">' + esc( p.text ) + '</p>' : '' ) +
+		'<p class="bb-pay-note">Ezeket az adatokat e-mailben is elküldtük.</p>' +
+		'<button type="button" class="mhk-btn mhk-btn-primary bb-pay-close"><span>Rendben</span></button>';
+	d.addEventListener( 'click', function ( e ) {
+		var b = e.target.closest( 'button' );
+		if ( e.target === d || ( b && b.classList.contains( 'bb-pay-close' ) ) ) return d.close();
+		if ( b && b.dataset.copy != null && navigator.clipboard ) {
+			navigator.clipboard.writeText( b.dataset.copy ).then( function () { b.textContent = 'Másolva ✓'; } );
+		}
+	} );
+	d.addEventListener( 'close', function () { d.remove(); } );
+	document.body.appendChild( d );
+	d.showModal();
+}

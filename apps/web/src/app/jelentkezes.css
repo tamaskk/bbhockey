@@ -34,3 +34,21 @@
 
 /* AcceptAll.tsx */
 .mhk-site .bb-accept-all { padding: .55rem 1rem; font-size: .85rem; }
+
+/* payment details pop-up after sending (mhk.js showPayment) */
+.mhk-site .bb-pay { width: min(520px, calc(100vw - 32px)); padding: 28px; border: 2px solid var(--mhk-accent); background: var(--mhk-bg-2); color: var(--mhk-text); }
+.mhk-site .bb-pay::backdrop { background: rgba(8, 8, 10, .75); }
+.mhk-site .bb-pay h3 { margin: 0 0 14px; font-size: 1.6rem; font-style: italic; color: var(--mhk-accent); }
+.mhk-site .bb-pay-ok { margin: 0 0 16px; }
+.mhk-site .bb-pay-row { display: grid; grid-template-columns: 9.5rem 1fr auto; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--mhk-line); }
+.mhk-site .bb-pay-row span { color: var(--mhk-muted); font-size: .9rem; }
+.mhk-site .bb-pay-row b { font-size: 1.05rem; overflow-wrap: anywhere; }
+.mhk-site .bb-pay-copy { padding: 5px 10px; font-size: .8rem; background: transparent; color: var(--mhk-text); border: 1px solid var(--mhk-line); cursor: pointer; }
+.mhk-site .bb-pay-copy:hover { border-color: var(--mhk-accent); }
+.mhk-site .bb-pay-text { margin: 16px 0 0; color: var(--mhk-muted); }
+.mhk-site .bb-pay-note { margin: 10px 0 20px; font-size: .9rem; color: var(--mhk-muted); }
+@media (max-width: 480px) {
+  .mhk-site .bb-pay { padding: 20px; }
+  .mhk-site .bb-pay-row { grid-template-columns: 1fr auto; }
+  .mhk-site .bb-pay-row span { grid-column: 1 / -1; }
+}

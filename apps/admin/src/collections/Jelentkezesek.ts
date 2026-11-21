@@ -1,6 +1,7 @@
 import type { CollectionAfterChangeHook, CollectionConfig, Field } from 'payload'
 import { directImageUrl } from '../drive'
 import { CONTACT_EMAIL, emailFrom, fill, recipient, renderEmail, type Submission } from '../email/template'
+import { amount, payment, paymentText, reference } from '../payment'
 
 // the form is built in the admin (Űrlap global); the website validates required fields, so none are required here
 const t = (name: string, label: string, _required = false): Field => ({ name, label, type: 'text' })
@@ -18,11 +19,13 @@ const sendConfirmation: CollectionAfterChangeHook = async ({ doc, operation, req
     const tpl = await req.payload.findGlobal({ slug: 'email', req, overrideAccess: true })
     if (!tpl.enabled) return doc
     const d = doc as Submission
+    const form = await req.payload.findGlobal({ slug: 'urlap', req, overrideAccess: true, depth: 0 })
+    const pay = payment(form as Record<string, unknown>, d)
     const subject = fill(tpl.subject ?? '', d).replace(/\s+/g, ' ').trim()
-    const text = fill(tpl.body ?? '', d)
+    const text = [fill(tpl.body ?? '', d), pay && paymentText(pay)].filter(Boolean).join('\n\n')
     const from = emailFrom()
     const replyTo = tpl.replyTo || CONTACT_EMAIL
-    const html = renderEmail(tpl.body ?? '', { ...tpl, replyTo, logoUrl: tpl.logoUrl ? directImageUrl(tpl.logoUrl) : '' }, d)
+    const html = renderEmail(tpl.body ?? '', { ...tpl, replyTo, logoUrl: tpl.logoUrl ? directImageUrl(tpl.logoUrl) : '' }, d, pay)
     const mail = { subject, text: `${text}\n\nKapcsolattartó: ${replyTo}`, html, replyTo, ...(from && { from: `"${(tpl.fromName ?? '').replace(/"/g, '')}" <${from}>` }) }
     const to = recipient(d)
     if (to) await req.payload.sendEmail({ ...mail, to })
@@ -40,7 +43,7 @@ export const Jelentkezesek: CollectionConfig = {
   labels: { singular: 'Jelentkezés', plural: 'Jelentkezések' },
   admin: {
     useAsTitle: 'jatekos_nev',
-    defaultColumns: ['jatekos_nev', 'korosztaly', 'szulo_nev', 'email', 'telefon', 'csoport', 'statusz', 'createdAt'],
+    defaultColumns: ['jatekos_nev', 'korosztaly', 'szulo_nev', 'email', 'telefon', 'csoport', 'statusz', 'fizetve', 'createdAt'],
     listSearchableFields: ['jatekos_nev', 'szulo_nev', 'email', 'telefon', 'klub'],
     group: 'Minden jelentkezés',
     // the list is the folder view (folders, drag and drop, export)
@@ -55,7 +58,12 @@ export const Jelentkezesek: CollectionConfig = {
   },
   hooks: {
     beforeChange: [
-      ({ data }) => {
+      ({ data, operation }) => {
+        // bank transfer reference and amount, fixed at submission (shown to the applicant and in the list)
+        if (operation === 'create') {
+          data.kozlemeny ||= reference(data)
+          data.osszeg ||= amount(data)
+        }
         // list-view friendly full names
         if (data.jatekos_vezeteknev || data.jatekos_keresztnev) data.jatekos_nev = `${data.jatekos_vezeteknev ?? ''} ${data.jatekos_keresztnev ?? ''}`.trim()
         if (data.szulo_vezeteknev || data.szulo_keresztnev) data.szulo_nev = `${data.szulo_vezeteknev ?? ''} ${data.szulo_keresztnev ?? ''}`.trim()
@@ -82,6 +90,14 @@ export const Jelentkezesek: CollectionConfig = {
           access: { create: isAdmin },
         },
         { name: 'megjegyzes', label: 'Belső megjegyzés', type: 'textarea', access: { create: isAdmin } },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
+        { name: 'fizetve', label: 'Fizetett', type: 'checkbox', defaultValue: false, access: { create: isAdmin } },
+        { name: 'kozlemeny', label: 'Utalás közleménye', type: 'text' },
+        { name: 'osszeg', label: 'Összeg', type: 'text' },
       ],
     },
     { name: 'csoport', label: 'Mappa', type: 'relationship', relationTo: 'csoportok', access: { create: isAdmin }, admin: { position: 'sidebar' } },

@@ -2,7 +2,7 @@ import { CMS_API, getContent } from "@/lib/cms";
 import { allFields, isInput, isVisible } from "@/lib/form";
 
 // admin-only or system columns a form field must never write
-const RESERVED = new Set(["id", "_id", "createdAt", "updatedAt", "statusz", "megjegyzes", "valaszok", "jatekos_nev", "szulo_nev"]);
+const RESERVED = new Set(["id", "_id", "createdAt", "updatedAt", "statusz", "megjegyzes", "valaszok", "jatekos_nev", "szulo_nev", "fizetve", "kozlemeny", "osszeg"]);
 
 const fail = (message: string, status = 400) => Response.json({ success: false, data: { message } }, { status });
 
@@ -44,5 +44,14 @@ export async function POST(req: Request) {
     console.error("[submit] admin rejected", res?.status, res && (await res.text()).slice(0, 500));
     return fail("A jelentkezést most nem sikerült elmenteni. Kérjük, próbáld újra, vagy írj nekünk e-mailt.", 502);
   }
-  return Response.json({ success: true, data: { message: form.successMessage } });
+  // bank transfer details for the pop-up; the admin worked out the reference and amount (admin/src/payment.ts)
+  const doc = ((await res.json().catch(() => ({}))) as { doc?: Record<string, unknown> }).doc ?? {};
+  const rows = [
+    ["Kedvezményezett", form.paymentHolder],
+    ["Számlaszám", form.paymentAccount],
+    ["Összeg", doc.osszeg],
+    ["Közlemény", doc.kozlemeny],
+  ].filter((r): r is [string, string] => typeof r[1] === "string" && !!r[1].trim());
+  const payment = form.paymentShow !== false && form.paymentAccount ? { title: form.paymentTitle || "Fizetési adatok", rows, text: form.paymentText ?? "" } : undefined;
+  return Response.json({ success: true, data: { message: form.successMessage, payment } });
 }

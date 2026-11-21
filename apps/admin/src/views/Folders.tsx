@@ -7,6 +7,7 @@ type Folder = { id: string; name: string; parent?: string | null; hidden?: boole
 type Sub = {
   id: string; jatekos_nev?: string | null; szulo_nev?: string | null; email?: string | null; telefon?: string | null
   korosztaly?: string | null; statusz?: string | null; csoport?: string | null; createdAt?: string; megjegyzes?: string | null
+  fizetve?: boolean | null; kozlemeny?: string | null; osszeg?: string | null
   valaszok?: { kerdes?: string | null; valasz?: string | null; mezo?: string | null }[] | null
 }
 type Sel = 'all' | 'none' | string
@@ -381,7 +382,7 @@ export function Folders() {
                   <tr>
                     <th style={th}><input type="checkbox" aria-label="Összes kijelölése" checked={allChecked} onChange={() => setChecked(allChecked ? new Set() : new Set(list.map((s) => s.id)))} /></th>
                     {sortTh('jatekos_nev', 'Játékos')}{sortTh('szulo_nev', 'Szülő')}{sortTh('email', 'E-mail')}{sortTh('telefon', 'Telefon')}
-                    {sortTh('korosztaly', 'Korosztály')}{sortTh('mappa', 'Mappa')}{sortTh('statusz', 'Státusz')}{sortTh('createdAt', 'Beérkezett')}
+                    {sortTh('korosztaly', 'Korosztály')}{sortTh('mappa', 'Mappa')}{sortTh('statusz', 'Státusz')}<th style={th}>Fizetett</th>{sortTh('createdAt', 'Beérkezett')}
                   </tr>
                 </thead>
                 <tbody>
@@ -395,6 +396,9 @@ export function Folders() {
                       <td style={td}>{s.korosztaly}</td>
                       <td style={td}>{path(s.csoport) || '–'}</td>
                       <td style={td}>{STATUS[s.statusz ?? ''] ?? s.statusz}</td>
+                      <td style={{ ...td, textAlign: 'center' }} onPointerDown={(e) => e.stopPropagation()}>
+                        <input type="checkbox" aria-label={`Fizetett: ${s.jatekos_nev ?? ''}`} title={s.kozlemeny ? `Közlemény: ${s.kozlemeny}` : undefined} checked={!!s.fizetve} onChange={(e) => act('Mentés', () => call(`/jelentkezesek/${s.id}`, 'PATCH', { fizetve: e.target.checked }))} />
+                      </td>
                       <td style={{ ...td, whiteSpace: 'nowrap' }}>{s.createdAt ? new Date(s.createdAt).toLocaleDateString('hu-HU') : ''}</td>
                     </tr>
                   ))}
@@ -412,7 +416,7 @@ const field: React.CSSProperties = { width: '100%', padding: '7px 9px', backgrou
 
 // one submission: every answer, plus status / folder / internal note editable in place
 // columns a form field must never overwrite (same list as apps/web api/submit RESERVED)
-const RESERVED = new Set(['id', '_id', 'createdAt', 'updatedAt', 'statusz', 'megjegyzes', 'valaszok', 'jatekos_nev', 'szulo_nev', 'csoport'])
+const RESERVED = new Set(['id', '_id', 'createdAt', 'updatedAt', 'statusz', 'megjegyzes', 'valaszok', 'jatekos_nev', 'szulo_nev', 'csoport', 'fizetve', 'kozlemeny', 'osszeg'])
 
 function Details({ sub, folders, position, formFields, onStep, onClose, onSave, onDelete }: {
   sub: Sub; folders: { id: string; name: string }[]; position: string; formFields: Map<string, { name: string; type: string }[]>
@@ -480,6 +484,11 @@ function Details({ sub, folders, position, formFields, onStep, onClose, onSave, 
                 {folders.map((f) => <option key={f.id} value={f.id}>📁 {f.name}</option>)}
               </select>
             </label>
+            <label style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+              <input key={`p${sub.id}`} type="checkbox" defaultChecked={!!sub.fizetve} onChange={(e) => onSave(sub.id, { fizetve: e.target.checked })} />
+              Fizetett{sub.osszeg ? ` (${sub.osszeg})` : ''}
+            </label>
+            {sub.kozlemeny && <div><small style={{ opacity: 0.7 }}>Utalás közleménye</small><br /><b>{sub.kozlemeny}</b></div>}
           </div>
           <label>Belső megjegyzés (csak az adminban látszik)
             <textarea key={`m${sub.id}`} style={{ ...field, minHeight: 60 }} defaultValue={sub.megjegyzes ?? ''} placeholder="pl. befizetve, kapus edzésre kéri…"
