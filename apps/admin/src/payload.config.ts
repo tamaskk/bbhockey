@@ -1,3 +1,4 @@
+import { emailTestEndpoint } from './emailTest'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { importExportPlugin } from '@payloadcms/plugin-import-export'
@@ -48,7 +49,7 @@ export default buildConfig({
   i18n: { supportedLanguages: { hu }, fallbackLanguage: 'hu' },
   collections: [Jelentkezesek, Csoportok, Media, Users],
   globals: [Beallitasok, Fooldal, Urlap, Email, Dokumentumok],
-  endpoints: [resetEndpoint],
+  endpoints: [resetEndpoint, emailTestEndpoint],
   // outgoing mail over SMTP (Gmail, Resend, any provider); RESEND_API_KEY alone is enough for Resend.
   // Without either Payload only logs the e-mails.
   ...(SMTP.host && {
