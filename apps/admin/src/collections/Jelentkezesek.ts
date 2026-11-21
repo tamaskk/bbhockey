@@ -1,6 +1,6 @@
 import type { CollectionAfterChangeHook, CollectionConfig, Field } from 'payload'
 import { directImageUrl } from '../drive'
-import { fill, recipient, renderEmail, type Submission } from '../email/template'
+import { CONTACT_EMAIL, emailFrom, fill, recipient, renderEmail, type Submission } from '../email/template'
 
 // the form is built in the admin (Űrlap global); the website validates required fields, so none are required here
 const t = (name: string, label: string, _required = false): Field => ({ name, label, type: 'text' })
@@ -20,9 +20,10 @@ const sendConfirmation: CollectionAfterChangeHook = async ({ doc, operation, req
     const d = doc as Submission
     const subject = fill(tpl.subject ?? '', d).replace(/\s+/g, ' ').trim()
     const text = fill(tpl.body ?? '', d)
-    const from = process.env.EMAIL_FROM || process.env.SMTP_USER
-    const html = renderEmail(tpl.body ?? '', { ...tpl, logoUrl: tpl.logoUrl ? directImageUrl(tpl.logoUrl) : '' }, d)
-    const mail = { subject, text, html, ...(from && { from: `"${(tpl.fromName ?? '').replace(/"/g, '')}" <${from}>` }), ...(tpl.replyTo && { replyTo: tpl.replyTo }) }
+    const from = emailFrom()
+    const replyTo = tpl.replyTo || CONTACT_EMAIL
+    const html = renderEmail(tpl.body ?? '', { ...tpl, replyTo, logoUrl: tpl.logoUrl ? directImageUrl(tpl.logoUrl) : '' }, d)
+    const mail = { subject, text: `${text}\n\nKapcsolattartó: ${replyTo}`, html, replyTo, ...(from && { from: `"${(tpl.fromName ?? '').replace(/"/g, '')}" <${from}>` }) }
     const to = recipient(d)
     if (to) await req.payload.sendEmail({ ...mail, to })
     else req.payload.logger.warn(`[email] no applicant address on submission ${doc.id}`)

@@ -1,5 +1,5 @@
 import type { Field, GlobalConfig } from 'payload'
-import { EMAIL_FONTS } from '../email/template'
+import { CONTACT_EMAIL, EMAIL_FONTS } from '../email/template'
 
 const isAdmin = ({ req }: { req: { user?: unknown } }) => Boolean(req.user)
 
@@ -32,7 +32,7 @@ export const Email: GlobalConfig = {
             { name: 'enabled', label: 'E-mail küldése bekapcsolva', type: 'checkbox', defaultValue: true },
             row(
               { name: 'fromName', label: 'Feladó neve', type: 'text', defaultValue: 'BB Skills tábor', admin: { width: '50%' } },
-              { name: 'replyTo', label: 'Válaszcím (ide érkeznek a válaszok)', type: 'email', admin: { width: '50%' } },
+              { name: 'replyTo', label: 'Válaszcím (ide érkeznek a válaszok)', type: 'email', defaultValue: CONTACT_EMAIL, admin: { width: '50%', description: 'A levél alján kapcsolattartóként is megjelenik.' } },
             ),
             { name: 'subject', label: 'Tárgy', type: 'text', required: true, defaultValue: 'Megkaptuk a jelentkezést – {{jatekos_nev}}' },
             {

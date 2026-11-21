@@ -294,6 +294,19 @@ export function Editor({ webUrl, schema }: { webUrl: string; schema: Record<stri
     changed('beallitasok', true)
   }
 
+  // everything back to the original content; waits for pending saves so they cannot overwrite the reset
+  const reset = async () => {
+    if (!window.confirm('Minden szöveg, kép, szekció, szín és az űrlap visszaáll az eredeti állapotra. Ez nem vonható vissza. Folytatod?')) return
+    clearTimeout(timer.current)
+    dirty.current.clear()
+    await chain.current
+    setStatus('Visszaállítás…')
+    const res = await fetch('/admin/api/alaphelyzet', { method: 'POST' })
+    if (res.ok) return window.location.reload()
+    setError(true)
+    setStatus(`Nem sikerült: ${errorText(await res.json().catch(() => ({})), res.status)}`)
+  }
+
   const apply = (slug: string, path: string, value: unknown) => {
     const doc = docs.current[slug]
     if (path) setPath(doc, path, value)
@@ -312,6 +325,7 @@ export function Editor({ webUrl, schema }: { webUrl: string; schema: Record<stri
         <button type="button" className="btn btn--style-primary btn--size-small" style={{ margin: 0 }} onClick={() => setModal({ kind: 'section', slug: 'fooldal', path: '' })}>＋ Új szekció</button>
         <button type="button" className="btn btn--style-secondary btn--size-small" style={{ margin: 0 }} onClick={() => setModal({ kind: 'settings', slug: 'beallitasok', path: '' })}>⚙ Oldal beállításai (színek, betűk)</button>
         <button type="button" className="btn btn--style-secondary btn--size-small" style={{ margin: 0 }} onClick={() => setModal({ kind: 'settings', slug: 'urlap', path: '' })}>⚙ Űrlap</button>
+        <button type="button" className="btn btn--style-secondary btn--size-small" style={{ margin: 0 }} onClick={reset} title="Az oldal tartalma és kinézete vissza az eredetire">⟲ Alaphelyzet</button>
         <a href="/admin/collections/jelentkezesek">Jelentkezések</a>
         <a href="/admin/globals/email">✉ Visszaigazoló e-mail</a>
         <a href="/admin/globals/fooldal">Haladó admin</a>

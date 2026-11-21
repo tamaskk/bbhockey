@@ -10,7 +10,14 @@ export type Design = {
   font?: string | null; fontSize?: number | null; radius?: number | null
   answers?: 'table' | 'list' | 'none' | null
   buttonLabel?: string | null; buttonUrl?: string | null; footer?: string | null
+  replyTo?: string | null
 }
+
+// replies and the contact line at the bottom of the e-mail go here unless the admin sets another reply address
+export const CONTACT_EMAIL = 'istvanbartalis28@gmail.com'
+
+// sender address (server only). shortcut: hello@bbskills.hu assumes bbskills.hu is verified in Resend; EMAIL_FROM overrides
+export const emailFrom = () => process.env.EMAIL_FROM || process.env.SMTP_USER || (process.env.RESEND_API_KEY ? 'hello@bbskills.hu' : undefined)
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -76,8 +83,13 @@ export function renderEmail(body: string, design: Design, doc: Submission): stri
   const button = design.buttonLabel && btnUrl
     ? `<tr><td align="center" style="padding:0 28px 28px"><a href="${esc(btnUrl)}" style="display:inline-block;background:${d.accent};color:${d.btnText};text-decoration:none;font-weight:700;padding:13px 26px;border-radius:${Math.min(d.radius, 24)}px">${esc(fill(design.buttonLabel, doc))}</a></td></tr>`
     : ''
-  const footer = design.footer
-    ? `<tr><td align="center" style="padding:16px 24px;font-size:${d.size - 3}px;color:${d.text};opacity:.6;border-top:1px solid rgba(0,0,0,0.08)">${esc(fill(design.footer, doc)).replace(/\n/g, '<br>')}</td></tr>`
+  const contact = design.replyTo && EMAIL.test(design.replyTo) ? design.replyTo : ''
+  const footerLines = [
+    design.footer && esc(fill(design.footer, doc)).replace(/\n/g, '<br>'),
+    contact && `Kapcsolattartó: <a href="mailto:${esc(contact)}" style="color:${d.text}">${esc(contact)}</a>`,
+  ].filter(Boolean)
+  const footer = footerLines.length
+    ? `<tr><td align="center" style="padding:16px 24px;font-size:${d.size - 3}px;color:${d.text};opacity:.6;border-top:1px solid rgba(0,0,0,0.08)">${footerLines.join('<br>')}</td></tr>`
     : ''
   return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"></head><body style="margin:0;padding:0;background:${d.page}">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${d.page}"><tr><td align="center" style="padding:24px 12px">

@@ -17,4 +17,6 @@ assert.ok(html.includes('background:#ff0000') && html.includes('href="https://x.
 assert.ok(!renderEmail('x', { buttonLabel: 'B', buttonUrl: 'javascript:alert(1)' }, doc).includes('javascript:'), 'unsafe link dropped')
 assert.ok(!renderEmail('x', { accent: 'red;x:y' }, doc).includes('red;x'), 'bad colour ignored')
 assert.ok(!renderEmail('{{valaszok}}', { answers: 'none' }, doc).includes('Pál'))
+assert.ok(renderEmail('x', { replyTo: 'a@b.hu' }, doc).includes('Kapcsolattartó: <a href="mailto:a@b.hu"'), 'contact line in footer')
+assert.ok(!renderEmail('x', {}, doc).includes('Kapcsolattartó'), 'no contact without address')
 console.log('template ok')

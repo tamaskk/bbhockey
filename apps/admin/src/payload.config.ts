@@ -17,8 +17,17 @@ import { Beallitasok } from './globals/Beallitasok'
 import { Email } from './globals/Email'
 import { Fooldal } from './globals/Fooldal'
 import { Urlap } from './globals/Urlap'
+import { emailFrom } from './email/template'
+import { resetEndpoint } from './reset'
 
 const filename = fileURLToPath(import.meta.url)
+const resend = process.env.RESEND_API_KEY
+const SMTP = {
+  host: process.env.SMTP_HOST || (resend && 'smtp.resend.com'),
+  port: Number(process.env.SMTP_PORT || (resend ? 465 : 587)),
+  user: process.env.SMTP_USER || (resend && 'resend'),
+  pass: process.env.SMTP_PASS || resend,
+}
 const dirname = path.dirname(filename)
 
 export default buildConfig({
@@ -38,16 +47,18 @@ export default buildConfig({
   i18n: { supportedLanguages: { hu }, fallbackLanguage: 'hu' },
   collections: [Jelentkezesek, Csoportok, Media, Users],
   globals: [Beallitasok, Fooldal, Urlap, Email],
-  // outgoing mail over SMTP (Gmail, Resend, any provider); without SMTP_HOST Payload only logs the e-mails
-  ...(process.env.SMTP_HOST && {
+  endpoints: [resetEndpoint],
+  // outgoing mail over SMTP (Gmail, Resend, any provider); RESEND_API_KEY alone is enough for Resend.
+  // Without either Payload only logs the e-mails.
+  ...(SMTP.host && {
     email: nodemailerAdapter({
-      defaultFromAddress: process.env.EMAIL_FROM || process.env.SMTP_USER || '',
+      defaultFromAddress: emailFrom() || '',
       defaultFromName: 'BB Skills tábor',
       transportOptions: {
-        host: process.env.SMTP_HOST,
-        port: Number(process.env.SMTP_PORT || 587),
-        secure: Number(process.env.SMTP_PORT) === 465,
-        auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+        host: SMTP.host,
+        port: SMTP.port,
+        secure: SMTP.port === 465,
+        auth: { user: SMTP.user, pass: SMTP.pass },
       },
     }),
   }),
