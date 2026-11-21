@@ -52,3 +52,6 @@
   .mhk-site .bb-pay-row { grid-template-columns: 1fr auto; }
   .mhk-site .bb-pay-row span { grid-column: 1 / -1; }
 }
+
+/* TestFill.tsx (only with ?teszt in the URL) */
+.mhk-site .bb-test-fill { margin-bottom: 20px; border-style: dashed; }

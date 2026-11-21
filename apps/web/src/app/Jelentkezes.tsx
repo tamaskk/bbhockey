@@ -5,6 +5,7 @@ import type { FormField } from "@/lib/form";
 import { editor, type Ed } from "@/lib/edit";
 import type { Looks } from "@/lib/style";
 import AcceptAll from "./AcceptAll";
+import TestFill from "./TestFill";
 
 const Linked = ({ text, href }: { text: string; href?: string | null }) =>
   href ? <a href={href} target="_blank" rel="noopener">{text}</a> : <>{text}</>;
@@ -99,6 +100,7 @@ export default function Jelentkezes({ form, privacyUrl, looks, edit = false }: {
           <p className="mhk-form-panel bb-closed" {...e.f("closedText", true)}>{form.closedText}</p>
         ) : (
           <form className="mhk-form-panel mhk-form bb-form" data-form="jelentkezes">
+            {!edit && <TestFill />}
             {(form.groups ?? []).map((g, gi) => (
               <fieldset className="bb-group" key={g.id ?? g.title} {...e.item(`groups.${gi}`)}>
                 <legend {...e.f(`groups.${gi}.title`)}>{g.title}</legend>
