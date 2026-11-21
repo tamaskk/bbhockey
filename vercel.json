@@ -3,8 +3,7 @@
   "services": {
     "admin": {
       "root": "apps/admin",
-      "framework": "nextjs",
-      "bindings": [{ "type": "service", "service": "web", "format": "url", "env": "WEB_URL" }]
+      "framework": "nextjs"
     },
     "web": {
       "root": "apps/web",

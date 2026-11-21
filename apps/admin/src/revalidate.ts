@@ -1,6 +1,7 @@
 // Tell the public site to drop its cached CMS content so edits show on the next page load.
 export async function revalidateWeb(): Promise<void> {
-  const url = process.env.WEB_URL
+  // on Vercel both apps share one deployment; its rewrites send /api/* to web (a web binding here would be circular)
+  const url = process.env.WEB_URL ?? (process.env.VERCEL_URL && `https://${process.env.VERCEL_URL}`)
   const secret = process.env.SHARED_SECRET
   if (!url || !secret) return
   try {

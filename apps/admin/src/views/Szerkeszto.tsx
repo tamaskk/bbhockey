@@ -38,6 +38,6 @@ export const Szerkeszto = ({ initPageResult }: AdminViewServerProps) => {
   // redirect() adds the /admin basePath itself
   if (!user) redirect('/login')
   const schema = Object.fromEntries(payload.config.globals.filter((g) => SLUGS.includes(g.slug)).map((g) => [g.slug, simplify(g.fields)]))
-  // public site URL for the browser; empty on Vercel, where both apps share one domain (WEB_URL is the internal binding)
+  // public site URL for the browser; empty on Vercel, where both apps share one domain
   return <Editor webUrl={process.env.WEB_PUBLIC_URL ?? ''} schema={schema} />
 }
