@@ -1,4 +1,4 @@
-import type { Block, GlobalConfig } from 'payload'
+import type { Block, Field, GlobalConfig } from 'payload'
 import { heading, image, show } from '../fields'
 import { revalidateHook } from '../revalidate'
 
@@ -16,6 +16,17 @@ const button = (name: string, label: string) => ({
     },
   ],
 })
+
+// extra photos on a card: the first two show in its bottom-right corner, a click opens all of them large
+const gallery: Field = {
+  name: 'gallery',
+  label: 'Galéria (max 10 kép)',
+  type: 'upload',
+  relationTo: 'media',
+  hasMany: true,
+  maxRows: 10,
+  admin: { description: 'A kártya jobb alsó sarkában az első 2 kép látszik; rákattintva nagyban lapozható az összes.' },
+}
 
 const subtitle = { name: 'subtitle', label: 'Alcím / bevezető', type: 'textarea' as const }
 const text = { name: 'text', label: 'Szöveg (új bekezdés: üres sor)', type: 'textarea' as const }
@@ -120,6 +131,7 @@ export const Fooldal: GlobalConfig = {
                 { type: 'row', fields: [{ name: 'title', label: 'Cím', type: 'text', required: true }, { name: 'cta', label: 'Link felirat', type: 'text' }] },
                 { name: 'text', label: 'Szöveg', type: 'textarea' },
                 image('image', 'Kép', true),
+                gallery,
               ],
             },
           ],
@@ -157,6 +169,7 @@ export const Fooldal: GlobalConfig = {
                 { name: 'title', label: 'Cím', type: 'text', required: true },
                 { name: 'text', label: 'Szöveg', type: 'textarea' },
                 image('image', 'Fotó', true),
+                gallery,
               ],
             },
           ],

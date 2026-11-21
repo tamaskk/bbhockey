@@ -3,6 +3,11 @@ import { Fragment, type ReactNode } from "react";
 import { alt, img, initials, type Fooldal } from "@/lib/cms";
 import { editor, type Ed } from "@/lib/edit";
 import type { Looks } from "@/lib/style";
+import TileGallery from "./TileGallery";
+
+// a card's gallery photos for TileGallery (not in the editor: the thumbnails would cover the editable text)
+const pics = (g: Parameters<typeof img>[0][] | null | undefined, edit: boolean) =>
+  edit ? [] : (g ?? []).flatMap((m) => (img(m) ? [{ src: img(m)!, alt: alt(m) }] : []));
 
 const d = (i: number) => (i ? ` mhk-reveal-d${Math.min(i, 3)}` : "");
 
@@ -160,15 +165,21 @@ export default function Sections({ home, looks, edit = false }: { home: Fooldal;
         <div className="mhk-wrap">
           <Head p="tabor" e={e} title={tabor.title} highlight={tabor.highlight} sub={tabor.subtitle} />
           <div className="mhk-brand-tiles">
-            {(tabor.tiles ?? []).map((t, i) => (
-              <a className={`mhk-brand-tile mhk-reveal${d(i)}`} href="#jelentkezes" key={t.id ?? i} {...item(`tabor.tiles.${i}`)} {...im(`tabor.tiles.${i}.image`)} style={{ backgroundImage: `url(${img(t.image)})`, ...item(`tabor.tiles.${i}`).style }}>
-                <div className="mhk-brand-tile-inner">
-                  <h3 {...f(`tabor.tiles.${i}.title`)}>{t.title}</h3>
-                  {(edit || t.text) && <p {...f(`tabor.tiles.${i}.text`, true)}>{t.text}</p>}
-                  {(edit || t.cta) && <span className="mhk-tile-cta" {...f(`tabor.tiles.${i}.cta`)}>{t.cta}</span>}
+            {(tabor.tiles ?? []).map((t, i) => {
+              const g = pics(t.gallery, edit);
+              return (
+                // a div with a covering link, so the gallery buttons are not nested inside the link
+                <div className={`mhk-brand-tile mhk-reveal${d(i)}${g.length ? " bb-has-gallery" : ""}`} key={t.id ?? i} {...item(`tabor.tiles.${i}`)} {...im(`tabor.tiles.${i}.image`)} style={{ backgroundImage: `url(${img(t.image)})`, ...item(`tabor.tiles.${i}`).style }}>
+                  {!edit && <a className="bb-tile-link" href="#jelentkezes" aria-label={`${t.title}: ${t.cta || "jelentkezés"}`} />}
+                  <div className="mhk-brand-tile-inner">
+                    <h3 {...f(`tabor.tiles.${i}.title`)}>{t.title}</h3>
+                    {(edit || t.text) && <p {...f(`tabor.tiles.${i}.text`, true)}>{t.text}</p>}
+                    {(edit || t.cta) && <span className="mhk-tile-cta" {...f(`tabor.tiles.${i}.cta`)}>{t.cta}</span>}
+                  </div>
+                  <TileGallery pics={g} title={t.title} />
                 </div>
-              </a>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -192,14 +203,18 @@ export default function Sections({ home, looks, edit = false }: { home: Fooldal;
               <h3 className="bb-gear-title"><span {...f("eszkozok.title")}>{eszkozok?.title}</span> {(edit || eszkozok?.highlight) && <em {...f("eszkozok.highlight")}>{eszkozok?.highlight}</em>}</h3>
               {(edit || eszkozok?.subtitle) && <p className="bb-gear-sub" {...f("eszkozok.subtitle", true)}>{eszkozok?.subtitle}</p>}
               <div className="mhk-brand-tiles bb-gear">
-                {(eszkozok?.items ?? []).map((t, i) => (
-                  <div className={`mhk-brand-tile mhk-reveal${d(i)}`} key={t.id ?? i} role="img" aria-label={alt(t.image)} {...item(`eszkozok.items.${i}`)} {...im(`eszkozok.items.${i}.image`)} style={{ backgroundImage: `url(${img(t.image)})`, ...item(`eszkozok.items.${i}`).style }}>
-                    <div className="mhk-brand-tile-inner">
-                      <h3 {...f(`eszkozok.items.${i}.title`)}>{t.title}</h3>
-                      {(edit || t.text) && <p {...f(`eszkozok.items.${i}.text`, true)}>{t.text}</p>}
+                {(eszkozok?.items ?? []).map((t, i) => {
+                  const g = pics(t.gallery, edit);
+                  return (
+                    <div className={`mhk-brand-tile mhk-reveal${d(i)}${g.length ? " bb-has-gallery" : ""}`} key={t.id ?? i} role={g.length ? undefined : "img"} aria-label={g.length ? undefined : alt(t.image)} {...item(`eszkozok.items.${i}`)} {...im(`eszkozok.items.${i}.image`)} style={{ backgroundImage: `url(${img(t.image)})`, ...item(`eszkozok.items.${i}`).style }}>
+                      <div className="mhk-brand-tile-inner">
+                        <h3 {...f(`eszkozok.items.${i}.title`)}>{t.title}</h3>
+                        {(edit || t.text) && <p {...f(`eszkozok.items.${i}.text`, true)}>{t.text}</p>}
+                      </div>
+                      <TileGallery pics={g} title={t.title} />
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}

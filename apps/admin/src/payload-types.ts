@@ -1063,6 +1063,10 @@ export interface Fooldal {
           cta?: string | null;
           text?: string | null;
           image: string | Media;
+          /**
+           * A kártya jobb alsó sarkában az első 2 kép látszik; rákattintva nagyban lapozható az összes.
+           */
+          gallery?: (string | Media)[] | null;
           id?: string | null;
         }[]
       | null;
@@ -1097,6 +1101,10 @@ export interface Fooldal {
           title: string;
           text?: string | null;
           image: string | Media;
+          /**
+           * A kártya jobb alsó sarkában az első 2 kép látszik; rákattintva nagyban lapozható az összes.
+           */
+          gallery?: (string | Media)[] | null;
           id?: string | null;
         }[]
       | null;
@@ -1536,6 +1544,7 @@ export interface FooldalSelect<T extends boolean = true> {
               cta?: T;
               text?: T;
               image?: T;
+              gallery?: T;
               id?: T;
             };
       };
@@ -1568,6 +1577,7 @@ export interface FooldalSelect<T extends boolean = true> {
               title?: T;
               text?: T;
               image?: T;
+              gallery?: T;
               id?: T;
             };
       };
