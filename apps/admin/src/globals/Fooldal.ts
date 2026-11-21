@@ -1,5 +1,6 @@
 import type { Block, Field, GlobalConfig } from 'payload'
 import { heading, image, show } from '../fields'
+import { directImageUrl } from '../drive'
 import { revalidateHook } from '../revalidate'
 
 const button = (name: string, label: string) => ({
@@ -26,6 +27,20 @@ const gallery: Field = {
   hasMany: true,
   maxRows: 10,
   admin: { description: 'A kártya jobb alsó sarkában az első 2 kép látszik; rákattintva nagyban lapozható az összes.' },
+}
+
+// the same gallery by link: one Google Drive (or other https image) link per line, stored as direct image URLs
+const galleryLinks: Field = {
+  name: 'galleryLinks',
+  label: 'Galéria képek linkkel (soronként egy link)',
+  type: 'textarea',
+  admin: { description: 'Google Drive: kép → Megosztás → „Bárki, aki rendelkezik a linkkel” → Link másolása. A feltöltött képek után jönnek; összesen max 10 kép.' },
+  validate: (v: string | null | undefined) => {
+    const lines = (v ?? '').split('\n').map((l) => l.trim()).filter(Boolean)
+    if (lines.length > 10) return 'Legfeljebb 10 link'
+    return lines.every((l) => /^https:\/\//i.test(l)) || 'Minden sor https:// kezdetű link legyen'
+  },
+  hooks: { beforeChange: [({ value }) => (typeof value === 'string' ? value.split('\n').map((l) => l.trim()).filter(Boolean).map(directImageUrl).join('\n') : value)] },
 }
 
 const subtitle = { name: 'subtitle', label: 'Alcím / bevezető', type: 'textarea' as const }
@@ -132,6 +147,7 @@ export const Fooldal: GlobalConfig = {
                 { name: 'text', label: 'Szöveg', type: 'textarea' },
                 image('image', 'Kép', true),
                 gallery,
+                galleryLinks,
               ],
             },
           ],
@@ -170,6 +186,7 @@ export const Fooldal: GlobalConfig = {
                 { name: 'text', label: 'Szöveg', type: 'textarea' },
                 image('image', 'Fotó', true),
                 gallery,
+                galleryLinks,
               ],
             },
           ],

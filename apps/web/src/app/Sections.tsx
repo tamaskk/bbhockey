@@ -6,8 +6,14 @@ import type { Looks } from "@/lib/style";
 import TileGallery from "./TileGallery";
 
 // a card's gallery photos for TileGallery (not in the editor: the thumbnails would cover the editable text)
-const pics = (g: Parameters<typeof img>[0][] | null | undefined, edit: boolean) =>
-  edit ? [] : (g ?? []).flatMap((m) => (img(m) ? [{ src: img(m)!, alt: alt(m) }] : []));
+// uploaded photos first, then the ones given by link (stored by the admin as direct image URLs, one per line); max 10
+const pics = (t: { gallery?: Parameters<typeof img>[0][] | null; galleryLinks?: string | null; title: string }, edit: boolean) =>
+  edit
+    ? []
+    : [
+        ...(t.gallery ?? []).flatMap((m) => (img(m) ? [{ src: img(m)!, alt: alt(m) }] : [])),
+        ...(t.galleryLinks ?? "").split("\n").filter(Boolean).map((src) => ({ src, alt: t.title })),
+      ].slice(0, 10);
 
 const d = (i: number) => (i ? ` mhk-reveal-d${Math.min(i, 3)}` : "");
 
@@ -166,7 +172,7 @@ export default function Sections({ home, looks, edit = false }: { home: Fooldal;
           <Head p="tabor" e={e} title={tabor.title} highlight={tabor.highlight} sub={tabor.subtitle} />
           <div className="mhk-brand-tiles">
             {(tabor.tiles ?? []).map((t, i) => {
-              const g = pics(t.gallery, edit);
+              const g = pics(t, edit);
               return (
                 // a div with a covering link, so the gallery buttons are not nested inside the link
                 <div className={`mhk-brand-tile mhk-reveal${d(i)}${g.length ? " bb-has-gallery" : ""}`} key={t.id ?? i} {...item(`tabor.tiles.${i}`)} {...im(`tabor.tiles.${i}.image`)} style={{ backgroundImage: `url(${img(t.image)})`, ...item(`tabor.tiles.${i}`).style }}>
@@ -204,7 +210,7 @@ export default function Sections({ home, looks, edit = false }: { home: Fooldal;
               {(edit || eszkozok?.subtitle) && <p className="bb-gear-sub" {...f("eszkozok.subtitle", true)}>{eszkozok?.subtitle}</p>}
               <div className="mhk-brand-tiles bb-gear">
                 {(eszkozok?.items ?? []).map((t, i) => {
-                  const g = pics(t.gallery, edit);
+                  const g = pics(t, edit);
                   return (
                     <div className={`mhk-brand-tile mhk-reveal${d(i)}${g.length ? " bb-has-gallery" : ""}`} key={t.id ?? i} role={g.length ? undefined : "img"} aria-label={g.length ? undefined : alt(t.image)} {...item(`eszkozok.items.${i}`)} {...im(`eszkozok.items.${i}.image`)} style={{ backgroundImage: `url(${img(t.image)})`, ...item(`eszkozok.items.${i}`).style }}>
                       <div className="mhk-brand-tile-inner">

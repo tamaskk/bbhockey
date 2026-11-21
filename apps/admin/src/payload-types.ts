@@ -1067,6 +1067,10 @@ export interface Fooldal {
            * A kártya jobb alsó sarkában az első 2 kép látszik; rákattintva nagyban lapozható az összes.
            */
           gallery?: (string | Media)[] | null;
+          /**
+           * Google Drive: kép → Megosztás → „Bárki, aki rendelkezik a linkkel” → Link másolása. A feltöltött képek után jönnek; összesen max 10 kép.
+           */
+          galleryLinks?: string | null;
           id?: string | null;
         }[]
       | null;
@@ -1105,6 +1109,10 @@ export interface Fooldal {
            * A kártya jobb alsó sarkában az első 2 kép látszik; rákattintva nagyban lapozható az összes.
            */
           gallery?: (string | Media)[] | null;
+          /**
+           * Google Drive: kép → Megosztás → „Bárki, aki rendelkezik a linkkel” → Link másolása. A feltöltött képek után jönnek; összesen max 10 kép.
+           */
+          galleryLinks?: string | null;
           id?: string | null;
         }[]
       | null;
@@ -1545,6 +1553,7 @@ export interface FooldalSelect<T extends boolean = true> {
               text?: T;
               image?: T;
               gallery?: T;
+              galleryLinks?: T;
               id?: T;
             };
       };
@@ -1578,6 +1587,7 @@ export interface FooldalSelect<T extends boolean = true> {
               text?: T;
               image?: T;
               gallery?: T;
+              galleryLinks?: T;
               id?: T;
             };
       };
