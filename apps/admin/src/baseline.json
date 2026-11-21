@@ -65,7 +65,7 @@
     ],
     "footerColumnTitle": "Tábor",
     "copyright": "© 2026 BB Your Hockey Skills. Minden jog fenntartva.",
-    "privacyUrl": "",
+    "privacyUrl": "/adatkezeles",
     "siteTitle": "BB Hockey Skills | Tábor jelentkezés",
     "description": "BB Skills nyári jégkorongtábor U8–U18 játékosoknak, nemzetközi edzőkkel. Jelentkezz online.",
     "ogImage": "6b00322dbaa880936e6d783f",
@@ -889,14 +889,15 @@
             "width": "full",
             "required": true,
             "name": "feltetelek",
-            "id": "6aedba16578e9bdc6241f186"
+            "id": "6aedba16578e9bdc6241f186",
+            "link": "/aszf"
           },
           {
             "label": "Elfogadom az adatkezelési tájékoztatót és adatvédelmi nyilatkozatot",
             "type": "consent",
             "width": "full",
             "required": true,
-            "link": "",
+            "link": "/adatkezeles",
             "name": "adatkezeles",
             "id": "6aedba16578e9bdc6241f187"
           },

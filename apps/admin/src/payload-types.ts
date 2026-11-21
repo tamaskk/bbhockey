@@ -102,12 +102,14 @@ export interface Config {
     fooldal: Fooldal;
     urlap: Urlap;
     email: Email;
+    dokumentumok: Dokumentumok;
   };
   globalsSelect: {
     beallitasok: BeallitasokSelect<false> | BeallitasokSelect<true>;
     fooldal: FooldalSelect<false> | FooldalSelect<true>;
     urlap: UrlapSelect<false> | UrlapSelect<true>;
     email: EmailSelect<false> | EmailSelect<true>;
+    dokumentumok: DokumentumokSelect<false> | DokumentumokSelect<true>;
   };
   locale: null;
   widgets: {
@@ -227,6 +229,7 @@ export interface Media {
    * A Drive-ban a kép megosztása legyen „Bárki, aki rendelkezik a linkkel”. Más képlink (https://…) is működik.
    */
   driveUrl?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -591,6 +594,7 @@ export interface CsoportokSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   driveUrl?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -1247,6 +1251,9 @@ export interface Email {
   id: string;
   enabled?: boolean | null;
   fromName?: string | null;
+  /**
+   * A levél alján kapcsolattartóként is megjelenik.
+   */
   replyTo?: string | null;
   subject: string;
   /**
@@ -1274,6 +1281,31 @@ export interface Email {
   fontSize?: number | null;
   radius?: number | null;
   answers?: ('table' | 'list' | 'none') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dokumentumok".
+ */
+export interface Dokumentumok {
+  id: string;
+  /**
+   * Oldal: bbskills.hu/aszf. Üres sor: új bekezdés. "## " a sor elején: címsor, "- " a sor elején: felsorolás.
+   */
+  aszf?: string | null;
+  /**
+   * Oldal: bbskills.hu/adatkezeles. Üres sor: új bekezdés. "## " a sor elején: címsor, "- " a sor elején: felsorolás.
+   */
+  adatkezeles?: string | null;
+  /**
+   * Oldal: bbskills.hu/impresszum. Üres sor: új bekezdés. "## " a sor elején: címsor, "- " a sor elején: felsorolás.
+   */
+  impresszum?: string | null;
+  /**
+   * Oldal: bbskills.hu/sutik. Üres sor: új bekezdés. "## " a sor elején: címsor, "- " a sor elején: felsorolás.
+   */
+  sutik?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1674,6 +1706,19 @@ export interface EmailSelect<T extends boolean = true> {
   fontSize?: T;
   radius?: T;
   answers?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dokumentumok_select".
+ */
+export interface DokumentumokSelect<T extends boolean = true> {
+  aszf?: T;
+  adatkezeles?: T;
+  impresszum?: T;
+  sutik?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

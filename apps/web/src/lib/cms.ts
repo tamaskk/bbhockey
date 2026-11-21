@@ -1,6 +1,6 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { connection } from "next/server";
-import type { Beallitasok, Fooldal, Media, Urlap } from "../../../admin/src/payload-types";
+import type { Beallitasok, Dokumentumok, Fooldal, Media, Urlap } from "../../../admin/src/payload-types";
 
 export type { Beallitasok, Fooldal, Urlap };
 
@@ -32,6 +32,19 @@ async function readContent() {
     getGlobal<Urlap>("urlap"),
   ]);
   return { site, home, form };
+}
+
+// legal pages; read separately so the home page never waits for them
+export async function getDocuments() {
+  await connection();
+  return readDocuments();
+}
+
+async function readDocuments() {
+  "use cache";
+  cacheTag("cms");
+  cacheLife("max");
+  return getGlobal<Dokumentumok>("dokumentumok");
 }
 
 // Upload fields come back as a Media object (depth=1); local uploads have a relative URL (/admin/api/media/...).

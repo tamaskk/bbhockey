@@ -17,6 +17,7 @@ import { Beallitasok } from './globals/Beallitasok'
 import { Email } from './globals/Email'
 import { Fooldal } from './globals/Fooldal'
 import { Urlap } from './globals/Urlap'
+import { Dokumentumok } from './globals/Dokumentumok'
 import { emailFrom } from './email/template'
 import { resetEndpoint } from './reset'
 
@@ -46,7 +47,7 @@ export default buildConfig({
   routes: { admin: '/' },
   i18n: { supportedLanguages: { hu }, fallbackLanguage: 'hu' },
   collections: [Jelentkezesek, Csoportok, Media, Users],
-  globals: [Beallitasok, Fooldal, Urlap, Email],
+  globals: [Beallitasok, Fooldal, Urlap, Email, Dokumentumok],
   endpoints: [resetEndpoint],
   // outgoing mail over SMTP (Gmail, Resend, any provider); RESEND_API_KEY alone is enough for Resend.
   // Without either Payload only logs the e-mails.
