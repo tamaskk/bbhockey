@@ -1,5 +1,6 @@
 import { commitTransaction, initTransaction, killTransaction, type Endpoint } from 'payload'
 import baseline from './baseline.json'
+import { revalidateWeb } from './revalidate'
 
 const SYSTEM = ['id', 'createdAt', 'updatedAt', 'globalType']
 
@@ -22,6 +23,8 @@ export const resetEndpoint: Endpoint = {
         await req.payload.updateGlobal({ slug, data: { ...cleared, ...data } as never, depth: 0, req })
       }
       if (shouldCommit) await commitTransaction(req)
+      // the save hooks ran before the commit: refresh the site again now that the data is final
+      await revalidateWeb()
       return Response.json({ ok: true })
     } catch (err) {
       if (shouldCommit) await killTransaction(req)

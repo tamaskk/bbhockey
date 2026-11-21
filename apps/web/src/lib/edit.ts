@@ -7,7 +7,7 @@ type A = Record<string, string> & { style?: CSSProperties };
 
 export function editor(edit: boolean, slug: string, looks: Looks = {}) {
   const look = (key: string): A => {
-    const l = looks[`${slug}:${key}`];
+    const l = looks?.[`${slug}:${key}`]; // styles is null after an editor reset
     const style = css(l, edit);
     return { ...(style && { style }), ...(edit && l?.hide === true && { "data-hidden": "" }) } as A;
   };
