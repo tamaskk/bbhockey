@@ -581,6 +581,25 @@ function GalleryModal({ value, uploaded, onClose, onSave }: { value: string; upl
   )
 }
 
+// an image field in a settings panel: shows the current image and its link; a changed link becomes a new image on save
+function UploadField({ label, id, onChange }: { label?: string; id?: string; onChange: (link: string) => void }) {
+  const [cur, setCur] = useState<{ link: string; src: string } | null>(null)
+  useEffect(() => {
+    if (!id) return
+    fetch(`/admin/api/media/${id}?depth=0`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((m) => m && setCur({ link: m.driveUrl || m.url || '', src: m.thumbnailURL || m.url || '' }))
+      .catch(() => {})
+  }, [id])
+  return (
+    <label>{label} – kép linkje
+      {cur?.src && <img src={cur.src} alt="" style={{ display: 'block', maxWidth: 160, maxHeight: 90, objectFit: 'cover', margin: '6px 0', borderRadius: 4 }} />}
+      {/* key: the current link arrives after the first render */}
+      <input key={cur?.link ?? ''} style={inputStyle} defaultValue={cur?.link ?? ''} placeholder="https://drive.google.com/file/d/…/view" onChange={(e) => onChange(e.target.value.trim() === (cur?.link ?? '') ? '' : e.target.value)} />
+    </label>
+  )
+}
+
 function SettingsModal({ title, fields, value, onClose, onSave, onAdd, top }: { title: string; fields: Schema[]; value: Doc; onClose: () => void; onSave: (v: Doc) => void; onAdd?: (list: string) => void; top?: React.ReactNode }) {
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState('')
@@ -625,12 +644,7 @@ function Fields({ fields, obj, prefix, links, onAdd, onChange }: { fields: Schem
           )
         if (f.type === 'checkbox')
           return <label key={key} style={{ display: 'flex', gap: 8 }}><input type="checkbox" defaultChecked={!!v} onChange={(e) => set(e.target.checked)} />{f.label}</label>
-        if (f.type === 'upload')
-          return (
-            <label key={key}>{f.label} – új kép linkje (üresen hagyva marad a mostani)
-              <input style={inputStyle} placeholder="https://drive.google.com/file/d/…/view" onChange={(e) => links.set(key, e.target.value)} />
-            </label>
-          )
+        if (f.type === 'upload') return <UploadField key={key} label={f.label} id={typeof v === 'string' ? v : undefined} onChange={(link) => links.set(key, link)} />
         if (f.type === 'array')
           return onAdd ? (
             <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>

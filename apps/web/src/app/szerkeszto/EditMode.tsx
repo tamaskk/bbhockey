@@ -9,7 +9,7 @@ const CSS = `
 /* inside list items (form fields, cards) empty optional texts only appear on hover, to keep the page readable */
 [data-item] [data-f]:empty:not(:focus){display:none}
 [data-item]:not(:has([data-item])):hover [data-f]:empty{display:revert}
-[data-block],[data-item],[data-img]{position:relative}
+:where([data-block],[data-item],[data-img]){position:relative}
 [data-show="false"]>*:not(.bb-ed-bar){opacity:.3}
 [data-item]:hover{outline:1px dashed rgba(80,160,255,.8);outline-offset:4px}
 .bb-ed-drag{opacity:.4}
