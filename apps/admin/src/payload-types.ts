@@ -1145,6 +1145,8 @@ export interface Fooldal {
     highlight?: string | null;
     text?: string | null;
     image?: (string | null) | Media;
+    image2?: (string | null) | Media;
+    image3?: (string | null) | Media;
     coaches?:
       | {
           name: string;
@@ -1617,6 +1619,8 @@ export interface FooldalSelect<T extends boolean = true> {
         highlight?: T;
         text?: T;
         image?: T;
+        image2?: T;
+        image3?: T;
         coaches?:
           | T
           | {

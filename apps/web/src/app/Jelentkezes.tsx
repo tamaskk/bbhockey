@@ -1,8 +1,10 @@
 import "./jelentkezes.css";
+import { Fragment } from "react";
 import { alt, img, type Urlap } from "@/lib/cms";
 import type { FormField } from "@/lib/form";
 import { editor, type Ed } from "@/lib/edit";
 import type { Looks } from "@/lib/style";
+import AcceptAll from "./AcceptAll";
 
 const Linked = ({ text, href }: { text: string; href?: string | null }) =>
   href ? <a href={href} target="_blank" rel="noopener">{text}</a> : <>{text}</>;
@@ -101,7 +103,13 @@ export default function Jelentkezes({ form, privacyUrl, looks, edit = false }: {
               <fieldset className="bb-group" key={g.id ?? g.title} {...e.item(`groups.${gi}`)}>
                 <legend {...e.f(`groups.${gi}.title`)}>{g.title}</legend>
                 <div className="mhk-form-grid">
-                  {(g.fields ?? []).map((f, fi) => <Item key={f.id ?? f.name} f={f} privacyUrl={privacyUrl} p={`groups.${gi}.fields.${fi}`} e={e} />)}
+                  {(g.fields ?? []).map((f, fi, all) => (
+                    <Fragment key={f.id ?? f.name}>
+                      {/* before the first of two or more consents */}
+                      {f.type === "consent" && all.findIndex((x) => x.type === "consent") === fi && all.filter((x) => x.type === "consent").length > 1 && <div className="bb-item mhk-full"><AcceptAll /></div>}
+                      <Item f={f} privacyUrl={privacyUrl} p={`groups.${gi}.fields.${fi}`} e={e} />
+                    </Fragment>
+                  ))}
                 </div>
               </fieldset>
             ))}

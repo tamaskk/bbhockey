@@ -251,7 +251,14 @@ export default function Sections({ home, looks, edit = false }: { home: Fooldal;
     rolunk: on("rolunk") && (
       <section className="mhk-sec" id="rolunk" {...sec("rolunk")}>
         <div className="mhk-wrap mhk-about-split">
-          {(edit || img(rolunk.image)) && <div className="mhk-photo mhk-reveal" {...im("rolunk.image")}><img src={img(rolunk.image)} alt={alt(rolunk.image)} loading="lazy" /></div>}
+          {/* up to three photos stacked beside the text, spread over its height */}
+          {(["image", "image2", "image3"] as const).some((k) => edit || img(rolunk[k])) && (
+            <div className="bb-about-photos">
+              {(["image", "image2", "image3"] as const).map((k) => (edit || img(rolunk[k])) && (
+                <div className="mhk-photo mhk-reveal" key={k} {...im(`rolunk.${k}`)}><img src={img(rolunk[k])} alt={alt(rolunk[k])} loading="lazy" /></div>
+              ))}
+            </div>
+          )}
           <div className="mhk-reveal mhk-reveal-d1">
             <h2><span {...f("rolunk.title")}>{rolunk.title}</span> {(edit || rolunk.highlight) && <em {...f("rolunk.highlight")}>{rolunk.highlight}</em>}</h2>
             {/* paragraphs separated by an empty line, "## " starts a subheading; edited as one text block */}

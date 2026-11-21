@@ -31,3 +31,6 @@
 .bb-item .bb-help { display: block; margin-top: 6px; }
 
 .bb-form .mhk-form-grid > .mhk-full { grid-column: 1 / -1; }
+
+/* AcceptAll.tsx */
+.mhk-site .bb-accept-all { padding: .55rem 1rem; font-size: .85rem; }

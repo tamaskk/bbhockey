@@ -79,3 +79,11 @@ body.mhk-site a.mhk-quick-tab, body.mhk-site a.mhk-quick-tab:visited { color: #1
   .bb-lightbox img { max-width: 100vw; max-height: calc(100vh - 140px); }
   .bb-lb-prev, .bb-lb-next { top: auto; bottom: 8px; transform: none; }
 }
+
+/* Rólunk: up to three photos in the left column, spread along the text */
+.mhk-site .mhk-about-split:has(.bb-about-photos) { align-items: stretch; }
+.mhk-site .bb-about-photos { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; }
+@media (max-width: 1109px) {
+  .mhk-site .bb-about-photos { flex-direction: row; gap: 12px; }
+  .mhk-site .bb-about-photos .mhk-photo { flex: 1; min-width: 0; }
+}

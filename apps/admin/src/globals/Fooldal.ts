@@ -218,6 +218,9 @@ export const Fooldal: GlobalConfig = {
             ...heading(),
             { name: 'text', label: 'Szöveg (új bekezdés: üres sor, alcím: "## " a sor elején)', type: 'textarea' },
             image('image', 'Kép'),
+            // optional 2nd and 3rd photo: stacked under the first, spread along the text
+            image('image2', 'Kép 2 (az első alatt)'),
+            image('image3', 'Kép 3 (a második alatt)'),
             {
               name: 'coaches',
               label: 'Edzők',

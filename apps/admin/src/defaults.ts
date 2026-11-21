@@ -225,7 +225,7 @@ export function defaultGroups(sizeChart: string | number | undefined, privacyUrl
       f('feltetelek', 'Elfogadom a BB Skills Camp részvételi feltételeit', { type: 'consent', ...full }),
       f('adatkezeles', 'Elfogadom az adatkezelési tájékoztatót és adatvédelmi nyilatkozatot', { type: 'consent', ...full, link: privacyUrl }),
       f('szuloi_hozzajarulas', 'Szülőként / törvényes képviselőként hozzájárulok a gyermek részvételéhez', { type: 'consent', ...full }),
-      f('foto_hozzajarulas', 'Hozzájárulok fénykép- és videófelvételek készítéséhez, valamint azok BB Skills marketing- és közösségi média célú felhasználásához', { type: 'consent', ...full, required: false }),
+      f('foto_hozzajarulas', 'Hozzájárulok fénykép- és videófelvételek készítéséhez, valamint azok BB Skills marketing- és közösségi média célú felhasználásához', { type: 'consent', ...full, required: true }),
     ] },
   ]
 }

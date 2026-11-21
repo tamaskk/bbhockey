@@ -924,7 +924,7 @@
             "label": "Hozzájárulok fénykép- és videófelvételek készítéséhez, valamint azok BB Skills marketing- és közösségi média célú felhasználásához",
             "type": "consent",
             "width": "full",
-            "required": false,
+            "required": true,
             "name": "foto_hozzajarulas",
             "id": "6aedba16578e9bdc6241f189"
           }
