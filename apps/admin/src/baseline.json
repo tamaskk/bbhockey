@@ -6,10 +6,10 @@
     "accentDark": "#857f00",
     "name": "BB Your Hockey Skills",
     "phone": "+36 30 000 0000",
-    "email": "info@example.com",
+    "email": "istvanbartalis28@gmail.com",
     "location": "Győr, Audi Aréna (dummy)",
-    "facebook": "https://www.facebook.com/",
-    "instagram": "https://www.instagram.com/",
+    "facebook": "",
+    "instagram": "",
     "nav": [
       {
         "label": "Főoldal",
@@ -364,7 +364,7 @@
         },
         {
           "label": "E-mail",
-          "value": "info@example.com",
+          "value": "istvanbartalis28@gmail.com",
           "id": "6aedb83e4924f29aedc70873"
         },
         {
