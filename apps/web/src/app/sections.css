@@ -32,7 +32,9 @@
 .bb-menu-day dt { color: var(--mhk-accent); font-size: .78rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin-top: 8px; }
 .bb-menu-day dd { margin: 0; line-height: 1.4; }
 
-.bb-coach-photo { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex: none; }
+/* the photo sits in a <span> (editor image marker): that span is the flex item, it must not shrink */
+.bb-coach > span { flex: none; }
+.bb-coach-photo { display: block; width: 64px; height: 64px; max-width: none; border-radius: 50%; object-fit: cover; }
 .bb-closed { text-align: center; font-size: 1.1rem; }
 
 /* body.mhk-site a{color:inherit} turned the tab text white on yellow */
