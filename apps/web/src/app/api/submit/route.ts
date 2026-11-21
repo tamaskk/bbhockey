@@ -1,5 +1,6 @@
 import { CMS_API, getContent } from "@/lib/cms";
 import { allFields, isInput, isVisible } from "@/lib/form";
+import { isLang, t } from "@/lib/i18n";
 
 // admin-only or system columns a form field must never write
 const RESERVED = new Set(["id", "_id", "createdAt", "updatedAt", "statusz", "megjegyzes", "valaszok", "jatekos_nev", "szulo_nev", "fizetve", "kozlemeny", "osszeg"]);
@@ -8,11 +9,15 @@ const fail = (message: string, status = 400) => Response.json({ success: false, 
 
 export async function POST(req: Request) {
   const fd = await req.formData();
+  // the page language: form texts, error messages and the confirmation e-mail follow it
+  const l = fd.get("nyelv");
+  const lang = typeof l === "string" && isLang(l) ? l : "hu";
+  const tr = t(lang);
   // honeypot filled in = bot: pretend success, store nothing
-  if (fd.get("website")) return Response.json({ success: true, data: { message: "Köszönjük!" } });
+  if (fd.get("website")) return Response.json({ success: true, data: { message: tr.thanks } });
 
-  const { form } = await getContent();
-  if (!form.open) return fail(form.closedText ?? "A jelentkezés lezárult.", 403);
+  const { form } = await getContent(lang);
+  if (!form.open) return fail(form.closedText ?? tr.closed, 403);
 
   // only fields defined in the admin are accepted; values are trimmed and capped
   const values = (name: string) =>
@@ -26,13 +31,14 @@ export async function POST(req: Request) {
     // choices must be one of the configured options
     if (["select", "radio", "checkboxes"].includes(f.type)) v = v.filter((x) => f.options?.includes(x));
     if (f.type !== "checkboxes") v = v.slice(0, 1);
-    if (f.required && !v.length) return fail(`Kérjük, töltsd ki: ${f.label}`);
+    if (f.required && !v.length) return fail(tr.required(f.label));
 
     const consent = f.type === "consent";
     if (!RESERVED.has(f.name)) data[f.name] = consent ? v[0] === "igen" : v.join(", ");
     valaszok.push({ kerdes: f.label, valasz: consent ? (v[0] === "igen" ? "Igen" : "Nem") : v.join(", "), mezo: f.name });
   }
   data.valaszok = valaszok;
+  data.nyelv = lang;
 
   const res = await fetch(`${CMS_API}/jelentkezesek`, {
     method: "POST",
@@ -42,16 +48,17 @@ export async function POST(req: Request) {
 
   if (!res?.ok) {
     console.error("[submit] admin rejected", res?.status, res && (await res.text()).slice(0, 500));
-    return fail("A jelentkezést most nem sikerült elmenteni. Kérjük, próbáld újra, vagy írj nekünk e-mailt.", 502);
+    return fail(tr.saveFailed, 502);
   }
   // bank transfer details for the pop-up; the admin worked out the reference and amount (admin/src/payment.ts)
   const doc = ((await res.json().catch(() => ({}))) as { doc?: Record<string, unknown> }).doc ?? {};
+  // [label, value, copy button]
   const rows = [
-    ["Kedvezményezett", form.paymentHolder],
-    ["Számlaszám", form.paymentAccount],
-    ["Összeg", doc.osszeg],
-    ["Közlemény", doc.kozlemeny],
-  ].filter((r): r is [string, string] => typeof r[1] === "string" && !!r[1].trim());
-  const payment = form.paymentShow !== false && form.paymentAccount ? { title: form.paymentTitle || "Fizetési adatok", rows, text: form.paymentText ?? "" } : undefined;
+    [tr.pay.holder, form.paymentHolder, false],
+    [tr.pay.account, form.paymentAccount, true],
+    [tr.pay.amount, doc.osszeg, false],
+    [tr.pay.reference, doc.kozlemeny, true],
+  ].filter((r): r is [string, string, boolean] => typeof r[1] === "string" && !!r[1].trim());
+  const payment = form.paymentShow !== false && form.paymentAccount ? { title: form.paymentTitle || tr.pay.title, rows, text: form.paymentText ?? "" } : undefined;
   return Response.json({ success: true, data: { message: form.successMessage, payment } });
 }

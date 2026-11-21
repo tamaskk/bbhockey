@@ -4,19 +4,23 @@ import { Footer, Header } from "./Chrome";
 import Jelentkezes from "./Jelentkezes";
 import Sections from "./Sections";
 import type { Looks } from "@/lib/style";
+import { t, type Lang } from "@/lib/i18n";
 
-export default async function Site({ edit = false }: { edit?: boolean }) {
-  const { site, home, form } = await getContent();
+export default async function Site({ lang, edit = false }: { lang: Lang; edit?: boolean }) {
+  const { site, home, form } = await getContent(lang);
+  const tr = t(lang);
+  // texts and language for the theme script (form messages, payment pop-up)
+  const mhk = { ajax: "/api/submit", nonce: "", lang, t: { error: tr.saveFailed, thanks: tr.thanks, copy: tr.copy, copied: tr.copied, sending: tr.sending, network: tr.network, emailed: tr.emailed, ok: tr.ok } };
   return (
     <>
-      <Header site={site} edit={edit} />
+      <Header site={site} lang={lang} edit={edit} />
       <main id="mhk-content">
-        <Sections home={home} looks={site.styles as Looks} edit={edit} />
-        <Jelentkezes form={form} privacyUrl={site.privacyUrl} looks={site.styles as Looks} edit={edit} />
+        <Sections home={home} lang={lang} looks={site.styles as Looks} edit={edit} />
+        <Jelentkezes form={form} lang={lang} privacyUrl={site.privacyUrl} looks={site.styles as Looks} edit={edit} />
       </main>
-      <Footer site={site} edit={edit} />
+      <Footer site={site} lang={lang} edit={edit} />
       <Script id="mhk-config" strategy="beforeInteractive">
-        {`window.MHK={ajax:"/api/submit",nonce:""};`}
+        {`window.MHK=${JSON.stringify(mhk)};`}
       </Script>
       <Script src="/wp-content/plugins/mhk-core/assets/js/mhk.js" strategy="afterInteractive" />
       {/* conditional form fields: enable the ones whose trigger field has the chosen value (3 passes for chained conditions) */}

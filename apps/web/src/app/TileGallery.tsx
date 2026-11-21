@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { t, type Lang } from "@/lib/i18n";
 
 type Pic = { src: string; alt: string };
 
 // A card's extra photos: two thumbnails in its bottom-right corner, a click opens all of them in a lightbox.
-export default function TileGallery({ pics, title }: { pics: Pic[]; title: string }) {
+export default function TileGallery({ pics, title, lang }: { pics: Pic[]; title: string; lang: Lang }) {
+  const labels = t(lang);
   const dialog = useRef<HTMLDialogElement>(null);
   const [at, setAt] = useState<number | null>(null);
   const n = pics.length;
@@ -20,7 +22,7 @@ export default function TileGallery({ pics, title }: { pics: Pic[]; title: strin
     <>
       <div className="bb-tile-gallery">
         {pics.slice(0, 2).map((p, i) => (
-          <button type="button" key={i} onClick={() => setAt(i)} aria-label={`${title}: galéria megnyitása (${n} kép)`}>
+          <button type="button" key={i} onClick={() => setAt(i)} aria-label={labels.galleryOpen(title, n)}>
             <img src={p.src} alt={p.alt} loading="lazy" />
             {i === 1 && n > 2 && <span aria-hidden="true">+{n - 2}</span>}
           </button>
@@ -29,7 +31,7 @@ export default function TileGallery({ pics, title }: { pics: Pic[]; title: strin
       <dialog
         ref={dialog}
         className="bb-lightbox"
-        aria-label={`${title} galéria`}
+        aria-label={labels.gallery(title)}
         onClose={() => setAt(null)}
         onClick={(e) => e.target === e.currentTarget && dialog.current?.close()}
         onKeyDown={(e) => {
@@ -40,11 +42,11 @@ export default function TileGallery({ pics, title }: { pics: Pic[]; title: strin
         {at !== null && (
           <>
             <img src={pics[at].src} alt={pics[at].alt} />
-            <button type="button" className="bb-lb-close" onClick={() => dialog.current?.close()} aria-label="Bezárás">×</button>
+            <button type="button" className="bb-lb-close" onClick={() => dialog.current?.close()} aria-label={labels.close}>×</button>
             {n > 1 && (
               <>
-                <button type="button" className="bb-lb-prev" onClick={() => go(-1)} aria-label="Előző kép">‹</button>
-                <button type="button" className="bb-lb-next" onClick={() => go(1)} aria-label="Következő kép">›</button>
+                <button type="button" className="bb-lb-prev" onClick={() => go(-1)} aria-label={labels.prev}>‹</button>
+                <button type="button" className="bb-lb-next" onClick={() => go(1)} aria-label={labels.next}>›</button>
               </>
             )}
             <span className="bb-lb-count">{at + 1} / {n}</span>

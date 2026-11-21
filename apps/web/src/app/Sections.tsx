@@ -4,6 +4,7 @@ import { alt, img, initials, type Fooldal } from "@/lib/cms";
 import { editor, type Ed } from "@/lib/edit";
 import type { Looks } from "@/lib/style";
 import TileGallery from "./TileGallery";
+import { t, type Lang } from "@/lib/i18n";
 
 // a card's gallery photos for TileGallery (not in the editor: the thumbnails would cover the editable text)
 // uploaded photos first, then the ones given by link (stored by the admin as direct image URLs, one per line); max 10
@@ -139,7 +140,8 @@ const Avatar = ({ name }: { name: string }) => <span className="mhk-q-avatar"><s
 export const SECTION_KEYS = ["marquee", "tabor", "napirend", "etlap", "rolunk", "velemenyek", "gyik", "kapcsolat"] as const;
 type Key = (typeof SECTION_KEYS)[number];
 
-export default function Sections({ home, looks, edit = false }: { home: Fooldal; looks?: Looks; edit?: boolean }) {
+export default function Sections({ home, lang, looks, edit = false }: { home: Fooldal; lang: Lang; looks?: Looks; edit?: boolean }) {
+  const tr = t(lang);
   const { hero, marquee, tabor, napirend, eszkozok, etlap, rolunk, velemenyek, gyik, kapcsolat } = home;
   const quotes = velemenyek.items ?? [];
   const e = editor(edit, "fooldal", looks);
@@ -176,13 +178,13 @@ export default function Sections({ home, looks, edit = false }: { home: Fooldal;
               return (
                 // a div with a covering link, so the gallery buttons are not nested inside the link
                 <div className={`mhk-brand-tile mhk-reveal${d(i)}${g.length ? " bb-has-gallery" : ""}`} key={t.id ?? i} {...item(`tabor.tiles.${i}`)} {...im(`tabor.tiles.${i}.image`)} {...e.gallery(`tabor.tiles.${i}`, (t.gallery?.length ?? 0) + (t.galleryLinks?.split("\n").filter(Boolean).length ?? 0))} style={{ backgroundImage: `url(${img(t.image)})`, ...item(`tabor.tiles.${i}`).style }}>
-                  {!edit && <a className="bb-tile-link" href="#jelentkezes" aria-label={`${t.title}: ${t.cta || "jelentkezés"}`} />}
+                  {!edit && <a className="bb-tile-link" href="#jelentkezes" aria-label={`${t.title}: ${t.cta || tr.apply}`} />}
                   <div className="mhk-brand-tile-inner">
                     <h3 {...f(`tabor.tiles.${i}.title`)}>{t.title}</h3>
                     {(edit || t.text) && <p {...f(`tabor.tiles.${i}.text`, true)}>{t.text}</p>}
                     {(edit || t.cta) && <span className="mhk-tile-cta" {...f(`tabor.tiles.${i}.cta`)}>{t.cta}</span>}
                   </div>
-                  <TileGallery pics={g} title={t.title} />
+                  <TileGallery pics={g} title={t.title} lang={lang} />
                 </div>
               );
             })}
@@ -217,7 +219,7 @@ export default function Sections({ home, looks, edit = false }: { home: Fooldal;
                         <h3 {...f(`eszkozok.items.${i}.title`)}>{t.title}</h3>
                         {(edit || t.text) && <p {...f(`eszkozok.items.${i}.text`, true)}>{t.text}</p>}
                       </div>
-                      <TileGallery pics={g} title={t.title} />
+                      <TileGallery pics={g} title={t.title} lang={lang} />
                     </div>
                   );
                 })}
@@ -238,8 +240,8 @@ export default function Sections({ home, looks, edit = false }: { home: Fooldal;
                 <header><b {...f(`etlap.days.${i}.day`)}>{m.day}</b>{(edit || m.date) && <small {...f(`etlap.days.${i}.date`)}>{m.date}</small>}</header>
                 <dl>
                   {(edit || m.soup) && <><dt>Leves</dt><dd {...f(`etlap.days.${i}.soup`)}>{m.soup}</dd></>}
-                  {(edit || m.a) && <><dt>„A” menü</dt><dd {...f(`etlap.days.${i}.a`)}>{m.a}</dd></>}
-                  {(edit || m.b) && <><dt>„B” menü</dt><dd {...f(`etlap.days.${i}.b`)}>{m.b}</dd></>}
+                  {(edit || m.a) && <><dt>{tr.menuA}</dt><dd {...f(`etlap.days.${i}.a`)}>{m.a}</dd></>}
+                  {(edit || m.b) && <><dt>{tr.menuB}</dt><dd {...f(`etlap.days.${i}.b`)}>{m.b}</dd></>}
                 </dl>
               </article>
             ))}

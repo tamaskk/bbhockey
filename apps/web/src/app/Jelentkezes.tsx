@@ -6,13 +6,15 @@ import { editor, type Ed } from "@/lib/edit";
 import type { Looks } from "@/lib/style";
 import AcceptAll from "./AcceptAll";
 import TestFill from "./TestFill";
+import { prefix, t, type Lang } from "@/lib/i18n";
 
-const Linked = ({ text, href }: { text: string; href?: string | null }) =>
-  href ? <a href={href} target="_blank" rel="noopener">{text}</a> : <>{text}</>;
+// site paths ("/aszf") point to the same language version of the page
+const Linked = ({ text, href, lang }: { text: string; href?: string | null; lang: Lang }) =>
+  href ? <a href={href.startsWith("/") ? `${prefix(lang)}${href}` : href} target="_blank" rel="noopener">{text}</a> : <>{text}</>;
 
 const star = (f: FormField) => (f.required ? " *" : "");
 
-function Control({ f, privacyUrl, p, e }: { f: FormField; privacyUrl?: string | null; p: string; e: Ed }) {
+function Control({ f, privacyUrl, p, e, choose, lang }: { f: FormField; privacyUrl?: string | null; p: string; e: Ed; choose: string; lang: Lang }) {
   const name = f.name ?? "";
   const id = `f-${name}`;
   const help = (e.edit || f.help) && <small className="bb-help" {...e.f(`${p}.help`, true)}>{f.help}</small>;
@@ -30,7 +32,7 @@ function Control({ f, privacyUrl, p, e }: { f: FormField; privacyUrl?: string | 
       return (
         <label className="mhk-form-check">
           <input type="checkbox" name={name} value="igen" required={!!f.required} />
-          <span>{e.edit ? label : <Linked text={f.label} href={f.link || (name === "adatkezeles" ? privacyUrl : null)} />}{star(f)}</span>
+          <span>{e.edit ? label : <Linked text={f.label} href={f.link || (name === "adatkezeles" ? privacyUrl : null)} lang={lang} />}{star(f)}</span>
         </label>
       );
     case "radio":
@@ -60,7 +62,7 @@ function Control({ f, privacyUrl, p, e }: { f: FormField; privacyUrl?: string | 
         <textarea rows={3} {...common} />
       ) : f.type === "select" ? (
         <select {...common} defaultValue="">
-          <option value="" disabled>Válassz…</option>
+          <option value="" disabled>{choose}</option>
           {opts.map((o) => <option key={o} value={o}>{o}</option>)}
         </select>
       ) : (
@@ -71,11 +73,11 @@ function Control({ f, privacyUrl, p, e }: { f: FormField; privacyUrl?: string | 
   );
 }
 
-function Item({ f, privacyUrl, p, e }: { f: FormField; privacyUrl?: string | null; p: string; e: Ed }) {
+function Item({ f, privacyUrl, p, e, choose, lang }: { f: FormField; privacyUrl?: string | null; p: string; e: Ed; choose: string; lang: Lang }) {
   // choices/consents/notes keep their own styling, outside the text-input field rules
   const base = ["radio", "checkboxes", "consent", "note", "image"].includes(f.type) ? "bb-item" : "mhk-form-field";
   const cls = `${base}${f.width === "full" ? " mhk-full" : ""}`;
-  const control = <Control f={f} privacyUrl={privacyUrl} p={p} e={e} />;
+  const control = <Control f={f} privacyUrl={privacyUrl} p={p} e={e} choose={choose} lang={lang} />;
   // conditional fields start disabled (hidden, skipped by validation); the bb-form-if script enables them
   return f.ifField ? (
     <fieldset className={`bb-if ${cls}`} data-if={f.ifField} data-if-value={f.ifValue ?? ""} disabled={!e.edit} {...e.item(p)}>{control}</fieldset>
@@ -84,7 +86,8 @@ function Item({ f, privacyUrl, p, e }: { f: FormField; privacyUrl?: string | nul
   );
 }
 
-export default function Jelentkezes({ form, privacyUrl, looks, edit = false }: { form: Urlap; privacyUrl?: string | null; looks?: Looks; edit?: boolean }) {
+export default function Jelentkezes({ form, lang, privacyUrl, looks, edit = false }: { form: Urlap; lang: Lang; privacyUrl?: string | null; looks?: Looks; edit?: boolean }) {
+  const tr = t(lang);
   const e = editor(edit, "urlap", looks);
   return (
     <section className="mhk-sec bb-jelentkezes" id="jelentkezes" {...e.block("", undefined, "section")}>
@@ -100,7 +103,7 @@ export default function Jelentkezes({ form, privacyUrl, looks, edit = false }: {
           <p className="mhk-form-panel bb-closed" {...e.f("closedText", true)}>{form.closedText}</p>
         ) : (
           <form className="mhk-form-panel mhk-form bb-form" data-form="jelentkezes">
-            {!edit && <TestFill />}
+            {!edit && <TestFill label={tr.testData} />}
             {(form.groups ?? []).map((g, gi) => (
               <fieldset className="bb-group" key={g.id ?? g.title} {...e.item(`groups.${gi}`)}>
                 <legend {...e.f(`groups.${gi}.title`)}>{g.title}</legend>
@@ -108,8 +111,8 @@ export default function Jelentkezes({ form, privacyUrl, looks, edit = false }: {
                   {(g.fields ?? []).map((f, fi, all) => (
                     <Fragment key={f.id ?? f.name}>
                       {/* before the first of two or more consents */}
-                      {f.type === "consent" && all.findIndex((x) => x.type === "consent") === fi && all.filter((x) => x.type === "consent").length > 1 && <div className="bb-item mhk-full"><AcceptAll /></div>}
-                      <Item f={f} privacyUrl={privacyUrl} p={`groups.${gi}.fields.${fi}`} e={e} />
+                      {f.type === "consent" && all.findIndex((x) => x.type === "consent") === fi && all.filter((x) => x.type === "consent").length > 1 && <div className="bb-item mhk-full"><AcceptAll label={tr.acceptAll} /></div>}
+                      <Item f={f} privacyUrl={privacyUrl} p={`groups.${gi}.fields.${fi}`} e={e} choose={tr.choose} lang={lang} />
                     </Fragment>
                   ))}
                 </div>

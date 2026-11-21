@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getContent, img } from "@/lib/cms";
+import { isLang, LANGS, prefix, type Lang } from "@/lib/i18n";
 import { fontName, fontsHref, type Looks } from "@/lib/style";
 
 const css = [
@@ -18,8 +20,19 @@ const css = [
 // blocking route: CMS content is read at request time (see getContent), then served from cache
 export const instant = false;
 
-export async function generateMetadata(): Promise<Metadata> {
-  const { site } = await getContent();
+// /en, /de, /sv are real paths; Hungarian is served at "/" (the proxy rewrites it to /hu)
+const langOf = async (params: Promise<{ lang: string }>): Promise<Lang> => {
+  const { lang } = await params;
+  if (!isLang(lang)) notFound();
+  return lang;
+};
+
+// the four language roots are known at build time
+export const generateStaticParams = () => LANGS.map((lang) => ({ lang }));
+
+export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Promise<Metadata> {
+  const lang = await langOf(params);
+  const { site } = await getContent(lang);
   const icon = img(site.favicon) ?? img(site.logo);
   const og = img(site.ogImage);
   return {
@@ -27,18 +40,21 @@ export async function generateMetadata(): Promise<Metadata> {
     description: site.description ?? undefined,
     icons: icon ? { icon, apple: icon } : undefined,
     openGraph: og ? { images: og } : undefined,
+    // tells search engines about the other language versions
+    alternates: { languages: Object.fromEntries(LANGS.map((l) => [l, prefix(l) || "/"])) },
   };
 }
 
-export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const { site } = await getContent();
+export default async function RootLayout({ children, params }: LayoutProps<"/[lang]">) {
+  const lang = await langOf(params);
+  const { site } = await getContent(lang);
   // brand colours from the admin override the stylesheet defaults
   // fonts chosen in the admin: theme-wide heading/text font + any font used by a single element
   const fh = fontName(site.fontHeading), fb = fontName(site.fontBody);
   const fonts = fontsHref([site.fontHeading, site.fontBody, ...Object.values((site.styles ?? {}) as Looks).map((l) => l?.font)]);
   const colors = `:root{--mhk-accent:${site.accent};--mhk-accent-2:${site.accentLight};--mhk-accent-dk:${site.accentDark}${fh ? `;--bb-fh:"${fh}"` : ""}${fb ? `;--bb-fb:"${fb}"` : ""}}`;
   return (
-    <html lang="hu" suppressHydrationWarning>
+    <html lang={lang} suppressHydrationWarning>
       <head>
         {css.map((href) => (
           <link key={href} rel="stylesheet" href={href} precedence="default" />

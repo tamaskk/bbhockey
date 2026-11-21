@@ -7,7 +7,14 @@ type Doc = Record<string, unknown>
 export type Schema = { name: string; label: string; type: string; options?: { label: string; value: string }[]; hasMany?: boolean; fields?: Schema[]; showFor?: string[]; blocks?: Record<string, Schema[]> }
 
 const SLUGS = ['fooldal', 'urlap', 'beallitasok']
-const api = (slug: string) => `/admin/api/globals/${slug}?depth=0`
+// the language being edited (?lang= on the admin page). An untranslated text is read as its Hungarian fallback
+// (required fields must not be saved empty), so saving that language stores it as a copy until translated.
+const LANGS = { hu: 'Magyar', en: 'English', de: 'Deutsch', sv: 'Svenska' } as const
+const lang = () => {
+  const l = new URLSearchParams(window.location.search).get('lang') ?? 'hu'
+  return l in LANGS ? l : 'hu'
+}
+const api = (slug: string) => `/admin/api/globals/${slug}?depth=0&locale=${lang()}`
 
 export function getPath(doc: unknown, path: string): unknown {
   return path ? path.split('.').reduce<unknown>((o, k) => (o && typeof o === 'object' ? (o as Doc)[k] : undefined), doc) : doc
@@ -87,7 +94,9 @@ export function Editor({ webUrl, schema }: { webUrl: string; schema: Record<stri
     window.addEventListener('resize', fit)
     return () => window.removeEventListener('resize', fit)
   }, [])
-  const src = `${webUrl}/szerkeszto`
+  const [edLang, setEdLang] = useState('hu')
+  useEffect(() => setEdLang(lang()), [])
+  const src = `${webUrl}${edLang === 'hu' ? '' : `/${edLang}`}/szerkeszto`
 
   // after a failed list change, drop the unsaved structure: reload the server state into memory and the page
   const resync = async (slug: string) => {
@@ -329,7 +338,13 @@ export function Editor({ webUrl, schema }: { webUrl: string; schema: Record<stri
         <a href="/admin/collections/jelentkezesek">Jelentkezések</a>
         <a href="/admin/globals/email">✉ Visszaigazoló e-mail</a>
         <a href="/admin/globals/fooldal">Haladó admin</a>
-        <a href={webUrl || '/'} target="_blank" rel="noreferrer">Oldal ↗</a>
+        <label style={{ display: 'flex', gap: 6, alignItems: 'center' }} title="Melyik nyelvű szöveget szerkeszted. A képek, színek és a sorrend minden nyelven közös.">
+          🌐
+          <select value={edLang} onChange={(e) => { const u = new URL(window.location.href); u.searchParams.set('lang', e.target.value); window.location.assign(u) }}>
+            {Object.entries(LANGS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+          </select>
+        </label>
+        <a href={`${webUrl}${edLang === 'hu' ? '' : `/${edLang}`}` || '/'} target="_blank" rel="noreferrer">Oldal ↗</a>
       </div>
       <iframe ref={frame} src={src} title="Oldalszerkesztő" style={{ flex: 1, border: 0, width: '100%' }} />
       {modal?.kind === 'img' && <ImageModal onClose={() => setModal(null)} onSave={(id) => apply(modal.slug, modal.path, id)} />}

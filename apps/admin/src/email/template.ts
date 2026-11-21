@@ -14,6 +14,7 @@ export type Design = {
   answers?: 'table' | 'list' | 'none' | null
   buttonLabel?: string | null; buttonUrl?: string | null; footer?: string | null
   replyTo?: string | null
+  contactLabel?: string | null
 }
 
 // replies and the contact line at the bottom of the e-mail go here unless the admin sets another reply address
@@ -95,7 +96,7 @@ export function renderEmail(body: string, design: Design, doc: Submission, pay?:
   const contact = design.replyTo && EMAIL.test(design.replyTo) ? design.replyTo : ''
   const footerLines = [
     design.footer && esc(fill(design.footer, doc)).replace(/\n/g, '<br>'),
-    contact && `Kapcsolattartó: <a href="mailto:${esc(contact)}" style="color:${d.text}">${esc(contact)}</a>`,
+    contact && `${esc(design.contactLabel || 'Kapcsolattartó')}: <a href="mailto:${esc(contact)}" style="color:${d.text}">${esc(contact)}</a>`,
   ].filter(Boolean)
   const footer = footerLines.length
     ? `<tr><td align="center" style="padding:16px 24px;font-size:${d.size - 3}px;color:${d.text};opacity:.6;border-top:1px solid rgba(0,0,0,0.08)">${footerLines.join('<br>')}</td></tr>`

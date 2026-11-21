@@ -1,5 +1,6 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { connection } from "next/server";
+import type { Lang } from "./i18n";
 import type { Beallitasok, Dokumentumok, Fooldal, Media, Urlap } from "../../../admin/src/payload-types";
 
 export type { Beallitasok, Fooldal, Urlap };
@@ -9,42 +10,43 @@ export const CMS_API = `${process.env.ADMIN_URL ?? "http://localhost:3001"}/admi
 // Browser-facing admin origin: empty on Vercel (same domain, admin under /admin); http://localhost:3001 in local dev.
 export const ADMIN_PUBLIC_URL = process.env.ADMIN_PUBLIC_URL ?? "";
 
-async function getGlobal<T>(slug: string): Promise<T> {
-  const res = await fetch(`${CMS_API}/globals/${slug}?depth=1`);
+// untranslated texts come back in Hungarian (Payload localization fallback)
+async function getGlobal<T>(slug: string, lang: Lang): Promise<T> {
+  const res = await fetch(`${CMS_API}/globals/${slug}?depth=1&locale=${lang}&fallback-locale=hu`);
   if (!res.ok) throw new Error(`CMS (${CMS_API}) answered ${res.status} for ${slug}`);
   return res.json();
 }
 
 // All page content in one cached read; the admin calls /api/revalidate after every save.
 // connection(): read at request time, never at build, because the admin URL (a Vercel service binding) only exists at runtime.
-export async function getContent() {
+export async function getContent(lang: Lang = "hu") {
   await connection();
-  return readContent();
+  return readContent(lang);
 }
 
-async function readContent() {
+async function readContent(lang: Lang) {
   "use cache";
   cacheTag("cms");
   cacheLife("max");
   const [site, home, form] = await Promise.all([
-    getGlobal<Beallitasok>("beallitasok"),
-    getGlobal<Fooldal>("fooldal"),
-    getGlobal<Urlap>("urlap"),
+    getGlobal<Beallitasok>("beallitasok", lang),
+    getGlobal<Fooldal>("fooldal", lang),
+    getGlobal<Urlap>("urlap", lang),
   ]);
   return { site, home, form };
 }
 
 // legal pages; read separately so the home page never waits for them
-export async function getDocuments() {
+export async function getDocuments(lang: Lang = "hu") {
   await connection();
-  return readDocuments();
+  return readDocuments(lang);
 }
 
-async function readDocuments() {
+async function readDocuments(lang: Lang) {
   "use cache";
   cacheTag("cms");
   cacheLife("max");
-  return getGlobal<Dokumentumok>("dokumentumok");
+  return getGlobal<Dokumentumok>("dokumentumok", lang);
 }
 
 // Upload fields come back as a Media object (depth=1); local uploads have a relative URL (/admin/api/media/...).

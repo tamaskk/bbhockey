@@ -21,6 +21,7 @@ import { Urlap } from './globals/Urlap'
 import { Dokumentumok } from './globals/Dokumentumok'
 import { emailFrom } from './email/template'
 import { resetEndpoint } from './reset'
+import { localizeGlobal } from './localize'
 
 const filename = fileURLToPath(import.meta.url)
 const resend = process.env.RESEND_API_KEY
@@ -48,7 +49,18 @@ export default buildConfig({
   routes: { admin: '/' },
   i18n: { supportedLanguages: { hu }, fallbackLanguage: 'hu' },
   collections: [Jelentkezesek, Csoportok, Media, Users],
-  globals: [Beallitasok, Fooldal, Urlap, Email, Dokumentumok],
+  globals: [Beallitasok, Fooldal, Urlap, Email, Dokumentumok].map(localizeGlobal),
+  // page content in four languages; an untranslated text falls back to Hungarian
+  localization: {
+    locales: [
+      { code: 'hu', label: 'Magyar' },
+      { code: 'en', label: 'English' },
+      { code: 'de', label: 'Deutsch' },
+      { code: 'sv', label: 'Svenska' },
+    ],
+    defaultLocale: 'hu',
+    fallback: true,
+  },
   endpoints: [resetEndpoint, emailTestEndpoint],
   // outgoing mail over SMTP (Gmail, Resend, any provider); RESEND_API_KEY alone is enough for Resend.
   // Without either Payload only logs the e-mails.

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 // "Teszt adatok" button for trying the form: shown to a logged-in admin (same domain on Vercel),
 // or to anyone on a URL with ?teszt (www.bbskills.hu/?teszt#jelentkezes).
 // Fills every visible field with sample data except the e-mail, which is focused so the tester types their own.
-export default function TestFill() {
+export default function TestFill({ label }: { label: string }) {
   const [on, setOn] = useState(false);
   useEffect(() => {
     if (new URLSearchParams(location.search).has("teszt")) return setOn(true);
@@ -43,7 +43,7 @@ export default function TestFill() {
 
   return (
     <button type="button" className="mhk-btn mhk-btn-ghost bb-test-fill" onClick={(e) => { const f = e.currentTarget.closest("form"); if (f) fill(f); }}>
-      <span>🧪 Teszt adatok</span>
+      <span>{label}</span>
     </button>
   );
 }

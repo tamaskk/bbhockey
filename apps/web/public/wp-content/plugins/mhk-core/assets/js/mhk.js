@@ -196,20 +196,22 @@
 
 				var msg = form.querySelector( '.mhk-form-msg' );
 				var btn = form.querySelector( 'button[type=submit]' );
+				var T = window.MHK.t || {};
 				var data = new FormData( form );
+				data.append( 'nyelv', window.MHK.lang || 'hu' );
 				data.append( 'action', 'mhk_submit' );
 				data.append( 'nonce', window.MHK.nonce );
 				data.append( 'form', form.dataset.form || 'ajanlat' );
 				data.append( 'source', location.href );
 
 				if ( btn ) { btn.disabled = true; btn.classList.add( 'mhk-loading' ); }
-				if ( msg ) { msg.textContent = 'Küldés folyamatban…'; msg.className = 'mhk-form-msg'; }
+				if ( msg ) { msg.textContent = T.sending || 'Küldés folyamatban…'; msg.className = 'mhk-form-msg'; }
 
 				fetch( window.MHK.ajax, { method: 'POST', body: data, credentials: 'same-origin' } )
 					.then( function ( r ) { return r.json().catch( function () { return { success: false }; } ); } )
 					.then( function ( res ) {
 						var ok = res && res.success;
-						var text = ( res && res.data && res.data.message ) || ( ok ? 'Köszönjük!' : 'Hiba történt. Hívj minket telefonon!' );
+						var text = ( res && res.data && res.data.message ) || ( ok ? T.thanks || 'Köszönjük!' : T.error || 'Hiba történt. Hívj minket telefonon!' );
 						if ( msg ) {
 							msg.textContent = text;
 							msg.className = 'mhk-form-msg ' + ( ok ? 'mhk-ok' : 'mhk-err' );
@@ -226,7 +228,7 @@
 						}
 					} )
 					.catch( function () {
-						if ( msg ) { msg.textContent = 'Hálózati hiba. Kérlek, hívj minket telefonon!'; msg.className = 'mhk-form-msg mhk-err'; }
+						if ( msg ) { msg.textContent = T.network || 'Hálózati hiba. Kérlek, hívj minket telefonon!'; msg.className = 'mhk-form-msg mhk-err'; }
 					} )
 					.finally( function () {
 						if ( btn ) { btn.disabled = false; btn.classList.remove( 'mhk-loading' ); }
@@ -417,21 +419,22 @@ function showPayment( p, message ) {
 	var d = document.createElement( 'dialog' );
 	d.className = 'bb-pay';
 	d.setAttribute( 'aria-labelledby', 'bb-pay-title' );
+	var T = ( window.MHK && window.MHK.t ) || {};
 	var esc = function ( s ) { var e = document.createElement( 'span' ); e.textContent = s == null ? '' : String( s ); return e.innerHTML; };
 	var rows = ( p.rows || [] ).map( function ( r ) {
-		var copy = r[ 0 ] === 'Számlaszám' || r[ 0 ] === 'Közlemény';
+		var copy = r[ 2 ];
 		return '<div class="bb-pay-row"><span>' + esc( r[ 0 ] ) + '</span><b>' + esc( r[ 1 ] ) + '</b>' +
-			( copy ? '<button type="button" class="bb-pay-copy" data-copy="' + esc( r[ 1 ] ) + '">Másolás</button>' : '' ) + '</div>';
+			( copy ? '<button type="button" class="bb-pay-copy" data-copy="' + esc( r[ 1 ] ) + '">' + esc( T.copy || 'Másolás' ) + '</button>' : '' ) + '</div>';
 	} ).join( '' );
 	d.innerHTML = '<p class="bb-pay-ok">' + esc( message ) + '</p><h3 id="bb-pay-title">' + esc( p.title ) + '</h3>' + rows +
 		( p.text ? '<p class="bb-pay-text">' + esc( p.text ) + '</p>' : '' ) +
-		'<p class="bb-pay-note">Ezeket az adatokat e-mailben is elküldtük.</p>' +
-		'<button type="button" class="mhk-btn mhk-btn-primary bb-pay-close"><span>Rendben</span></button>';
+		'<p class="bb-pay-note">' + esc( T.emailed || 'Ezeket az adatokat e-mailben is elküldtük.' ) + '</p>' +
+		'<button type="button" class="mhk-btn mhk-btn-primary bb-pay-close"><span>' + esc( T.ok || 'Rendben' ) + '</span></button>';
 	d.addEventListener( 'click', function ( e ) {
 		var b = e.target.closest( 'button' );
 		if ( e.target === d || ( b && b.classList.contains( 'bb-pay-close' ) ) ) return d.close();
 		if ( b && b.dataset.copy != null && navigator.clipboard ) {
-			navigator.clipboard.writeText( b.dataset.copy ).then( function () { b.textContent = 'Másolva ✓'; } );
+			navigator.clipboard.writeText( b.dataset.copy ).then( function () { b.textContent = T.copied || 'Másolva ✓'; } );
 		}
 	} );
 	d.addEventListener( 'close', function () { d.remove(); } );

@@ -1,24 +1,23 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getContent, getDocuments } from "@/lib/cms";
-import { Footer, Header } from "../Chrome";
+import { isLang, prefix, t, type Lang } from "@/lib/i18n";
+import { Footer, Header } from "../../Chrome";
 
 // blocking route: CMS content is read at request time (see getContent), then served from cache
 export const instant = false;
 
-const DOCS = {
-  aszf: { title: "Általános Szerződési Feltételek", ghost: "ÁSZF" },
-  adatkezeles: { title: "Adatkezelési tájékoztató", ghost: "GDPR" },
-  nyilatkozat: { title: "Beleegyező nyilatkozat", ghost: "GDPR" },
-  impresszum: { title: "Impresszum", ghost: "Impresszum" },
-  sutik: { title: "Süti tájékoztató", ghost: "Sütik" },
-} as const;
+// big faded word behind the title; titles come from lib/i18n
+const DOCS = { aszf: "ÁSZF", adatkezeles: "GDPR", nyilatkozat: "GDPR", impresszum: "Impresszum", sutik: "Cookies" } as const;
 type Slug = keyof typeof DOCS;
 const isDoc = (s: string): s is Slug => Object.hasOwn(DOCS, s);
 
-export async function generateMetadata({ params }: { params: Promise<{ doc: string }> }): Promise<Metadata> {
-  const { doc } = await params;
-  return isDoc(doc) ? { title: DOCS[doc].title } : {};
+type Params = { params: Promise<{ lang: string; doc: string }> };
+const langOf = (l: string): Lang => (isLang(l) ? l : "hu");
+
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const { lang, doc } = await params;
+  return isDoc(doc) ? { title: t(langOf(lang)).docs[doc].title } : {};
 }
 
 // empty line = paragraph, "## " / "### " = heading, "- " lines = list
@@ -36,24 +35,25 @@ function Text({ text }: { text: string }) {
   );
 }
 
-export default async function DocumentPage({ params }: { params: Promise<{ doc: string }> }) {
-  const { doc } = await params;
+export default async function DocumentPage({ params }: Params) {
+  const { doc, lang: l } = await params;
   if (!isDoc(doc)) notFound();
-  const [{ site }, docs] = await Promise.all([getContent(), getDocuments()]);
+  const lang = langOf(l);
+  const [{ site }, docs] = await Promise.all([getContent(lang), getDocuments(lang)]);
   const text = docs[doc];
   if (!text) notFound();
   return (
     <>
-      <Header site={site} base="/" />
+      <Header site={site} lang={lang} base={`${prefix(lang)}/`} />
       <main id="mhk-content">
-        <section className="mhk-page-head" data-ghost={DOCS[doc].ghost}>
-          <div className="mhk-wrap"><h1>{DOCS[doc].title}</h1></div>
+        <section className="mhk-page-head" data-ghost={DOCS[doc]}>
+          <div className="mhk-wrap"><h1>{t(lang).docs[doc].title}</h1></div>
         </section>
         <section className="mhk-sec">
           <div className="mhk-wrap" style={{ maxWidth: 860 }}><Text text={text} /></div>
         </section>
       </main>
-      <Footer site={site} base="/" />
+      <Footer site={site} lang={lang} base={`${prefix(lang)}/`} />
     </>
   );
 }

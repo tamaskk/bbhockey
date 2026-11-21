@@ -13,16 +13,26 @@ export const amount = (doc: Doc): string => /(\d[\d\s.]*\d)\s*Ft/.exec(str(doc.j
 
 export type Payment = { title: string; rows: [string, string][]; text: string }
 
+// row labels in the applicant's language (the submission's `nyelv`)
+const LABELS: Record<string, [string, string, string, string]> = {
+  hu: ['Kedvezményezett', 'Számlaszám', 'Összeg', 'Közlemény'],
+  en: ['Beneficiary', 'Account number', 'Amount', 'Payment reference'],
+  de: ['Empfänger', 'Kontonummer', 'Betrag', 'Verwendungszweck'],
+  sv: ['Mottagare', 'Kontonummer', 'Belopp', 'Meddelande'],
+}
+const TITLE: Record<string, string> = { hu: 'Fizetési adatok', en: 'Payment details', de: 'Zahlungsdaten', sv: 'Betalningsuppgifter' }
+
 // shown after sending the form and in the confirmation e-mail; settings from Jelentkezési űrlap → Fizetés
-export function payment(form: Doc, doc: Doc): Payment | null {
+export function payment(form: Doc, doc: Doc, locale = 'hu'): Payment | null {
   if (form.paymentShow === false || !str(form.paymentAccount)) return null
+  const [holder, account, sum, ref] = LABELS[locale] ?? LABELS.hu
   const rows: [string, string][] = [
-    ['Kedvezményezett', str(form.paymentHolder)],
-    ['Számlaszám', str(form.paymentAccount)],
-    ['Összeg', str(doc.osszeg) || amount(doc)],
-    ['Közlemény', str(doc.kozlemeny) || reference(doc)],
+    [holder, str(form.paymentHolder)],
+    [account, str(form.paymentAccount)],
+    [sum, str(doc.osszeg) || amount(doc)],
+    [ref, str(doc.kozlemeny) || reference(doc)],
   ]
-  return { title: str(form.paymentTitle) || 'Fizetési adatok', rows: rows.filter(([, v]) => v), text: str(form.paymentText) }
+  return { title: str(form.paymentTitle) || TITLE[locale] || TITLE.hu, rows: rows.filter(([, v]) => v), text: str(form.paymentText) }
 }
 
 export const paymentText = (p: Payment) => [p.title.toUpperCase(), ...p.rows.map(([k, v]) => `${k}: ${v}`), p.text].filter(Boolean).join('\n')

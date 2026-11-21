@@ -1,7 +1,7 @@
 "use client";
 
 // ticks every consent checkbox of its form group (Jelentkezes.tsx)
-export default function AcceptAll() {
+export default function AcceptAll({ label }: { label: string }) {
   return (
     <button
       type="button"
@@ -13,7 +13,7 @@ export default function AcceptAll() {
         })
       }
     >
-      <span>✓ Összes elfogadása</span>
+      <span>{label}</span>
     </button>
   );
 }

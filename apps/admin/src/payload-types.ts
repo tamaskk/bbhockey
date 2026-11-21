@@ -96,7 +96,8 @@ export interface Config {
   db: {
     defaultIDType: string;
   };
-  fallbackLocale: null;
+  fallbackLocale:
+    ('false' | 'none' | 'null') | false | null | ('hu' | 'en' | 'de' | 'sv') | ('hu' | 'en' | 'de' | 'sv')[];
   globals: {
     beallitasok: Beallitasok;
     fooldal: Fooldal;
@@ -111,7 +112,7 @@ export interface Config {
     email: EmailSelect<false> | EmailSelect<true>;
     dokumentumok: DokumentumokSelect<false> | DokumentumokSelect<true>;
   };
-  locale: null;
+  locale: 'hu' | 'en' | 'de' | 'sv';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -157,6 +158,10 @@ export interface Jelentkezesek {
   fizetve?: boolean | null;
   kozlemeny?: string | null;
   osszeg?: string | null;
+  /**
+   * Ezen a nyelven jelentkezett, ezen a nyelven kapta az e-mailt.
+   */
+  nyelv?: ('hu' | 'en' | 'de' | 'sv') | null;
   csoport?: (string | null) | Csoportok;
   jatekos_nev?: string | null;
   szulo_nev?: string | null;
@@ -284,6 +289,7 @@ export interface Export {
   page?: number | null;
   sort?: string | null;
   sortOrder?: ('asc' | 'desc') | null;
+  locale?: ('all' | 'hu' | 'en' | 'de' | 'sv') | null;
   drafts?: ('yes' | 'no') | null;
   selectionToUse?: ('currentSelection' | 'currentFilters' | 'all') | null;
   fields?: string[] | null;
@@ -530,6 +536,7 @@ export interface JelentkezesekSelect<T extends boolean = true> {
   fizetve?: T;
   kozlemeny?: T;
   osszeg?: T;
+  nyelv?: T;
   csoport?: T;
   jatekos_nev?: T;
   szulo_nev?: T;
@@ -648,6 +655,7 @@ export interface ExportsSelect<T extends boolean = true> {
   page?: T;
   sort?: T;
   sortOrder?: T;
+  locale?: T;
   drafts?: T;
   selectionToUse?: T;
   fields?: T;

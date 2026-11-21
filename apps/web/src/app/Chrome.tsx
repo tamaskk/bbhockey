@@ -1,5 +1,7 @@
 import { img, type Beallitasok } from "@/lib/cms";
 import ThemeToggle from "./ThemeToggle";
+import LangSwitch from "./LangSwitch";
+import { prefix, t, type Lang } from "@/lib/i18n";
 import { editor } from "@/lib/edit";
 import type { Looks } from "@/lib/style";
 
@@ -7,32 +9,30 @@ const tel = (phone: string) => `tel:${phone.replace(/[^\d+]/g, "")}`;
 const anchor = (l: { target?: string | null; href?: string | null }, base = "") => l.href || `${base}#${l.target ?? "fooldal"}`;
 
 // links to the legal pages, at the bottom of the footer
-export const DOC_LINKS = [
-  { href: "/aszf", label: "ÁSZF" },
-  { href: "/adatkezeles", label: "Adatkezelési tájékoztató" },
-  { href: "/sutik", label: "Süti tájékoztató" },
-  { href: "/impresszum", label: "Impresszum" },
-];
+export const DOC_LINKS = ["aszf", "adatkezeles", "sutik", "impresszum"] as const;
 
 function Logo({ site, priority, edit = false }: { site: Beallitasok; priority?: boolean; edit?: boolean }) {
   const src = img(site.logo);
   return src ? <img alt={site.name} src={src} width={614} height={614} fetchPriority={priority ? "high" : undefined} {...editor(edit, "beallitasok").img("logo")} /> : <b>{site.name}</b>;
 }
 
-export function Header({ site, edit = false, base = "" }: { site: Beallitasok; edit?: boolean; base?: string }) {
+type ChromeProps = { site: Beallitasok; lang: Lang; edit?: boolean; base?: string };
+
+export function Header({ site, lang, edit = false, base = "" }: ChromeProps) {
+  const tr = t(lang);
   const nav = site.nav ?? [];
   const e = editor(edit, "beallitasok", site.styles as Looks);
   return (
     <>
       <div aria-hidden="true" className="mhk-scroll-progress" />
-      <a className="screen-reader-text" href="#mhk-content">Ugrás a tartalomra</a>
+      <a className="screen-reader-text" href="#mhk-content">{tr.skip}</a>
       <header className="mhk-sticky-header" role="banner" {...e.block("", undefined, "header")}>
         <div className="mhk-wrap mhk-nav">
-          <a aria-label={`${site.name} – főoldal`} className="mhk-nav-logo" href={`${base}#fooldal`}><Logo site={site} priority edit={edit} /></a>
-          <nav aria-label="Főmenü" className="mhk-nav-links" id="mhk-menu" role="navigation">
+          <a aria-label={`${site.name} – ${tr.home}`} className="mhk-nav-logo" href={`${base}#fooldal`}><Logo site={site} priority edit={edit} /></a>
+          <nav aria-label={tr.mainMenu} className="mhk-nav-links" id="mhk-menu" role="navigation">
             <div className="mhk-nav-panel-head">
-              <span>Menü</span>
-              <button aria-label="Menü bezárása" className="mhk-nav-close" type="button">×</button>
+              <span>{tr.menu}</span>
+              <button aria-label={tr.closeMenu} className="mhk-nav-close" type="button">×</button>
             </div>
             {nav.map((l, i) => (
               <a className={i === 0 ? "mhk-active" : undefined} href={`${base}#${l.target}`} key={l.id ?? i}><span {...e.f(`nav.${i}.label`)}>{l.label}</span></a>
@@ -47,9 +47,10 @@ export function Header({ site, edit = false, base = "" }: { site: Beallitasok; e
           <div className="mhk-nav-backdrop" hidden />
           <div className="mhk-nav-cta">
             <Social site={site} className="mhk-nav-social" mail />
-            <ThemeToggle />
+            <LangSwitch lang={lang} label={tr.language} />
+            <ThemeToggle label={tr.theme} title={tr.themeTitle} />
             <a className="mhk-btn mhk-btn-primary" href={`${base}#jelentkezes`}><span {...e.f("ctaLabel")}>{site.ctaLabel}</span></a>
-            <button aria-controls="mhk-menu" aria-expanded="false" aria-label="Menü megnyitása" className="mhk-nav-toggle" type="button">
+            <button aria-controls="mhk-menu" aria-expanded="false" aria-label={tr.openMenu} className="mhk-nav-toggle" type="button">
               <span /><span /><span />
             </button>
           </div>
@@ -96,7 +97,8 @@ function Social({ site, className, mail = false }: { site: Beallitasok; classNam
   );
 }
 
-export function Footer({ site, edit = false, base = "" }: { site: Beallitasok; edit?: boolean; base?: string }) {
+export function Footer({ site, lang, edit = false, base = "" }: ChromeProps) {
+  const tr = t(lang);
   const e = editor(edit, "beallitasok", site.styles as Looks);
   return (
     <>
@@ -108,7 +110,7 @@ export function Footer({ site, edit = false, base = "" }: { site: Beallitasok; e
             <Social site={site} className="mhk-footer-social" />
           </div>
           <div>
-            <h4>Menü</h4>
+            <h4>{tr.menu}</h4>
             <ul className="mhk-list">
               {(site.nav ?? []).map((l, i) => <li key={l.id ?? i} {...e.item(`nav.${i}`)}><a href={`${base}#${l.target}`}><span {...e.f(`nav.${i}.label`)}>{l.label}</span></a></li>)}
             </ul>
@@ -120,7 +122,7 @@ export function Footer({ site, edit = false, base = "" }: { site: Beallitasok; e
             </ul>
           </div>
           <div>
-            <h4>Elérhetőség</h4>
+            <h4>{tr.contact}</h4>
             <ul className="mhk-list">
               {(edit || site.location) && <li {...e.f("location")}>{site.location}</li>}
               <li><a href={tel(site.phone)}><span {...e.f("phone")}>{site.phone}</span></a></li>
@@ -130,7 +132,7 @@ export function Footer({ site, edit = false, base = "" }: { site: Beallitasok; e
         </div>
         <div className="mhk-wrap mhk-footer-bottom">
           <span {...e.f("copyright")}>{site.copyright}</span>
-          {DOC_LINKS.map((d) => <a key={d.href} href={d.href}>{d.label}</a>)}
+          {DOC_LINKS.map((d) => <a key={d} href={`${prefix(lang)}/${d}`}>{tr.docs[d].short}</a>)}
         </div>
       </footer>
       <div className="mhk-mobile-call"><a href={`${base}#jelentkezes`}>{site.mobileBarLabel || site.ctaLabel}</a></div>
@@ -138,7 +140,7 @@ export function Footer({ site, edit = false, base = "" }: { site: Beallitasok; e
         <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect height="14" rx="1" width="18" x="3" y="5" /><path d="m3 7 9 6 9-6" /></svg> <span>{site.quickTabLabel}</span>
       </a>
       {site.cookieShow && (
-        <div aria-label="Süti-tájékoztató" aria-live="polite" className="mhk-cookie" hidden id="mhk-cookie" role="dialog">
+        <div aria-label={tr.cookieDialog} aria-live="polite" className="mhk-cookie" hidden id="mhk-cookie" role="dialog">
           <div className="mhk-cookie-inner">
             <div className="mhk-cookie-text">
               <strong>{site.cookieTitle}</strong>

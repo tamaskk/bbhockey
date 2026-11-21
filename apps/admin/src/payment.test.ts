@@ -13,4 +13,5 @@ assert.deepEqual(p.rows.map(([k]) => k), ['Kedvezményezett', 'Számlaszám', '�
 assert.match(paymentText(p), /Közlemény: Kiss Gábor 2019\.07\.01/)
 assert.equal(payment({ ...form, paymentShow: false }, {}), null)
 assert.equal(payment({}, {}), null)
+assert.deepEqual(payment(form, {}, 'de')!.rows.map(([k]) => k), ['Empfänger', 'Kontonummer'])
 console.log('payment ok')
