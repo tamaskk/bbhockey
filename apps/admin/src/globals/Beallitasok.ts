@@ -122,7 +122,7 @@ export const Beallitasok: GlobalConfig = {
             },
             { name: 'ctaLabel', label: 'Fejléc gomb felirata', type: 'text', defaultValue: 'Jelentkezés' },
             { name: 'quickTabLabel', label: 'Oldalsó fül felirata', type: 'text', defaultValue: 'Jelentkezés' },
-            { name: 'mobileCallLabel', label: 'Mobilos alsó sáv felirata (a jelentkezéshez ugrik)', type: 'text', defaultValue: 'Jelentkezés' },
+            { name: 'mobileBarLabel', label: 'Mobilos alsó sáv felirata (a jelentkezéshez ugrik)', type: 'text', defaultValue: 'Jelentkezés' },
           ],
         },
         {

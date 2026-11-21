@@ -133,7 +133,7 @@ export function Footer({ site, edit = false, base = "" }: { site: Beallitasok; e
           {DOC_LINKS.map((d) => <a key={d.href} href={d.href}>{d.label}</a>)}
         </div>
       </footer>
-      <div className="mhk-mobile-call"><a href={`${base}#jelentkezes`}>{site.mobileCallLabel || site.ctaLabel}</a></div>
+      <div className="mhk-mobile-call"><a href={`${base}#jelentkezes`}>{site.mobileBarLabel || site.ctaLabel}</a></div>
       <a aria-label={site.quickTabLabel ?? undefined} className="mhk-quick-tab" href={`${base}#jelentkezes`}>
         <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect height="14" rx="1" width="18" x="3" y="5" /><path d="m3 7 9 6 9-6" /></svg> <span>{site.quickTabLabel}</span>
       </a>

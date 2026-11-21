@@ -879,7 +879,7 @@ export interface Beallitasok {
     | null;
   ctaLabel?: string | null;
   quickTabLabel?: string | null;
-  mobileCallLabel?: string | null;
+  mobileBarLabel?: string | null;
   footerText?: string | null;
   footerLinks?:
     | {
@@ -1388,7 +1388,7 @@ export interface BeallitasokSelect<T extends boolean = true> {
       };
   ctaLabel?: T;
   quickTabLabel?: T;
-  mobileCallLabel?: T;
+  mobileBarLabel?: T;
   footerText?: T;
   footerLinks?:
     | T

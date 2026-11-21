@@ -1211,6 +1211,7 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
     text-transform:uppercase; letter-spacing:.05em; color:#151009;
   }
   body.mhk-site{ padding-bottom:52px; }
+  body.mhk-site .mhk-mobile-call a{ color:#151009; } /* beats body.mhk-site a { color:inherit } */
 }
 
 /* fókusz-jelzés (akadálymentesség) */

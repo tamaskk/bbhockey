@@ -33,7 +33,7 @@ export const beallitasokData = ({ logo, hero }: Media) => ({
   ],
   ctaLabel: 'Jelentkezés',
   quickTabLabel: 'Jelentkezés',
-  mobileCallLabel: 'Jelentkezés',
+  mobileBarLabel: 'Jelentkezés',
   footerText: 'Jégkorong utánpótlás-fejlesztés és nyári skills táborok 2015 óta.',
   footerColumnTitle: 'Tábor',
   footerLinks: [
