@@ -21,7 +21,7 @@ export const Dokumentumok: GlobalConfig = {
   fields: [
     doc('aszf', 'Általános Szerződési Feltételek', 'aszf', ASZF),
     doc('adatkezeles', 'Adatkezelési tájékoztató', 'adatkezeles', ADATKEZELES),
-    doc('nyilatkozat', 'Hozzájáruló nyilatkozat (GDPR)', 'nyilatkozat', NYILATKOZAT),
+    doc('nyilatkozat', 'Beleegyező nyilatkozat (GDPR, saját felelősség)', 'nyilatkozat', NYILATKOZAT),
     doc('impresszum', 'Impresszum', 'impresszum', IMPRESSZUM),
     doc('sutik', 'Süti tájékoztató', 'sutik', SUTIK),
   ],

@@ -208,13 +208,17 @@ Jogaid megsértése esetén bírósághoz is fordulhatsz; a pert választásod s
 
 Az Adatkezelő jogosult a Tájékoztatót egyoldalúan módosítani, különösen jogszabályváltozás vagy új adatkezelés bevezetése esetén. A mindenkori hatályos változat ezen az oldalon érhető el.`
 
-export const NYILATKOZAT = `## Hozzájáruló nyilatkozat
+export const NYILATKOZAT = `## Beleegyező és hozzájáruló nyilatkozat
+
+Ez a nyilatkozat a jelentkezési űrlapon, a hozzá tartozó jelölőnégyzet bejelölésével (X) fogadható el; aláírásra nincs szükség.
 
 A jelentkezési űrlap elküldésével és a nyilatkozat elfogadását jelző jelölőnégyzet bejelölésével, mint Érintett, illetve kiskorú résztvevő esetén annak törvényes képviselője, kifejezetten hozzájárulok, hogy az Adatkezelő (${CEG}) a jelentkezési űrlapon általam megadott személyes adatokat, ideértve a gyermek egészségügyi adatait (allergia, ételintolerancia, egyéb egészségügyi információ), megismerje, és a tábor szervezése és lebonyolítása érdekében kezelje.
 
 Jelen hozzájárulásom önkéntes, konkrét és megfelelő tájékoztatáson alapul, és egyértelmű kinyilvánítása annak, hogy a fentiek szerint végzett adatkezeléshez a hozzájárulásomat megadom.
 
 Kijelentem, hogy az Adatkezelő a tervezett adatkezelésről megfelelően tájékoztatott, az Adatkezelési tájékoztatót (bbskills.hu/adatkezeles) számomra elérhetővé tette, annak tartalmát megismertem és az abban foglaltakat megértettem.
+
+Tudomásul veszem, hogy a jégkorong kontaktsport, és a gyermek a táborban saját (szülői) felelősségre vesz részt. Kijelentem, hogy a gyermek egészségi állapota a sporttevékenységet lehetővé teszi, és minden ismert egészségügyi körülményt a jelentkezési űrlapon megadtam. A szervező felelősségére az Általános Szerződési Feltételek (bbskills.hu/aszf) 8. pontja az irányadó.
 
 Tudomásul veszem, hogy hozzájárulásomat bármikor visszavonhatom a ${EMAIL} címen; a visszavonás nem érinti a visszavonás előtti adatkezelés jogszerűségét.`
 

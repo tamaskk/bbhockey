@@ -9,7 +9,7 @@ export const instant = false;
 const DOCS = {
   aszf: { title: "Általános Szerződési Feltételek", ghost: "ÁSZF" },
   adatkezeles: { title: "Adatkezelési tájékoztató", ghost: "GDPR" },
-  nyilatkozat: { title: "Hozzájáruló nyilatkozat", ghost: "GDPR" },
+  nyilatkozat: { title: "Beleegyező nyilatkozat", ghost: "GDPR" },
   impresszum: { title: "Impresszum", ghost: "Impresszum" },
   sutik: { title: "Süti tájékoztató", ghost: "Sütik" },
 } as const;
