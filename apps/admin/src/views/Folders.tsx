@@ -365,6 +365,12 @@ export function Folders() {
                   {folders.map((f) => <option key={f.id} value={f.id}>📁 {path(f.id)}</option>)}
                 </select>
                 <button type="button" className={btn} style={small} onClick={() => exportCsv(subs.filter((s) => checked.has(s.id)), 'kijelolt')}>⬇ Kijelöltek exportja</button>
+                <button type="button" className="btn btn--style-primary btn--size-small" style={{ ...small, background: 'var(--theme-error-500)', borderColor: 'var(--theme-error-500)' }}
+                  onClick={() => {
+                    const ids = [...checked]
+                    if (!window.confirm(`Biztosan törlöd a kijelölt ${ids.length} jelentkezést? Ez nem vonható vissza.`)) return
+                    act(`${ids.length} jelentkezés törlése`, async () => { await call(`/jelentkezesek?${idsQuery(ids)}`, 'DELETE'); setChecked(new Set()) })
+                  }}>🗑 Kijelöltek törlése</button>
               </>
             )}
             <button type="button" className="btn btn--style-primary btn--size-small" style={small} disabled={!list.length} onClick={() => exportCsv(list, selName)}>
