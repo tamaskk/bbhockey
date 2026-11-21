@@ -1299,6 +1299,10 @@ export interface Dokumentumok {
    */
   adatkezeles?: string | null;
   /**
+   * Oldal: bbskills.hu/nyilatkozat. Üres sor: új bekezdés. "## " a sor elején: címsor, "- " a sor elején: felsorolás.
+   */
+  nyilatkozat?: string | null;
+  /**
    * Oldal: bbskills.hu/impresszum. Üres sor: új bekezdés. "## " a sor elején: címsor, "- " a sor elején: felsorolás.
    */
   impresszum?: string | null;
@@ -1717,6 +1721,7 @@ export interface EmailSelect<T extends boolean = true> {
 export interface DokumentumokSelect<T extends boolean = true> {
   aszf?: T;
   adatkezeles?: T;
+  nyilatkozat?: T;
   impresszum?: T;
   sutik?: T;
   updatedAt?: T;

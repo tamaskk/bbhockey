@@ -1,5 +1,5 @@
 import type { GlobalConfig } from 'payload'
-import { ADATKEZELES, ASZF, IMPRESSZUM, SUTIK } from '../documents'
+import { ADATKEZELES, ASZF, IMPRESSZUM, NYILATKOZAT, SUTIK } from '../documents'
 import { revalidateHook } from '../revalidate'
 
 const help = 'Üres sor: új bekezdés. "## " a sor elején: címsor, "- " a sor elején: felsorolás.'
@@ -21,6 +21,7 @@ export const Dokumentumok: GlobalConfig = {
   fields: [
     doc('aszf', 'Általános Szerződési Feltételek', 'aszf', ASZF),
     doc('adatkezeles', 'Adatkezelési tájékoztató', 'adatkezeles', ADATKEZELES),
+    doc('nyilatkozat', 'Hozzájáruló nyilatkozat (GDPR)', 'nyilatkozat', NYILATKOZAT),
     doc('impresszum', 'Impresszum', 'impresszum', IMPRESSZUM),
     doc('sutik', 'Süti tájékoztató', 'sutik', SUTIK),
   ],

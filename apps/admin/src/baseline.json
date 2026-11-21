@@ -902,6 +902,15 @@
             "id": "6aedba16578e9bdc6241f187"
           },
           {
+            "label": "Elfogadom a hozzájáruló nyilatkozatot, és hozzájárulok a megadott adatok – köztük a gyermek egészségügyi adatainak – kezeléséhez",
+            "type": "consent",
+            "width": "full",
+            "required": true,
+            "link": "/nyilatkozat",
+            "name": "gdpr_nyilatkozat",
+            "id": "6b20f0a1c3d4e5f601234567"
+          },
+          {
             "label": "Szülőként / törvényes képviselőként hozzájárulok a gyermek részvételéhez",
             "type": "consent",
             "width": "full",
