@@ -134,7 +134,7 @@
       "show": true,
       "title": "A",
       "highlight": "táborról",
-      "subtitle": "Egyhetes, bentlakásos tábor: 2027. június 21–25. · Győr, Audi Aréna jégcsarnok (dummy adat)",
+      "subtitle": "Egyhetes tábor: 2027. június 21–25. · Győri Egyetemi Jégsport Központ, Győr",
       "tiles": [
         {
           "title": "Jégen",
@@ -326,12 +326,12 @@
         },
         {
           "q": "Mennyibe kerül a tábor?",
-          "a": "Egyéni jelentkezés 160 000 Ft / fő, testvéreknek 140 000 Ft / fő. Az ár tartalmazza az edzéseket, az étkezést és a tábori felszerelést.",
+          "a": "Egyéni jelentkezés 160 000 Ft / fő, testvéreknek 140 000 Ft / fő. Az ár tartalmazza az edzéseket, az étkezést és az ajándékokat (póló, sapka, zokni). Szállást nem tartalmaz.",
           "id": "6aedb83e4924f29aedc7086d"
         },
         {
           "q": "Hogyan fizethetek?",
-          "a": "A jelentkezés után e-mailben küldjük a díjbekérőt, átutalással lehet fizetni.",
+          "a": "A részvételi díjat a jelentkezéssel egy időben kell befizetni, banki átutalással: Bartalis-Horváth Nikolett, 11736006-21509339. A közleménybe a játékos nevét írd. A befizetésről számlát küldünk.",
           "id": "6aedb83e4924f29aedc7086e"
         },
         {
@@ -341,7 +341,7 @@
         },
         {
           "q": "Mi történik, ha lemondjuk a részvételt?",
-          "a": "A tábor kezdete előtt 30 nappal díjmentesen lemondható, utána a részvételi feltételek szerint térítünk vissza.",
+          "a": "Orvosi igazolással alátámasztott sérülés vagy betegség esetén a teljes díjat visszatérítjük. Egyéb lemondásnál: a tábor előtt legalább 15 munkanappal 40 000 Ft, 15 munkanapon belül 80 000 Ft marad nálunk, 5 napon belül a teljes összeg. Részletek az ÁSZF-ben.",
           "id": "6aedb83e4924f29aedc70870"
         }
       ]
@@ -354,17 +354,17 @@
       "rows": [
         {
           "label": "Helyszín",
-          "value": "Győr, Audi Aréna (dummy)",
+          "value": "Győri Egyetemi Jégsport Központ",
           "id": "6aedb83e4924f29aedc70871"
         },
         {
           "label": "Telefon",
-          "value": "+36 30 000 0000",
+          "value": "+36 30 677 8093",
           "id": "6aedb83e4924f29aedc70872"
         },
         {
           "label": "E-mail",
-          "value": "istvanbartalis28@gmail.com",
+          "value": "bbyourskills@gmail.com",
           "id": "6aedb83e4924f29aedc70873"
         },
         {
