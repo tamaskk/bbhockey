@@ -296,7 +296,7 @@ export function Editor({ webUrl, schema }: { webUrl: string; schema: Record<stri
 
   // everything back to the original content; waits for pending saves so they cannot overwrite the reset
   const reset = async () => {
-    if (!window.confirm('Minden szöveg, kép, szekció, szín és az űrlap visszaáll az eredeti állapotra. Ez nem vonható vissza. Folytatod?')) return
+    if (!window.confirm('Minden szöveg, kép, szekció, szín és az űrlap visszaáll az alapállapotra. Ez nem vonható vissza. Folytatod?')) return
     clearTimeout(timer.current)
     dirty.current.clear()
     await chain.current

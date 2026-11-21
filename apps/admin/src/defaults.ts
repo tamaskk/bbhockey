@@ -1,4 +1,4 @@
-// The site's original content: written by the seed script and restored by the editor's "Alaphelyzet" button.
+// The original dummy content for an empty database (seed script). The editor reset uses baseline.json.
 export type Media = { logo?: string; hero?: string; a?: string; b?: string; c?: string; sizeChart?: string }
 
 // file in apps/web/public/img + alt text; the alt text finds the already uploaded copy on reset
