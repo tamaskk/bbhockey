@@ -17,7 +17,7 @@ export const Email: GlobalConfig = {
   slug: 'email',
   label: 'Visszaigazoló e-mail',
   admin: {
-    group: 'Jelentkezések',
+    group: 'Minden jelentkezés',
     description: 'Ez az e-mail megy ki automatikusan minden új jelentkezés után a jelentkező e-mail címére. Lent élő előnézet mutatja, hogyan fog kinézni.',
   },
   access: { read: isAdmin, update: isAdmin },

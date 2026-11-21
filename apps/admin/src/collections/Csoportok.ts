@@ -6,7 +6,7 @@ const isAdmin = ({ req }: { req: { user?: unknown } }) => Boolean(req.user)
 export const Csoportok: CollectionConfig = {
   slug: 'csoportok',
   labels: { singular: 'Mappa', plural: 'Mappák' },
-  admin: { useAsTitle: 'name', group: 'Jelentkezések', hidden: true },
+  admin: { useAsTitle: 'name', group: 'Minden jelentkezés', hidden: true },
   access: { read: isAdmin, create: isAdmin, update: isAdmin, delete: isAdmin },
   hooks: {
     // deleting a folder: its subfolders move up one level, its submissions become unfiled

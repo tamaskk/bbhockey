@@ -42,7 +42,7 @@ export const Jelentkezesek: CollectionConfig = {
     useAsTitle: 'jatekos_nev',
     defaultColumns: ['jatekos_nev', 'korosztaly', 'szulo_nev', 'email', 'telefon', 'csoport', 'statusz', 'createdAt'],
     listSearchableFields: ['jatekos_nev', 'szulo_nev', 'email', 'telefon', 'klub'],
-    group: 'Jelentkezések',
+    group: 'Minden jelentkezés',
     // the list is the folder view (folders, drag and drop, export)
     components: { views: { list: { Component: '/views/Mappak#Mappak' } } },
   },
