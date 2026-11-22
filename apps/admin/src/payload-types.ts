@@ -919,6 +919,17 @@ export interface Beallitasok {
   cookieText?: string | null;
   cookieAccept?: string | null;
   cookieNecessary?: string | null;
+  promoShow?: boolean | null;
+  promoUntil?: string | null;
+  promoBadge?: string | null;
+  promoTitle?: string | null;
+  /**
+   * Üres sor: új bekezdés. "- " a sor elején: felsorolás.
+   */
+  promoText?: string | null;
+  promoImage?: (string | null) | Media;
+  promoButton?: string | null;
+  promoLink?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1415,6 +1426,14 @@ export interface BeallitasokSelect<T extends boolean = true> {
   cookieText?: T;
   cookieAccept?: T;
   cookieNecessary?: T;
+  promoShow?: T;
+  promoUntil?: T;
+  promoBadge?: T;
+  promoTitle?: T;
+  promoText?: T;
+  promoImage?: T;
+  promoButton?: T;
+  promoLink?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

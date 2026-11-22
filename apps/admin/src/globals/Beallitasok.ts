@@ -166,6 +166,37 @@ export const Beallitasok: GlobalConfig = {
             { name: 'cookieNecessary', label: 'Csak szükséges gomb', type: 'text', defaultValue: 'Csak a szükségesek' },
           ],
         },
+        {
+          label: 'Promóció',
+          description:
+            'Felugró ablak az aktuális akcióról a főoldalon. Bármikor átírható vagy kikapcsolható; a lejárat után magától eltűnik. ' +
+            'Egy látogatónak egyszer jön fel, de ha átírod a szöveget, újra megjelenik neki.',
+          fields: [
+            {
+              type: 'row',
+              fields: [
+                { name: 'promoShow', label: 'Promóció bekapcsolva', type: 'checkbox', defaultValue: false, admin: { width: '50%' } },
+                {
+                  name: 'promoUntil',
+                  label: 'Eddig látszik (üresen: amíg ki nem kapcsolod)',
+                  type: 'date',
+                  admin: { width: '50%', date: { pickerAppearance: 'dayOnly', displayFormat: 'yyyy.MM.dd.' } },
+                },
+              ],
+            },
+            { name: 'promoBadge', label: 'Kis felirat a cím fölött', type: 'text', admin: { placeholder: 'pl. Karácsonyi akció' } },
+            { name: 'promoTitle', label: 'Cím', type: 'text' },
+            { name: 'promoText', label: 'Szöveg', type: 'textarea', admin: { rows: 6, description: 'Üres sor: új bekezdés. "- " a sor elején: felsorolás.' } },
+            image('promoImage', 'Kép (nem kötelező)'),
+            {
+              type: 'row',
+              fields: [
+                { name: 'promoButton', label: 'Gomb felirata', type: 'text', defaultValue: 'Jelentkezem', admin: { width: '50%' } },
+                { name: 'promoLink', label: 'Gomb linkje (üresen: a jelentkezéshez ugrik)', type: 'text', admin: { width: '50%' } },
+              ],
+            },
+          ],
+        },
       ],
     },
   ],

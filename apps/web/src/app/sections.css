@@ -89,3 +89,21 @@ body.mhk-site a.mhk-quick-tab, body.mhk-site a.mhk-quick-tab:visited { color: #1
   .mhk-site .bb-about-photos { flex-direction: row; gap: 12px; }
   .mhk-site .bb-about-photos .mhk-photo { flex: 1; min-width: 0; }
 }
+
+/* Promo.tsx: current offer pop-up */
+.mhk-site .bb-promo { position: fixed; width: min(520px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); padding: 0; overflow: auto; border: 2px solid var(--mhk-accent); background: var(--mhk-bg-2); color: var(--mhk-text); }
+.mhk-site .bb-promo::backdrop { background: rgba(8, 8, 10, .75); }
+.mhk-site .bb-promo[open] { animation: bb-promo-in .35s ease-out; }
+@keyframes bb-promo-in { from { opacity: 0; transform: translateY(16px) scale(.97); } }
+.mhk-site .bb-promo > img { display: block; width: 100%; max-height: 240px; object-fit: cover; }
+.mhk-site .bb-promo-body { padding: 26px 28px 28px; }
+.mhk-site .bb-promo-badge { display: inline-block; margin-bottom: 10px; padding: 4px 10px; background: var(--mhk-accent); color: #151009; font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.mhk-site .bb-promo h3 { margin: 0 0 12px; font-size: 1.7rem; font-style: italic; line-height: 1.15; color: var(--mhk-accent); }
+.mhk-site .bb-promo p { margin: 0 0 12px; line-height: 1.55; white-space: pre-line; }
+.mhk-site .bb-promo ul { margin: 0 0 12px; padding-left: 1.2rem; line-height: 1.55; }
+.mhk-site .bb-promo li { margin-bottom: 6px; }
+.mhk-site .bb-promo .mhk-btn { margin-top: 8px; width: 100%; justify-content: center; }
+.mhk-site .bb-promo-x { position: absolute; top: 8px; right: 8px; z-index: 1; width: 36px; height: 36px; border: 0; background: rgba(0, 0, 0, .55); color: #fff; font-size: 1.5rem; line-height: 1; cursor: pointer; }
+.mhk-site .bb-promo-x:hover { background: #000; }
+html[data-theme="light"] .mhk-site .bb-promo h3 { color: var(--mhk-accent-dk); }
+@media (max-width: 600px) { .mhk-site .bb-promo-body { padding: 20px; } .mhk-site .bb-promo h3 { font-size: 1.4rem; } }

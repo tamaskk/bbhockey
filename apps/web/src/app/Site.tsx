@@ -1,8 +1,9 @@
 import Script from "next/script";
-import { getContent } from "@/lib/cms";
+import { getContent, img } from "@/lib/cms";
 import { Footer, Header } from "./Chrome";
 import Jelentkezes from "./Jelentkezes";
 import Sections from "./Sections";
+import Promo from "./Promo";
 import type { Looks } from "@/lib/style";
 import { t, type Lang } from "@/lib/i18n";
 
@@ -19,6 +20,10 @@ export default async function Site({ lang, edit = false }: { lang: Lang; edit?: 
         <Jelentkezes form={form} lang={lang} privacyUrl={site.privacyUrl} looks={site.styles as Looks} edit={edit} />
       </main>
       <Footer site={site} lang={lang} edit={edit} />
+      {!edit && site.promoShow && (site.promoTitle || site.promoText) && (
+        <Promo badge={site.promoBadge} title={site.promoTitle} text={site.promoText} image={img(site.promoImage)} button={site.promoButton}
+          href={site.promoLink || "#jelentkezes"} until={site.promoUntil} close={tr.close} />
+      )}
       <Script id="mhk-config" strategy="beforeInteractive">
         {`window.MHK=${JSON.stringify(mhk)};`}
       </Script>
