@@ -1108,8 +1108,6 @@ body.menu-open .mhk-nav-toggle span:nth-child(3){ transform:translateY(-7px) rot
   .mhk-trust-item{ border-left:0; padding:0; }
   .mhk-about-split, .mhk-story-grid{ grid-template-columns:1fr; gap:32px; }
   .mhk-hero-inner{ padding:72px 0 130px; }
-  .mhk-mobile-call{ display:block; }
-  body{ padding-bottom:52px; }
   .mhk-filter-bar{ top:72px; }
   .mhk-page-head::after{ display:none; }
 }
