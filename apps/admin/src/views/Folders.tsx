@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { toTable } from './table'
 import { toXlsx } from './xlsx'
 import { compare, toRegex } from './sort'
+import { recipient, type Submission } from '../email/template'
 
 type Folder = { id: string; name: string; parent?: string | null; hidden?: boolean | null }
 type Sub = {
@@ -41,6 +42,7 @@ export function Folders() {
   const [rx, setRx] = useState(false) // search is a regex on the player's and parent's name
   const [sort, setSort] = useState<{ key: string; dir: 1 | -1 }>({ key: 'createdAt', dir: -1 })
   const [view, setView] = useState<string | null>(null) // submission shown in the details modal
+  const [mailTo, setMailTo] = useState<{ subs: Sub[]; name: string } | null>(null) // group e-mail dialog
   const [formFields, setFormFields] = useState<Map<string, { name: string; type: string }[]>>(new Map())
 
   const load = useCallback(async () => {
@@ -289,6 +291,7 @@ export function Folders() {
           onDelete={(id) => { setView(null); act('Jelentkezés törlése', () => call(`/jelentkezesek/${id}`, 'DELETE')) }}
         />
       )}
+      {mailTo && <Mailer subs={mailTo.subs} name={mailTo.name} onClose={() => setMailTo(null)} />}
       {ghost && (
         <div style={{ position: 'fixed', left: ghost.x + 12, top: ghost.y + 12, zIndex: 1000, pointerEvents: 'none', background: 'var(--theme-elevation-800)', color: 'var(--theme-elevation-0)', padding: '6px 10px', borderRadius: 6, fontSize: 13, boxShadow: '0 4px 14px rgba(0,0,0,.3)' }}>
           {ghost.text}
@@ -367,6 +370,7 @@ export function Folders() {
                   {folders.map((f) => <option key={f.id} value={f.id}>📁 {path(f.id)}</option>)}
                 </select>
                 <button type="button" className={btn} style={small} onClick={() => exportXlsx(subs.filter((s) => checked.has(s.id)), 'kijelolt')}>⬇ Kijelöltek exportja (Excel)</button>
+                <button type="button" className={btn} style={small} onClick={() => setMailTo({ subs: subs.filter((s) => checked.has(s.id)), name: `${checked.size} kijelölt` })}>✉ E-mail a kijelölteknek</button>
                 <button type="button" className="btn btn--style-primary btn--size-small" style={{ ...small, background: 'var(--theme-error-500)', borderColor: 'var(--theme-error-500)' }}
                   onClick={() => {
                     const ids = [...checked]
@@ -375,6 +379,9 @@ export function Folders() {
                   }}>🗑 Kijelöltek törlése</button>
               </>
             )}
+            <button type="button" className={btn} style={small} disabled={!list.length} onClick={() => setMailTo({ subs: list, name: sel === 'all' ? 'Összes jelentkezés' : sel === 'none' ? 'Nincs mappában' : path(sel) })}>
+              ✉ E-mail küldése
+            </button>
             <button type="button" className="btn btn--style-primary btn--size-small" style={small} disabled={!list.length} onClick={() => exportXlsx(list, selName)}>
               ⬇ Export Excelbe
             </button>
@@ -536,6 +543,99 @@ function Details({ sub, folders, position, formFields, onStep, onClose, onSave, 
               <button type="button" className={btn} style={small} onClick={() => setDraft((sub.valaszok ?? []).map((a) => a.valasz ?? ''))}>✎ Szerkesztés</button>
               <button type="button" className="btn btn--style-primary btn--size-small" style={small} onClick={onClose}>Kész</button>
             </>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const SITE = 'https://www.bbskills.hu'
+const DRAFT = {
+  subject: 'Újra indul a BB Skills tábor – jelentkezz most!',
+  body:
+    'Kedves {{szulo_nev}}!\n\nJó hírünk van: újra indul a BB Your Hockey Skills tábor! Köszönjük, hogy legutóbb {{jatekos_nev}} is velünk volt, ' +
+    'nagyon örülnénk, ha idén is együtt edzhetnénk.\n\nA helyek száma korlátozott, ezért érdemes minél előbb jelentkezni. ' +
+    'Az időpontokat, árakat és a jelentkezési lapot a weboldalon találod.\n\nVárunk szeretettel a jégen!\nA BB Skills csapata',
+  buttonLabel: 'Jelentkezem a táborba',
+  buttonUrl: `${SITE}/#jelentkezes`,
+}
+
+// group e-mail to the listed applicants: one address gets it once, sent in small batches by /admin/api/korlevel
+function Mailer({ subs, name, onClose }: { subs: Sub[]; name: string; onClose: () => void }) {
+  const [m, setM] = useState(DRAFT)
+  const [state, setState] = useState<{ done: number; failed: string[]; running: boolean } | null>(null)
+  // one submission per address (siblings share a parent's e-mail); submissions without an address are skipped
+  const { targets, missing } = useMemo(() => {
+    const seen = new Map<string, Sub>()
+    let missing = 0
+    for (const s of subs) {
+      const to = recipient(s as Submission)?.toLowerCase()
+      if (!to) missing++
+      else if (!seen.has(to)) seen.set(to, s)
+    }
+    return { targets: [...seen.values()], missing }
+  }, [subs])
+  const running = state?.running ?? false
+  const send = async () => {
+    if (!window.confirm(`Biztosan elküldöd ezt az e-mailt ${targets.length} címre? Elküldés után nem vonható vissza.`)) return
+    const failed: string[] = []
+    let done = 0
+    setState({ done, failed, running: true })
+    for (let i = 0; i < targets.length; i += 10) {
+      const batch = targets.slice(i, i + 10)
+      try {
+        const r = await call('/korlevel', 'POST', { ids: batch.map((s) => s.id), ...m })
+        done += r.sent.length
+        for (const f of r.failed) failed.push(`${batch.find((s) => s.id === f.id)?.jatekos_nev ?? f.id}: ${f.error}`)
+      } catch (e) {
+        failed.push(...batch.map((s) => `${s.jatekos_nev ?? s.id}: ${(e as Error).message}`))
+      }
+      setState({ done, failed: [...failed], running: true })
+    }
+    setState({ done, failed, running: false })
+  }
+  const input = (k: keyof typeof DRAFT, label: string, multi = false) => (
+    <label style={{ display: 'grid', gap: 4 }}>{label}
+      {multi
+        ? <textarea style={{ ...field, minHeight: 220 }} value={m[k]} disabled={running} onChange={(e) => setM({ ...m, [k]: e.target.value })} />
+        : <input style={field} value={m[k]} disabled={running} onChange={(e) => setM({ ...m, [k]: e.target.value })} />}
+    </label>
+  )
+  return (
+    <div role="dialog" aria-modal="true" aria-label="E-mail küldése" onMouseDown={(e) => e.target === e.currentTarget && !running && onClose()}
+      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.55)', display: 'grid', placeItems: 'center', padding: 16, zIndex: 300 }}>
+      <div style={{ background: 'var(--theme-elevation-0)', color: 'var(--theme-text)', borderRadius: 10, width: 'min(720px, 100%)', maxHeight: '90vh', display: 'flex', flexDirection: 'column', boxShadow: '0 20px 60px rgba(0,0,0,.4)' }}>
+        <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--theme-elevation-150)' }}>
+          <h2 style={{ margin: 0 }}>✉ E-mail küldése</h2>
+          <small style={{ opacity: 0.7 }}>
+            {name}: {targets.length} címzett{subs.length !== targets.length ? ` (${subs.length} jelentkezés; azonos címre csak egyszer megy${missing ? `, ${missing} jelentkezésnél nincs e-mail cím` : ''})` : ''}
+          </small>
+        </div>
+        <div style={{ overflow: 'auto', padding: '16px 20px', display: 'grid', gap: 12 }}>
+          {input('subject', 'Tárgy')}
+          {input('body', 'Szöveg', true)}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            {input('buttonLabel', 'Gomb felirata (üresen: nincs gomb)')}
+            {input('buttonUrl', 'Gomb linkje')}
+          </div>
+          <small style={{ opacity: 0.7 }}>
+            Mindenki külön levelet kap, a többiek címét nem látja. Behelyettesíthető: {'{{szulo_nev}}'}, {'{{jatekos_nev}}'} és az űrlap többi mezője, mint a visszaigazoló e-mailben.
+            A kinézet (logó, színek, lábléc) a „Visszaigazoló e-mail” beállításaiból jön. A válaszok a válaszcímre érkeznek.
+          </small>
+          {state && (
+            <p role="status" style={{ margin: 0, fontWeight: 600 }}>
+              {state.running ? `Küldés… ${state.done} / ${targets.length}` : `Kész: ${state.done} e-mail elküldve${state.failed.length ? `, ${state.failed.length} nem ment ki` : ' ✓'}`}
+            </p>
+          )}
+          {!!state?.failed.length && <ul style={{ margin: 0, color: '#dc2626', fontSize: 13 }}>{state.failed.map((f) => <li key={f}>{f}</li>)}</ul>}
+        </div>
+        <div style={{ display: 'flex', gap: 8, padding: '12px 20px', borderTop: '1px solid var(--theme-elevation-150)', justifyContent: 'flex-end' }}>
+          <button type="button" className={btn} style={small} disabled={running} onClick={onClose}>{state && !running ? 'Bezárás' : 'Mégse'}</button>
+          {!(state && !running) && (
+            <button type="button" className="btn btn--style-primary btn--size-small" style={small} disabled={running || !targets.length || !m.subject.trim() || !m.body.trim()} onClick={send}>
+              {running ? 'Küldés…' : `✉ Küldés ${targets.length} címre`}
+            </button>
           )}
         </div>
       </div>

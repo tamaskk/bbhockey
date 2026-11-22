@@ -1,4 +1,5 @@
 import { emailTestEndpoint } from './emailTest'
+import { korlevelEndpoint } from './korlevel'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
@@ -60,7 +61,7 @@ export default buildConfig({
     defaultLocale: 'hu',
     fallback: true,
   },
-  endpoints: [resetEndpoint, emailTestEndpoint],
+  endpoints: [resetEndpoint, emailTestEndpoint, korlevelEndpoint],
   // outgoing mail over SMTP (Gmail, Resend, any provider); RESEND_API_KEY alone is enough for Resend.
   // Without either Payload only logs the e-mails.
   ...(SMTP.host && {
