@@ -82,10 +82,13 @@ body.mhk-site a.mhk-quick-tab, body.mhk-site a.mhk-quick-tab:visited { color: #1
   .bb-lb-prev, .bb-lb-next { top: auto; bottom: 8px; transform: none; }
 }
 
+/* the tilted marquee and hero background are wider than the screen: iOS Safari scrolls sideways unless html clips too */
+html, body { overflow-x: clip; }
+
 /* Rólunk: up to three photos in the left column, spread along the text */
 .mhk-site .mhk-about-split:has(.bb-about-photos) { align-items: stretch; }
 .mhk-site .bb-about-photos { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; }
-@media (max-width: 1109px) {
+@media (max-width: 860px) {
   .mhk-site .bb-about-photos { flex-direction: row; gap: 12px; }
   .mhk-site .bb-about-photos .mhk-photo { flex: 1; min-width: 0; }
 }
