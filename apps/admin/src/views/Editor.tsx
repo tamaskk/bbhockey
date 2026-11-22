@@ -347,7 +347,7 @@ export function Editor({ webUrl, schema }: { webUrl: string; schema: Record<stri
         <a href={`${webUrl}${edLang === 'hu' ? '' : `/${edLang}`}` || '/'} target="_blank" rel="noreferrer">Oldal ↗</a>
       </div>
       <iframe ref={frame} src={src} title="Oldalszerkesztő" style={{ flex: 1, border: 0, width: '100%' }} />
-      {modal?.kind === 'img' && <ImageModal onClose={() => setModal(null)} onSave={(id) => apply(modal.slug, modal.path, id)} />}
+      {modal?.kind === 'img' && <ImageModal current={getPath(docs.current[modal.slug], modal.path)} onClose={() => setModal(null)} onSave={(id) => apply(modal.slug, modal.path, id)} />}
       {modal?.kind === 'gallery' && (
         <GalleryModal
           value={String(getPath(docs.current[modal.slug], `${modal.path}.galleryLinks`) ?? '')}
@@ -552,10 +552,20 @@ function Dialog({ title, children, onClose, onSubmit, busy, err, submitLabel = '
 const inputStyle = { width: '100%', padding: 8, borderRadius: 4, border: '1px solid var(--theme-elevation-250)', background: 'var(--theme-input-bg, var(--theme-elevation-50))', color: 'inherit', font: 'inherit' }
 const LINK_HELP = 'Google Drive: jobb klikk a képen → Megosztás → „Bárki, aki rendelkezik a linkkel” → Link másolása. Más https képlink is jó.'
 
-function ImageModal({ onClose, onSave }: { onClose: () => void; onSave: (mediaId: string) => void }) {
+function ImageModal({ current, onClose, onSave }: { current: unknown; onClose: () => void; onSave: (mediaId: string) => void }) {
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState('')
   const link = useRef(''), alt = useRef('')
+  // the image shown now: its saved link, and whether this browser can load it (a Drive file not shared publicly can't)
+  const [cur, setCur] = useState<{ link: string; src: string; ok?: boolean } | null>(null)
+  const id = typeof current === 'string' ? current : (current as Doc | null)?.id
+  useEffect(() => {
+    if (typeof id !== 'string') return
+    fetch(`/admin/api/media/${id}?depth=0`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((m) => m && setCur({ link: m.driveUrl || m.url || '', src: m.thumbnailURL || m.url || '' }))
+      .catch(() => {})
+  }, [id])
   const submit = async () => {
     if (!/^https:\/\//i.test(link.current.trim())) return setErr('Illessz be egy https:// kezdetű linket.')
     setBusy(true)
@@ -568,6 +578,18 @@ function ImageModal({ onClose, onSave }: { onClose: () => void; onSave: (mediaId
   }
   return (
     <Dialog title="Kép cseréje" onClose={onClose} onSubmit={submit} busy={busy} err={err}>
+      {cur && (
+        <div style={{ display: 'grid', gap: 6 }}>
+          <span>Jelenlegi kép</span>
+          {cur.src && cur.ok !== false && <img src={cur.src} alt="" onLoad={() => setCur((c) => c && { ...c, ok: true })} onError={() => setCur((c) => c && { ...c, ok: false })} style={{ maxWidth: 200, maxHeight: 120, objectFit: 'cover', borderRadius: 4 }} />}
+          {cur.ok === false && (
+            <span style={{ color: '#dc2626' }}>
+              ⚠ Ez a kép nem tölthető be. Ha Google Drive link: a tulajdonos állítsa a megosztást „Bárki, aki rendelkezik a linkkel” értékre, addig csak ő látja.
+            </span>
+          )}
+          <a href={cur.link} target="_blank" rel="noreferrer" style={{ wordBreak: 'break-all', fontSize: 13 }}>{cur.link}</a>
+        </div>
+      )}
       <label>Google Drive link<input autoFocus style={inputStyle} placeholder="https://drive.google.com/file/d/…/view" onChange={(e) => (link.current = e.target.value)} /></label>
       <small>{LINK_HELP}</small>
       <label>Leírás (mi látható a képen)<input style={inputStyle} onChange={(e) => (alt.current = e.target.value)} /></label>
