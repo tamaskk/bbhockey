@@ -32,6 +32,8 @@ export async function POST(req: Request) {
     if (["select", "radio", "checkboxes"].includes(f.type)) v = v.filter((x) => f.options?.includes(x));
     if (f.type !== "checkboxes") v = v.slice(0, 1);
     if (f.required && !v.length) return fail(tr.required(f.label));
+    // dates arrive as YYYY-MM-DD, so plain string comparison is a date comparison
+    if (f.type === "date" && v[0] && ((f.minDate && v[0] < f.minDate) || (f.maxDate && v[0] > f.maxDate))) return fail(tr.dateRange(f.label, f.minDate, f.maxDate));
 
     const consent = f.type === "consent";
     if (!RESERVED.has(f.name)) data[f.name] = consent ? v[0] === "igen" : v.join(", ");

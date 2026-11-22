@@ -12,6 +12,9 @@ const showFor = (types: string[]) => ({ condition: onlyFor(types), custom: { sho
 export const slug = (s: string) =>
   s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '').slice(0, 40) || 'mezo'
 
+// optional date limit, e.g. youngest accepted birth date
+const isoDate = (v: unknown) => !v || (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)) || 'ÉÉÉÉ-HH-NN formátum kell, pl. 2018-12-31'
+
 type FormField = { name?: string | null; label?: string | null; type?: string | null }
 type FormGroup = { fields?: FormField[] | null }
 
@@ -69,6 +72,14 @@ const fieldItem: Field[] = [
     admin: { ...showFor(CHOICE_TYPES), description: 'Írd be az opciót, majd Enter. Sorrend húzással állítható.' },
   },
   { name: 'placeholder', label: 'Minta szöveg a mezőben', type: 'text', admin: showFor(INPUT_TYPES) },
+  {
+    type: 'row',
+    admin: showFor(['date']),
+    fields: [
+      { name: 'minDate', label: 'Legkorábbi elfogadott dátum', type: 'text', admin: { width: '50%', placeholder: 'ÉÉÉÉ-HH-NN, pl. 2008-01-01' }, validate: isoDate },
+      { name: 'maxDate', label: 'Legkésőbbi elfogadott dátum', type: 'text', admin: { width: '50%', placeholder: 'ÉÉÉÉ-HH-NN, pl. 2018-12-31' }, validate: isoDate },
+    ],
+  },
   { name: 'link', label: 'Link (a felirat erre mutat)', type: 'text', admin: showFor(['consent']) },
   { ...image('image', 'Kép'), admin: showFor(['image']) } as Field,
   { name: 'help', label: 'Segítő szöveg (a mező alatt)', type: 'textarea', admin: showFor(ALL_TYPES.filter((t) => t !== 'image')) },

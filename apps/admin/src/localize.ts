@@ -7,7 +7,7 @@ export type Locale = (typeof LOCALES)[number]
 const SHARED = new Set([
   'name', 'phone', 'url', 'href', 'link', 'driveUrl', 'galleryLinks', 'ifField', 'order',
   'accent', 'accentLight', 'accentDark', 'notify', 'logoUrl', 'buttonUrl', 'pageBg', 'cardBg', 'headerBg',
-  'headerText', 'textColor', 'buttonText', 'paymentAccount', 'paymentHolder', 'privacyUrl', 'promoLink',
+  'headerText', 'textColor', 'buttonText', 'paymentAccount', 'paymentHolder', 'privacyUrl', 'promoLink', 'minDate', 'maxDate',
 ])
 
 // Marks every text/textarea field as translatable (Payload localization), except the SHARED ones.

@@ -66,7 +66,7 @@ function Control({ f, privacyUrl, p, e, choose, lang }: { f: FormField; privacyU
           {opts.map((o) => <option key={o} value={o}>{o}</option>)}
         </select>
       ) : (
-        <input type={f.type} autoComplete={f.type === "email" ? "email" : f.type === "tel" ? "tel" : undefined} {...common} />
+        <input type={f.type} autoComplete={f.type === "email" ? "email" : f.type === "tel" ? "tel" : undefined} min={f.minDate || undefined} max={f.maxDate || undefined} {...common} />
       )}
       {help}
     </>

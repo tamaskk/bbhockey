@@ -1282,6 +1282,8 @@ export interface Urlap {
                */
               options?: string[] | null;
               placeholder?: string | null;
+              minDate?: string | null;
+              maxDate?: string | null;
               link?: string | null;
               image?: (string | null) | Media;
               help?: string | null;
@@ -1751,6 +1753,8 @@ export interface UrlapSelect<T extends boolean = true> {
               required?: T;
               options?: T;
               placeholder?: T;
+              minDate?: T;
+              maxDate?: T;
               link?: T;
               image?: T;
               help?: T;
