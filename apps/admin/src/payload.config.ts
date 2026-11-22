@@ -1,7 +1,6 @@
 import { emailTestEndpoint } from './emailTest'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
-import { importExportPlugin } from '@payloadcms/plugin-import-export'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { hu } from '@payloadcms/translations/languages/hu'
@@ -83,7 +82,6 @@ export default buildConfig({
   db: mongooseAdapter({ url: process.env.DATABASE_URL || '' }),
   sharp,
   plugins: [
-    importExportPlugin({ collections: [{ slug: 'jelentkezesek' }] }),
     // uploads go to Vercel Blob in production; locally (no token) they stay on disk
     vercelBlobStorage({
       enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),

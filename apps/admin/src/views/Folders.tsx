@@ -1,6 +1,6 @@
 'use client'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { toCsv, toTable } from './csv'
+import { toTable } from './table'
 import { toXlsx } from './xlsx'
 import { compare, toRegex } from './sort'
 
@@ -173,16 +173,12 @@ export function Folders() {
   }
   const dropProps = (_target: string | null, key: string) => ({ 'data-drop': key })
 
-  const exportFile = (rows: Sub[], name: string, kind: 'csv' | 'xlsx') => {
-    const folderOf = (r: object) => path((r as Sub).csoport) || '–'
-    const status = (st?: string | null) => STATUS[st ?? ''] ?? st ?? ''
-    const blob =
-      kind === 'csv'
-        ? new Blob([toCsv(rows, folderOf, status)], { type: 'text/csv;charset=utf-8' })
-        : new Blob([toXlsx(toTable(rows, folderOf, status), name) as BlobPart], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+  const exportXlsx = (rows: Sub[], name: string) => {
+    const table = toTable(rows, (r) => path((r as Sub).csoport) || '–', (st) => STATUS[st ?? ''] ?? st ?? '')
+    const blob = new Blob([toXlsx(table, name) as BlobPart], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
     const a = Object.assign(document.createElement('a'), {
       href: URL.createObjectURL(blob),
-      download: `jelentkezesek-${name.replace(/[^\p{L}\p{N}]+/gu, '-').toLowerCase()}-${new Date().toISOString().slice(0, 10)}.${kind}`,
+      download: `jelentkezesek-${name.replace(/[^\p{L}\p{N}]+/gu, '-').toLowerCase()}-${new Date().toISOString().slice(0, 10)}.xlsx`,
     })
     a.click()
     URL.revokeObjectURL(a.href)
@@ -370,8 +366,7 @@ export function Folders() {
                   <option value="-">📥 Nincs mappában</option>
                   {folders.map((f) => <option key={f.id} value={f.id}>📁 {path(f.id)}</option>)}
                 </select>
-                <button type="button" className={btn} style={small} onClick={() => exportFile(subs.filter((s) => checked.has(s.id)), 'kijelolt', 'xlsx')}>⬇ Kijelöltek (XLSX)</button>
-                <button type="button" className={btn} style={small} onClick={() => exportFile(subs.filter((s) => checked.has(s.id)), 'kijelolt', 'csv')}>⬇ Kijelöltek (CSV)</button>
+                <button type="button" className={btn} style={small} onClick={() => exportXlsx(subs.filter((s) => checked.has(s.id)), 'kijelolt')}>⬇ Kijelöltek exportja (Excel)</button>
                 <button type="button" className="btn btn--style-primary btn--size-small" style={{ ...small, background: 'var(--theme-error-500)', borderColor: 'var(--theme-error-500)' }}
                   onClick={() => {
                     const ids = [...checked]
@@ -380,11 +375,8 @@ export function Folders() {
                   }}>🗑 Kijelöltek törlése</button>
               </>
             )}
-            <button type="button" className="btn btn--style-primary btn--size-small" style={small} disabled={!list.length} onClick={() => exportFile(list, selName, 'xlsx')}>
-              ⬇ Excel (XLSX)
-            </button>
-            <button type="button" className="btn btn--style-secondary btn--size-small" style={small} disabled={!list.length} onClick={() => exportFile(list, selName, 'csv')}>
-              ⬇ CSV
+            <button type="button" className="btn btn--style-primary btn--size-small" style={small} disabled={!list.length} onClick={() => exportXlsx(list, selName)}>
+              ⬇ Export Excelbe
             </button>
           </div>
           {list.length === 0 ? (
