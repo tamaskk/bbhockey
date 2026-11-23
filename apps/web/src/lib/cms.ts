@@ -33,6 +33,9 @@ async function readContent(lang: Lang) {
     getGlobal<Fooldal>("fooldal", lang),
     getGlobal<Urlap>("urlap", lang),
   ]);
+  // Beállítások → youngest birth year caps the birth date field; the form shows it and /api/submit enforces it
+  if (site.youngestBirthYear)
+    for (const g of form.groups ?? []) for (const f of g.fields ?? []) if (f.name === "szuletesi_datum") f.maxDate = `${site.youngestBirthYear}-12-31`;
   return { site, home, form };
 }
 

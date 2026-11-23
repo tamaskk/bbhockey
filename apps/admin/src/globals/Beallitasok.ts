@@ -125,6 +125,19 @@ export const Beallitasok: GlobalConfig = {
           ],
         },
         {
+          label: 'Jelentkezés',
+          fields: [
+            {
+              name: 'youngestBirthYear',
+              label: 'Legfiatalabb jelentkező születési éve',
+              type: 'number',
+              min: 2000,
+              max: 2100,
+              admin: { description: 'Pl. 2018: aki 2019-ben vagy később született, nem tud jelentkezni. Az űrlap kiírja a határt. Üresen: nincs korlát.' },
+            },
+          ],
+        },
+        {
           label: 'Lábléc',
           fields: [
             { name: 'footerText', label: 'Rövid leírás a logó alatt', type: 'textarea' },

@@ -617,6 +617,7 @@ export interface Beallitasok {
     | null;
   ctaLabel?: string | null;
   quickTabLabel?: string | null;
+  youngestBirthYear?: number | null;
   footerText?: string | null;
   footerLinks?:
     | {
@@ -1138,6 +1139,7 @@ export interface BeallitasokSelect<T extends boolean = true> {
       };
   ctaLabel?: T;
   quickTabLabel?: T;
+  youngestBirthYear?: T;
   footerText?: T;
   footerLinks?:
     | T

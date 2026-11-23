@@ -68,6 +68,7 @@ function Control({ f, privacyUrl, p, e, choose, lang }: { f: FormField; privacyU
       ) : (
         <input type={f.type} autoComplete={f.type === "email" ? "email" : f.type === "tel" ? "tel" : undefined} min={f.minDate || undefined} max={f.maxDate || undefined} {...common} />
       )}
+      {f.type === "date" && (f.minDate || f.maxDate) && <small className="bb-help">{t(lang).dateHint(f.minDate, f.maxDate)}</small>}
       {help}
     </>
   );

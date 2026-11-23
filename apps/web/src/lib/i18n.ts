@@ -43,6 +43,7 @@ const hu = {
   required: (label: string) => `Kérjük, töltsd ki: ${label}`,
   dateRange: (label: string, min?: string | null, max?: string | null) =>
     `${label}: ${[min && `legkorábban ${min}`, max && `legkésőbb ${max}`].filter(Boolean).join(", ")} lehet. Erre a táborra ezzel a dátummal sajnos nem lehet jelentkezni.`,
+  dateHint: (min?: string | null, max?: string | null) => `Elfogadott dátum: ${[min && `legkorábban ${min}`, max && `legkésőbb ${max}`].filter(Boolean).join(", ")}`,
   saveFailed: "A jelentkezést most nem sikerült elmenteni. Kérjük, próbáld újra, vagy írj nekünk e-mailt.",
   pay: { title: "Fizetési adatok", holder: "Kedvezményezett", account: "Számlaszám", amount: "Összeg", reference: "Közlemény" },
   docs: {
@@ -89,6 +90,7 @@ const en: Dict = {
   closed: "Registration is closed.",
   required: (label) => `Please fill in: ${label}`,
   dateRange: (label, min, max) => `${label}: must be ${[min && `on or after ${min}`, max && `on or before ${max}`].filter(Boolean).join(" and ")}. Unfortunately, registration for this camp is not possible with this date.`,
+  dateHint: (min, max) => `Accepted date: ${[min && `on or after ${min}`, max && `on or before ${max}`].filter(Boolean).join(", ")}`,
   saveFailed: "We could not save your registration right now. Please try again, or send us an e-mail.",
   pay: { title: "Payment details", holder: "Beneficiary", account: "Account number", amount: "Amount", reference: "Payment reference" },
   docs: {
@@ -134,6 +136,7 @@ const de: Dict = {
   closed: "Die Anmeldung ist geschlossen.",
   required: (label) => `Bitte ausfüllen: ${label}`,
   dateRange: (label, min, max) => `${label}: ${[min && `frühestens ${min}`, max && `spätestens ${max}`].filter(Boolean).join(", ")}. Mit diesem Datum ist eine Anmeldung für dieses Camp leider nicht möglich.`,
+  dateHint: (min, max) => `Zulässiges Datum: ${[min && `frühestens ${min}`, max && `spätestens ${max}`].filter(Boolean).join(", ")}`,
   saveFailed: "Die Anmeldung konnte gerade nicht gespeichert werden. Bitte versuche es erneut oder schreib uns eine E-Mail.",
   pay: { title: "Zahlungsdaten", holder: "Empfänger", account: "Kontonummer", amount: "Betrag", reference: "Verwendungszweck" },
   docs: {
@@ -179,6 +182,7 @@ const sv: Dict = {
   closed: "Anmälan är stängd.",
   required: (label) => `Fyll i: ${label}`,
   dateRange: (label, min, max) => `${label}: ${[min && `tidigast ${min}`, max && `senast ${max}`].filter(Boolean).join(", ")}. Tyvärr går det inte att anmäla sig till lägret med detta datum.`,
+  dateHint: (min, max) => `Godkänt datum: ${[min && `tidigast ${min}`, max && `senast ${max}`].filter(Boolean).join(", ")}`,
   saveFailed: "Vi kunde inte spara anmälan just nu. Försök igen eller skicka ett e-postmeddelande till oss.",
   pay: { title: "Betalningsuppgifter", holder: "Mottagare", account: "Kontonummer", amount: "Belopp", reference: "Meddelande" },
   docs: {
