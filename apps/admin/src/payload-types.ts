@@ -617,6 +617,9 @@ export interface Beallitasok {
     | null;
   ctaLabel?: string | null;
   quickTabLabel?: string | null;
+  /**
+   * Pl. 2018: aki 2019-ben vagy később született, nem tud jelentkezni. Az űrlap kiírja a határt. Üresen: nincs korlát.
+   */
   youngestBirthYear?: number | null;
   footerText?: string | null;
   footerLinks?:
@@ -650,6 +653,21 @@ export interface Beallitasok {
   cookieText?: string | null;
   cookieAccept?: string | null;
   cookieNecessary?: string | null;
+  extraShow?: boolean | null;
+  extraTitle?: string | null;
+  /**
+   * Üres sor: új bekezdés.
+   */
+  extraText?: string | null;
+  extraImages?:
+    | {
+        /**
+         * Google Drive: kép → Megosztás → „Bárki, aki rendelkezik a linkkel” → Link másolása. Más https kép link is jó.
+         */
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
   promoShow?: boolean | null;
   promoUntil?: string | null;
   promoBadge?: string | null;
@@ -1160,6 +1178,15 @@ export interface BeallitasokSelect<T extends boolean = true> {
   cookieText?: T;
   cookieAccept?: T;
   cookieNecessary?: T;
+  extraShow?: T;
+  extraTitle?: T;
+  extraText?: T;
+  extraImages?:
+    | T
+    | {
+        url?: T;
+        id?: T;
+      };
   promoShow?: T;
   promoUntil?: T;
   promoBadge?: T;

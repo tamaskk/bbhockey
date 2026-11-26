@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 import { FONTS } from '../fonts'
 import { image } from '../fields'
+import { directImageUrl, validateImageLink } from '../drive'
 import { revalidateHook } from '../revalidate'
 
 const sectionTargets = [
@@ -177,6 +178,26 @@ export const Beallitasok: GlobalConfig = {
             { name: 'cookieText', label: 'Szöveg', type: 'textarea' },
             { name: 'cookieAccept', label: 'Elfogadás gomb', type: 'text', defaultValue: 'Elfogadom' },
             { name: 'cookieNecessary', label: 'Csak szükséges gomb', type: 'text', defaultValue: 'Csak a szükségesek' },
+          ],
+        },
+        {
+          label: 'Képes blokk',
+          description: 'Cím, szöveg és max 3 kép a „Táborról” szekció alatt, a napirend előtt.',
+          fields: [
+            { name: 'extraShow', label: 'Megjelenjen az oldalon', type: 'checkbox', defaultValue: false },
+            { name: 'extraTitle', label: 'Cím', type: 'text' },
+            { name: 'extraText', label: 'Szöveg', type: 'textarea', admin: { rows: 6, description: 'Üres sor: új bekezdés.' } },
+            { name: 'extraImages', label: 'Képek (max 3, egymás mellett)', type: 'array', maxRows: 3, labels: { singular: 'Kép', plural: 'Képek' }, fields: [
+              {
+                name: 'url',
+                label: 'Kép linkje',
+                type: 'text',
+                required: true,
+                admin: { description: 'Google Drive: kép → Megosztás → „Bárki, aki rendelkezik a linkkel” → Link másolása. Más https kép link is jó.' },
+                validate: validateImageLink,
+                hooks: { beforeChange: [({ value }) => (typeof value === 'string' ? directImageUrl(value.trim()) : value)] },
+              },
+            ] },
           ],
         },
         {
