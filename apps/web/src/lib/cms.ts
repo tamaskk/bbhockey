@@ -1,4 +1,5 @@
 import { cacheLife, cacheTag } from "next/cache";
+import { sized } from "./image";
 import { connection } from "next/server";
 import type { Lang } from "./i18n";
 import type { Beallitasok, Dokumentumok, Fooldal, Media, Urlap } from "../../../admin/src/payload-types";
@@ -53,9 +54,11 @@ async function readDocuments(lang: Lang) {
 }
 
 // Upload fields come back as a Media object (depth=1); local uploads have a relative URL (/admin/api/media/...).
-export function img(m: string | Media | null | undefined): string | undefined {
+export { sized };
+
+export function img(m: string | Media | null | undefined, w = 1200): string | undefined {
   if (!m || typeof m === "string" || !m.url) return undefined;
-  return m.url.startsWith("http") ? m.url : `${ADMIN_PUBLIC_URL}${m.url}`;
+  return m.url.startsWith("http") ? sized(m.url, w) : `${ADMIN_PUBLIC_URL}${m.url}`;
 }
 
 export function alt(m: string | Media | null | undefined): string {

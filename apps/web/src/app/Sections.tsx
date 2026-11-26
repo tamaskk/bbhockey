@@ -1,6 +1,6 @@
 import "./sections.css";
 import { Fragment, type ReactNode } from "react";
-import { alt, img, initials, type Beallitasok, type Fooldal } from "@/lib/cms";
+import { alt, img, initials, sized, type Beallitasok, type Fooldal } from "@/lib/cms";
 import { editor, type Ed } from "@/lib/edit";
 import type { Looks } from "@/lib/style";
 import TileGallery from "./TileGallery";
@@ -13,7 +13,7 @@ const pics = (t: { gallery?: Parameters<typeof img>[0][] | null; galleryLinks?: 
     ? []
     : [
         ...(t.gallery ?? []).flatMap((m) => (img(m) ? [{ src: img(m)!, alt: alt(m) }] : [])),
-        ...(t.galleryLinks ?? "").split("\n").filter(Boolean).map((src) => ({ src, alt: t.title })),
+        ...(t.galleryLinks ?? "").split("\n").filter(Boolean).map((src) => ({ src: sized(src), alt: t.title })),
       ].slice(0, 10);
 
 const d = (i: number) => (i ? ` mhk-reveal-d${Math.min(i, 3)}` : "");
@@ -201,7 +201,7 @@ export default function Sections({ home, site, lang, looks, edit = false }: { ho
           {site.extraText && <div className="mhk-rte">{site.extraText.split(/\n\s*\n/).map((t, i) => <p key={i}>{t}</p>)}</div>}
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 16, marginTop: 24 }}>
             {(site.extraImages ?? []).slice(0, 3).map((g, i) => g.url && (
-              <img key={g.id ?? i} src={g.url} alt={site.extraTitle ?? ""} loading="lazy" style={{ flex: "1 1 260px", maxWidth: 380, width: "100%", aspectRatio: "4 / 3", objectFit: "cover", display: "block" }} />
+              <img key={g.id ?? i} src={sized(g.url, 800)} alt={site.extraTitle ?? ""} loading="lazy" style={{ flex: "1 1 260px", maxWidth: 380, width: "100%", aspectRatio: "4 / 3", objectFit: "cover", display: "block" }} />
             ))}
           </div>
         </div>
@@ -362,7 +362,7 @@ export default function Sections({ home, site, lang, looks, edit = false }: { ho
     <>
       <section className="mhk-hero-slider bb-hero" id="fooldal" {...e.block("hero")}>
         <div className="mhk-hs-slide mhk-is-active">
-          <div className="mhk-hs-bg" style={{ backgroundImage: `url(${img(hero.image)})` }} {...im("hero.image")} />
+          <div className="mhk-hs-bg" style={{ backgroundImage: `url(${img(hero.image, 1920)})` }} {...im("hero.image")} />
           <div className="mhk-wrap mhk-hs-inner">
             <h1><span {...f("hero.title")}>{hero.title}</span> {(edit || hero.highlight) && <em {...f("hero.highlight")}>{hero.highlight}</em>}{(edit || hero.byline) && <small className="bb-byline" {...f("hero.byline")}>{hero.byline}</small>}</h1>
             {(edit || hero.text) && <p {...f("hero.text", true)}>{hero.text}</p>}
