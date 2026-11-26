@@ -110,3 +110,16 @@ html, body { overflow-x: clip; }
 .mhk-site .bb-promo-x:hover { background: #000; }
 html[data-theme="light"] .mhk-site .bb-promo h3 { color: var(--mhk-accent-dk); }
 @media (max-width: 600px) { .mhk-site .bb-promo-body { padding: 20px; } .mhk-site .bb-promo h3 { font-size: 1.4rem; } }
+
+/* metallic sheen: a gradient built from the three accent colours set in Beállítások → Arculat */
+.mhk-site {
+  --bb-sheen: linear-gradient(115deg, var(--mhk-accent-dk) 0%, var(--mhk-accent) 28%, var(--mhk-accent-2) 48%, var(--mhk-accent) 64%, var(--mhk-accent-dk) 100%);
+  --bb-sheen-dk: linear-gradient(115deg, var(--mhk-accent-dk) 0%, var(--mhk-accent) 50%, var(--mhk-accent-dk) 100%);
+}
+.mhk-site .mhk-btn-primary, .mhk-site .mhk-marquee, .mhk-site .bb-promo-badge { background: var(--bb-sheen); background-size: 200% 100%; }
+.mhk-site .mhk-btn-primary { transition: background-position .6s ease; }
+.mhk-site .mhk-btn-primary:hover { background-position: 100% 0; }
+/* highlighted words in headings: gold text; darker gradient on light backgrounds for contrast */
+.mhk-site h1 em, .mhk-site h2 em, .mhk-site .bb-promo h3 { background: var(--bb-sheen); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .08em; }
+.mhk-site .mhk-section-light h2 em, html[data-theme="light"] .mhk-site h1 em, html[data-theme="light"] .mhk-site h2 em, html[data-theme="light"] .mhk-site .bb-promo h3 { background-image: var(--bb-sheen-dk); }
+@media (forced-colors: active) { .mhk-site h1 em, .mhk-site h2 em, .mhk-site .bb-promo h3 { color: CanvasText; background: none; } }
