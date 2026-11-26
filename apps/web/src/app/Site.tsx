@@ -5,7 +5,7 @@ import Jelentkezes from "./Jelentkezes";
 import Sections from "./Sections";
 import Promo from "./Promo";
 import type { Looks } from "@/lib/style";
-import { t, type Lang } from "@/lib/i18n";
+import { prefix, SITE_URL, t, type Lang } from "@/lib/i18n";
 
 export default async function Site({ lang, edit = false }: { lang: Lang; edit?: boolean }) {
   const { site, home, form } = await getContent(lang);
@@ -16,10 +16,38 @@ export default async function Site({ lang, edit = false }: { lang: Lang; edit?: 
     <>
       <Header site={site} lang={lang} edit={edit} />
       <main id="mhk-content">
-        <Sections home={home} lang={lang} looks={site.styles as Looks} edit={edit} />
+        <Sections home={home} site={site} lang={lang} looks={site.styles as Looks} edit={edit} />
         <Jelentkezes form={form} lang={lang} privacyUrl={site.privacyUrl} looks={site.styles as Looks} edit={edit} />
       </main>
       <Footer site={site} lang={lang} edit={edit} />
+      {/* structured data for search engines: who runs the camp and how to reach them */}
+      {!edit && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "SportsOrganization",
+                  "@id": `${SITE_URL}/#org`,
+                  name: site.name,
+                  url: SITE_URL,
+                  sport: "Ice hockey",
+                  logo: img(site.logo),
+                  description: site.description ?? undefined,
+                  telephone: /\d/.test(site.phone ?? "") ? site.phone : undefined, // "-" placeholder is not a number
+                  email: site.email ?? undefined,
+                  address: site.location ?? undefined,
+                  sameAs: (site.social ?? []).map((s) => s.url).filter(Boolean),
+                },
+                { "@type": "WebSite", "@id": `${SITE_URL}/#website`, url: SITE_URL, name: site.siteTitle, inLanguage: lang, publisher: { "@id": `${SITE_URL}/#org` } },
+                { "@type": "WebPage", url: `${SITE_URL}${prefix(lang)}`, name: site.siteTitle, inLanguage: lang, isPartOf: { "@id": `${SITE_URL}/#website` } },
+              ],
+            }).replace(/</g, "\\u003c"),
+          }}
+        />
+      )}
       {!edit && site.promoShow && (site.promoTitle || site.promoText) && (
         <Promo badge={site.promoBadge} title={site.promoTitle} text={site.promoText} image={img(site.promoImage)} button={site.promoButton}
           href={site.promoLink || "#jelentkezes"} until={site.promoUntil} close={tr.close} />

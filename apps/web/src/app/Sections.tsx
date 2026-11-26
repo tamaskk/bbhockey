@@ -1,6 +1,6 @@
 import "./sections.css";
 import { Fragment, type ReactNode } from "react";
-import { alt, img, initials, type Fooldal } from "@/lib/cms";
+import { alt, img, initials, type Beallitasok, type Fooldal } from "@/lib/cms";
 import { editor, type Ed } from "@/lib/edit";
 import type { Looks } from "@/lib/style";
 import TileGallery from "./TileGallery";
@@ -140,7 +140,7 @@ const Avatar = ({ name }: { name: string }) => <span className="mhk-q-avatar"><s
 export const SECTION_KEYS = ["marquee", "tabor", "napirend", "etlap", "rolunk", "velemenyek", "gyik", "kapcsolat"] as const;
 type Key = (typeof SECTION_KEYS)[number];
 
-export default function Sections({ home, lang, looks, edit = false }: { home: Fooldal; lang: Lang; looks?: Looks; edit?: boolean }) {
+export default function Sections({ home, site, lang, looks, edit = false }: { home: Fooldal; site: Beallitasok; lang: Lang; looks?: Looks; edit?: boolean }) {
   const tr = t(lang);
   const { hero, marquee, tabor, napirend, eszkozok, etlap, rolunk, velemenyek, gyik, kapcsolat } = home;
   const quotes = velemenyek.items ?? [];
@@ -188,6 +188,21 @@ export default function Sections({ home, lang, looks, edit = false }: { home: Fo
                 </div>
               );
             })}
+          </div>
+        </div>
+      </section>
+    ),
+
+    // Beállítások → Képes blokk, edited in the admin only; sits between Táborról and Napirend
+    extra: site.extraShow && (site.extraTitle || site.extraText || site.extraImages?.length) && (
+      <section className="mhk-sec" id="kepes-blokk">
+        <div className="mhk-wrap" style={{ textAlign: "center" }}>
+          {site.extraTitle && <div className="mhk-section-head"><div><h2>{site.extraTitle}</h2></div></div>}
+          {site.extraText && <div className="mhk-rte">{site.extraText.split(/\n\s*\n/).map((t, i) => <p key={i}>{t}</p>)}</div>}
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 16, marginTop: 24 }}>
+            {(site.extraImages ?? []).slice(0, 3).map((g, i) => g.url && (
+              <img key={g.id ?? i} src={g.url} alt={site.extraTitle ?? ""} loading="lazy" style={{ flex: "1 1 260px", maxWidth: 380, width: "100%", aspectRatio: "4 / 3", objectFit: "cover", display: "block" }} />
+            ))}
           </div>
         </div>
       </section>
@@ -257,7 +272,7 @@ export default function Sections({ home, lang, looks, edit = false }: { home: Fo
           {(["image", "image2", "image3"] as const).some((k) => edit || img(rolunk[k])) && (
             <div className="bb-about-photos">
               {(["image", "image2", "image3"] as const).map((k) => (edit || img(rolunk[k])) && (
-                <div className="mhk-photo mhk-reveal" key={k} {...im(`rolunk.${k}`)}><img src={img(rolunk[k])} alt={alt(rolunk[k])} loading="lazy" /></div>
+                <div className="mhk-photo mhk-reveal" key={k} {...im(`rolunk.${k}`)}><img src={img(rolunk[k])} alt={alt(rolunk[k]) || `${rolunk.title ?? ""} ${rolunk.highlight ?? ""}`.trim()} loading="lazy" /></div>
               ))}
             </div>
           )}
@@ -362,7 +377,7 @@ export default function Sections({ home, lang, looks, edit = false }: { home: Fo
           </div>
         )}
       </section>
-      {order.map((k) => <Fragment key={k}>{blocks[k]}</Fragment>)}
+      {order.map((k) => <Fragment key={k}>{blocks[k]}{k === "tabor" && blocks.extra}</Fragment>)}
     </>
   );
 }

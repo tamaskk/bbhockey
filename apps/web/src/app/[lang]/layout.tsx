@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getContent, img } from "@/lib/cms";
-import { isLang, LANGS, prefix, type Lang } from "@/lib/i18n";
+import { isLang, LANGS, languageUrls, OG_LOCALE, prefix, SITE_URL, type Lang } from "@/lib/i18n";
 import { fontName, fontsHref, type Looks } from "@/lib/style";
 
 const css = [
@@ -35,13 +35,25 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
   const { site } = await getContent(lang);
   const icon = img(site.favicon) ?? img(site.logo);
   const og = img(site.ogImage);
+  const url = `${SITE_URL}${prefix(lang)}`;
   return {
-    title: site.siteTitle,
+    metadataBase: new URL(SITE_URL),
+    // legal pages: "ÁSZF | BB Hockey Skills"
+    title: { default: site.siteTitle, template: `%s | ${site.name}` },
     description: site.description ?? undefined,
     icons: icon ? { icon, apple: icon } : undefined,
-    openGraph: og ? { images: og } : undefined,
-    // tells search engines about the other language versions
-    alternates: { languages: Object.fromEntries(LANGS.map((l) => [l, prefix(l) || "/"])) },
+    openGraph: {
+      type: "website",
+      url,
+      siteName: site.name,
+      title: site.siteTitle,
+      description: site.description ?? undefined,
+      locale: OG_LOCALE[lang],
+      alternateLocale: LANGS.filter((l) => l !== lang).map((l) => OG_LOCALE[l]),
+      images: og,
+    },
+    // canonical address + the other language versions
+    alternates: { canonical: url, languages: languageUrls() },
   };
 }
 

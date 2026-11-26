@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getContent, getDocuments } from "@/lib/cms";
-import { isLang, prefix, t, type Lang } from "@/lib/i18n";
+import { isLang, languageUrls, prefix, SITE_URL, t, type Lang } from "@/lib/i18n";
 import { Footer, Header } from "../../Chrome";
 
 // blocking route: CMS content is read at request time (see getContent), then served from cache
@@ -17,7 +17,9 @@ const langOf = (l: string): Lang => (isLang(l) ? l : "hu");
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { lang, doc } = await params;
-  return isDoc(doc) ? { title: t(langOf(lang)).docs[doc].title } : {};
+  if (!isDoc(doc)) return {};
+  const l = langOf(lang);
+  return { title: t(l).docs[doc].title, alternates: { canonical: `${SITE_URL}${prefix(l)}/${doc}`, languages: languageUrls(`/${doc}`) } };
 }
 
 // empty line = paragraph, "## " / "### " = heading, "- " lines = list

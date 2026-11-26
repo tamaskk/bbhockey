@@ -7,6 +7,14 @@ export const LANG_NAMES: Record<Lang, string> = { hu: "Magyar", en: "English", d
 
 /** path prefix of a language: "" for Hungarian, "/en" etc. */
 export const prefix = (lang: Lang) => (lang === "hu" ? "" : `/${lang}`);
+// public address for canonical links, hreflang, sitemap and structured data
+export const SITE_URL = process.env.SITE_URL ?? "https://www.bbskills.hu";
+export const OG_LOCALE: Record<Lang, string> = { hu: "hu_HU", en: "en_GB", de: "de_DE", sv: "sv_SE" };
+// absolute URL of a page in every language, for hreflang (x-default: the Hungarian original)
+export const languageUrls = (path = "") => ({
+  ...Object.fromEntries(LANGS.map((l) => [l, `${SITE_URL}${prefix(l)}${path}` || SITE_URL])),
+  "x-default": `${SITE_URL}${path}`,
+});
 
 const hu = {
   skip: "Ugrás a tartalomra",
