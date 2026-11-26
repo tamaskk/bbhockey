@@ -75,11 +75,11 @@ export function Editor({ webUrl, schema }: { webUrl: string; schema: Record<stri
   const dirty = useRef(new Set<string>())
   const reloadAfter = useRef(false)
   const chain = useRef(Promise.resolve())
-  const timer = useRef<ReturnType<typeof setTimeout>>(undefined)
   const frame = useRef<HTMLIFrameElement>(null)
   const [status, setStatus] = useState('Betöltés…')
   const [error, setError] = useState(false)
   const [modal, setModal] = useState<Modal>(null)
+  const [unsaved, setUnsaved] = useState(false)
   // undo: snapshots of all docs taken before each change; typing into the same text counts as one step
   const history = useRef<Record<string, Doc>[]>([])
   const last = useRef<Record<string, Doc>>({})
@@ -111,7 +111,6 @@ export function Editor({ webUrl, schema }: { webUrl: string; schema: Record<stri
   }
 
   const save = () => {
-    timer.current = undefined
     chain.current = chain.current.then(async () => {
       const slugs = [...dirty.current]
       dirty.current.clear()
@@ -123,7 +122,8 @@ export function Editor({ webUrl, schema }: { webUrl: string; schema: Record<stri
           const res = await fetch(api(slug), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(docs.current[slug]) })
           const body = await res.json().catch(() => ({}))
           if (!res.ok) {
-            dirty.current.add(slug) // retried with the next change
+            dirty.current.add(slug) // retried with the Mentés button
+            setUnsaved(true)
             if (reloadAfter.current) await resync(slug)
             setError(true)
             // Payload validation errors, e.g. a required title left empty
@@ -138,12 +138,14 @@ export function Editor({ webUrl, schema }: { webUrl: string; schema: Record<stri
           }
         } catch {
           dirty.current.add(slug)
+          setUnsaved(true)
           if (reloadAfter.current) await resync(slug).catch(() => {})
           setError(true)
           return setStatus('Nem mentve: nincs kapcsolat.')
         }
       }
       setError(false)
+      setUnsaved(false)
       setStatus('Mentve ✓')
       if (reloadAfter.current && frame.current) {
         reloadAfter.current = false
@@ -161,10 +163,14 @@ export function Editor({ webUrl, schema }: { webUrl: string; schema: Record<stri
     lastKey.current = key
     last.current = structuredClone(docs.current)
     dirty.current.add(slug)
-    if (structural) reloadAfter.current = true
-    setStatus('Változás…')
-    clearTimeout(timer.current)
-    timer.current = setTimeout(save, structural ? 0 : 800)
+    // text and nudges wait for the Mentés button; structural changes save at once,
+    // because the page only shows them after a reload from the server
+    if (!structural) {
+      setUnsaved(true)
+      return setStatus('Nem mentett változás – kattints a Mentés gombra.')
+    }
+    reloadAfter.current = true
+    save()
   }
 
   useEffect(() => {
@@ -246,9 +252,9 @@ export function Editor({ webUrl, schema }: { webUrl: string; schema: Record<stri
       if (typeof value === 'string' || typeof value === 'boolean')
         if (setPath(doc, path, value)) changed(slug, false, `${slug}:${path}`)
     }
-    // don't lose a pending edit when leaving within the debounce window
+    // warn before leaving with unsaved changes
     const onLeave = (e: BeforeUnloadEvent) => {
-      if (timer.current || dirty.current.size) e.preventDefault()
+      if (dirty.current.size) e.preventDefault()
     }
     window.addEventListener('message', onMessage)
     window.addEventListener('beforeunload', onLeave)
@@ -263,7 +269,6 @@ export function Editor({ webUrl, schema }: { webUrl: string; schema: Record<stri
     const prev = history.current.pop()
     setUndoCount(history.current.length)
     if (!prev) return
-    clearTimeout(timer.current)
     for (const slug of SLUGS) if (JSON.stringify(prev[slug]) !== JSON.stringify(docs.current[slug])) dirty.current.add(slug)
     docs.current = structuredClone(prev)
     last.current = prev
@@ -306,7 +311,6 @@ export function Editor({ webUrl, schema }: { webUrl: string; schema: Record<stri
   // everything back to the original content; waits for pending saves so they cannot overwrite the reset
   const reset = async () => {
     if (!window.confirm('Minden szöveg, kép, szekció, szín és az űrlap visszaáll az alapállapotra. Ez nem vonható vissza. Folytatod?')) return
-    clearTimeout(timer.current)
     dirty.current.clear()
     await chain.current
     setStatus('Visszaállítás…')
@@ -330,6 +334,7 @@ export function Editor({ webUrl, schema }: { webUrl: string; schema: Record<stri
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px 16px', padding: '10px 16px', borderBottom: '1px solid var(--theme-elevation-150)' }}>
         <strong>Oldalszerkesztő</strong>
         <span role="status" style={{ color: error ? 'var(--theme-error-500)' : 'var(--theme-elevation-600)', flex: 1, minWidth: 200 }}>{status}</span>
+        <button type="button" className="btn btn--style-primary btn--size-small" style={{ margin: 0 }} disabled={!unsaved} onClick={save} title="A szöveges változások mentése">💾 Mentés</button>
         <button type="button" className="btn btn--style-secondary btn--size-small" style={{ margin: 0 }} disabled={!undoCount} onClick={undo} title="Az utolsó változás visszavonása (Ctrl/Cmd+Z)">↶ Visszavonás{undoCount ? ` (${undoCount})` : ''}</button>
         <button type="button" className="btn btn--style-primary btn--size-small" style={{ margin: 0 }} onClick={() => setModal({ kind: 'section', slug: 'fooldal', path: '' })}>＋ Új szekció</button>
         <button type="button" className="btn btn--style-secondary btn--size-small" style={{ margin: 0 }} onClick={() => setModal({ kind: 'settings', slug: 'beallitasok', path: '' })}>⚙ Oldal beállításai (színek, betűk)</button>
