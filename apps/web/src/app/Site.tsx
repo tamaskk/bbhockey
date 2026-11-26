@@ -38,7 +38,7 @@ export default async function Site({ lang, edit = false }: { lang: Lang; edit?: 
                   description: site.description ?? undefined,
                   telephone: /\d/.test(site.phone ?? "") ? site.phone : undefined, // "-" placeholder is not a number
                   email: site.email ?? undefined,
-                  address: site.location ?? undefined,
+                  address: site.location ? { "@type": "PostalAddress", name: site.location, addressCountry: "HU" } : undefined,
                   sameAs: (site.social ?? []).map((s) => s.url).filter(Boolean),
                 },
                 { "@type": "WebSite", "@id": `${SITE_URL}/#website`, url: SITE_URL, name: site.siteTitle, inLanguage: lang, publisher: { "@id": `${SITE_URL}/#org` } },
